@@ -7,5 +7,5 @@ public class Category{
     String name;
     Discount discount = null;
 
-    ArrayList<MenuItem> items;
+    OptionList options;
 }
