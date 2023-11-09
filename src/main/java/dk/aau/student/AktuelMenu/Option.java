@@ -8,4 +8,10 @@ public class Option{
     String getInternalName(){
         return internalName;
     }
+
+    public Option(String internalName, String displayName, int price){
+        this.internalName = internalName;
+        this.displayName = displayName;
+        this.price = price;
+    }
 }

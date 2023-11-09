@@ -7,4 +7,10 @@ public class TimeAvailability{
     private LocalTime end;
 
     private DaySelector days;
+
+    public TimeAvailability(LocalTime start, LocalTime end, DaySelector daySelector){
+        this.start = start;
+        this.end = end;
+        days = daySelector;
+    }
 }

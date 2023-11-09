@@ -9,6 +9,11 @@ public class TableOrder{
 
     private ArrayList<OrderItem> items;
 
+    public TableOrder(int tableId, int orderId, ArrayList<OrderItem> listOfOrder){
+        this.tableId = tableId;
+        this.orderId = orderId;
+        this.items = listOfOrder;
+    }
     public String printForKitchen(){
         StringBuilder order = new StringBuilder("Order " + orderId + " for table " + tableId + "\n");
 

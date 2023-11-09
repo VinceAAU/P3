@@ -22,4 +22,15 @@ public class DaySelector {
             case SUNDAY -> this.sunday;
         };
     }
+    static DaySelector always(){
+        DaySelector sevenDays = new DaySelector();
+        sevenDays.monday = true;
+        sevenDays.tuesday = true;
+        sevenDays.wednesday = true;
+        sevenDays.thursday = true;
+        sevenDays.friday = true;
+        sevenDays.saturday = true;
+        sevenDays.sunday = true;
+        return sevenDays;
+    }
 }
