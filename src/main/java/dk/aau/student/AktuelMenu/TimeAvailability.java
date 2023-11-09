@@ -3,8 +3,8 @@ package dk.aau.student.AktuelMenu;
 import java.time.LocalTime;
 
 public class TimeAvailability{
-    LocalTime start;
-    LocalTime end;
+    private LocalTime start;
+    private LocalTime end;
 
-    DaySelector days;
+    private DaySelector days;
 }

@@ -1,8 +1,8 @@
 package dk.aau.student.AktuelMenu;
 
 public class Discount{
-    int price;
-    int amount;
+    private int price;
+    private int amount;
 
-    DaySelector days;
+    private DaySelector days;
 }
