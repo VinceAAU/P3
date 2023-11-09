@@ -1,9 +1,14 @@
 package dk.aau.student.AktuelMenu;
 
-public class MenuItem {
-    int price;
-    String name;
-    Discount discount = null;
+public class MenuItem{
+    private int price;
+    private String internalName;
+    private String displayName;
+    private Discount discount = null;
 
-    OptionList options;
+    private OptionList options;
+
+    public String getInternalName() {
+        return internalName;
+    }
 }

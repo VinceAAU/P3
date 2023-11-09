@@ -8,4 +8,14 @@ public class TableOrder{
     boolean delivered = false;
 
     ArrayList<OrderItem> items;
+
+    public String printForKitchen(){
+        StringBuilder order = new StringBuilder("Order " + orderId + " for table " + tableId + "\n");
+
+        for (OrderItem item : items){
+            order.append(item.printForKitchen());
+        }
+
+        return order.toString();
+    }
 }

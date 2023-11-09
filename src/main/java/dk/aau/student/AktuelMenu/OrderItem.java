@@ -3,10 +3,30 @@ package dk.aau.student.AktuelMenu;
 import java.util.ArrayList;
 
 public class OrderItem {
-    MenuItem menuItem;
+    private MenuItem menuItem;
 
-    ArrayList<Option> options;
-    ArrayList<Option> additions;
+    private ArrayList<Option> options;
+    private ArrayList<Option> additions;
 
-    String comment;
+    private String comment;
+
+    String printForKitchen(){
+        StringBuilder output = new StringBuilder();
+
+        output.append(menuItem.getInternalName()).append("\n");
+
+        for (Option o : options){
+            output.append("\t").append(o.getInternalName()).append("\n");
+        }
+
+        for (Option a : additions){
+            output.append("\t+").append(a.getInternalName()).append("\n");
+        }
+
+        output.append("Comments:\n");
+
+        output.append(comment);
+
+        return output.toString();
+    }
 }
