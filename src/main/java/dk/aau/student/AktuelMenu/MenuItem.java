@@ -1,8 +1,9 @@
 package dk.aau.student.AktuelMenu;
 
-public class MenuItem{
-    String name;
+public class MenuItem {
     int price;
+    String name;
+    Discount discount = null;
 
-    boolean isAddition; //Perhaps we could do this more object-oriented
+    OptionList options;
 }

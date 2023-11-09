@@ -7,5 +7,5 @@ public class TableOrder{
     int orderId;
     boolean delivered = false;
 
-    ArrayList<OrderCategory> categories;
+    ArrayList<OrderItem> items;
 }
