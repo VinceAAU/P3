@@ -20,7 +20,9 @@ public class ServletMain extends HttpServlet {
         MenuItem burger = new MenuItem("Burger", "Burger", 12);
         burger.addOption(new Option("kylling","kylling",0));
         burger.addOption(new Option("Bøf","Bøf",0));
-        burger.addOption(new Option("Vegi","Vegi",0));
+        Option vegiBurger = new Option("Vegi","Vegi",0);
+        vegiBurger.addAllergen(Allergen.VEGETARIAN);
+        burger.addOption(vegiBurger);
         menu.addItem(burger);
 
         MenuItem variant = new MenuItem("xVarianter","Vælg 3 varianter eller flere",0);

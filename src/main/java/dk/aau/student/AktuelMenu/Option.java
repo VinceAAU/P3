@@ -1,8 +1,12 @@
 package dk.aau.student.AktuelMenu;
 
+import java.util.ArrayList;
+
 public class Option{
     private String internalName;
     private String displayName;
+
+    private ArrayList<Allergen> allergens;
     private int price;
 
     String getInternalName(){
@@ -13,5 +17,8 @@ public class Option{
         this.internalName = internalName;
         this.displayName = displayName;
         this.price = price;
+    }
+    public void addAllergen(Allergen allergen){
+        allergens.add(allergen);
     }
 }
