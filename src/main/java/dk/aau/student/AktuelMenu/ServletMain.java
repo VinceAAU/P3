@@ -4,7 +4,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
-import javax.swing.plaf.metal.MetalBorders;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -39,15 +38,15 @@ public class ServletMain extends HttpServlet {
         variant.addOption(new Option("lakse tatar","Rørt laksetatar med urter, avocadocreme og sprøde rugchips",80));
         variant.addOption(new Option("veggie Tatar","Veggie tatar på gulerod og sesam, med marineret kål, grøn mayo, edamamebønner, jordskokkechips og karse",80));
 
-        MenuItem SliderFafal = new MenuItem("SliderFafel","Slider med falafel, feldsalat og chimichurri af soltørret tomat og peberfrugt",80);
+        MenuItem SliderFalafel = new MenuItem("SliderFafel","Slider med falafel, feldsalat og chimichurri af soltørret tomat og peberfrugt",80);
 
 
         ArrayList<Option> optionsInOrder = new ArrayList<>(List.of(new Option[]{burger.getOptions()[0]}));
         OrderItem order1 = new OrderItem(burger,optionsInOrder, new ArrayList<>(),"medium");
 
-        TableOrder tableOrderExample = new TableOrder(69,69,new ArrayList<>(List.of(order1)));
+        Order orderExample = new Order(69,69,new ArrayList<>(List.of(order1)));
 
-        System.out.println(tableOrderExample.printForKitchen());
+        System.out.println(orderExample.printForKitchen());
     }
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
