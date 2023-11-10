@@ -14,6 +14,8 @@ function addToOrder(itemName, selectedOptions, selectedAdditions) {
   orderItem.selectedOptions = selectedOptions;
   orderItem.selectedAdditions = selectedAdditions;
   order.push(orderItem);
+
+  console.log('item added to order', orderItem);
 }
 
 document.querySelector('div > button.add-to-order').addEventListener('click', (event) => {
