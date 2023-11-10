@@ -24,7 +24,12 @@ document.querySelector('div > button.add-to-order').addEventListener('click', (e
  
   if (target.classList.contains('add-to-order')) {
     const itemName = target.getAttribute('data-item-name');
-    addToOrder(itemName);
+    const optionsgroup = document.getAttribute('.options'):
+    const selecetedOptions = getSelectedOptions(optionsGroup)
+    const additionGroup = document.querySelector('.addition');
+    const selectedAdditions = getSelectedAdditions(additionGroup);
+    
+    addToOrder(itemName,selectedOptions,selectedAdditions);
   }
 
 }); 
