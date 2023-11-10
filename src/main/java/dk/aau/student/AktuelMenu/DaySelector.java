@@ -19,6 +19,10 @@ public class DaySelector {
         return new DaySelector(true, true, true, true, true, true, true);
     }
 
+    public static DaySelector never(){
+        return new DaySelector(false, false, false, false, false, false, false);
+    }
+
     // This could be done so much easier with bit flags, but I know for a fact that if I write them,
     // they'll show up to the exam and you guys will have no idea how to use them
     public DaySelector(boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday){
@@ -29,10 +33,6 @@ public class DaySelector {
         this.friday = friday;
         this.saturday = saturday;
         this.sunday = sunday;
-    }
-
-    public DaySelector(){
-        this(false, false, false, false, false, false, false);
     }
 
     public void enable(DayOfWeek day){
