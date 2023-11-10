@@ -17,6 +17,7 @@ public class Option{
         this.internalName = internalName;
         this.displayName = displayName;
         this.price = price;
+        this.allergens = new ArrayList<>();
     }
     public void addAllergen(Allergen allergen){
         allergens.add(allergen);

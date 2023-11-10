@@ -43,7 +43,7 @@ public class ServletMain extends HttpServlet {
 
 
         ArrayList<Option> optionsInOrder = new ArrayList<>(List.of(new Option[]{burger.getOptions()[0]}));
-        OrderItem order1 = new OrderItem(burger,optionsInOrder, new ArrayList<>());
+        OrderItem order1 = new OrderItem(burger,optionsInOrder, new ArrayList<>(),"medium");
 
         TableOrder tableOrderExample = new TableOrder(69,69,new ArrayList<>(List.of(order1)));
 
