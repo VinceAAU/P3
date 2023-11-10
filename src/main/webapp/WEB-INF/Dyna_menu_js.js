@@ -51,9 +51,9 @@ document.querySelector('div > button.add-to-order').addEventListener('click', (e
 
   buttons.forEach((button) => { if (button.classList.contains('selected')) {
       const addition = button.getAttribute('data-addition');
-      selectedadditions.push(addition);
+      selectedAdditions.push(addition);
   });
-  return selectedadditions;
+  return selectedAdditions;
   }
     
   
