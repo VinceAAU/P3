@@ -16,8 +16,8 @@ function addToOrder(itemName, selectedOptions, selectedAdditions) {
   order.push(orderItem);
 }
 
-document.getElementById('menu').addEventListener('click', (event) => {
-  const target = event.target;
+document.querySelector('div > button.add-to-order').addEventListener('click', (event) => {
+    const target = event.target;
 
  
   if (target.classList.contains('add-to-order')) {
