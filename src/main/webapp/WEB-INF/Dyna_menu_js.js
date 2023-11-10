@@ -24,15 +24,40 @@ document.querySelector('div > button.add-to-order').addEventListener('click', (e
  
   if (target.classList.contains('add-to-order')) {
     const itemName = target.getAttribute('data-item-name');
-    const optionsgroup = document.getAttribute('.options'):
-    const selecetedOptions = getSelectedOptions(optionsGroup)
+    const optionsgroup = document.getAttribute('.options');
+    const selecetedOptions = getSelectedOptions(optionsGroup);
     const additionGroup = document.querySelector('.addition');
     const selectedAdditions = getSelectedAdditions(additionGroup);
     
     addToOrder(itemName,selectedOptions,selectedAdditions);
   }
+  function get Selectedoptions(optionsGroup) {
+    const buttons = optionGroup.querySelectorall('button');
+    const selectedOptions =[];
 
-}); 
+    buttons.forEach((buttons) => {
+      if (buttins.classList.contains('selected')){
+        const option = button.getAttribute('data-option');
+        selectedOptions.push(option);
+      }
+    }); 
+
+    return selectedOptions;
+  }
+
+  function getSelectedAdditions(additionGroup) {
+  const buttons = additionGroup.querySelectorAll('button');
+  const selectedAdditions = [];
+
+  buttons.forEach((button) => { if (button.classList.contains('selected')) {
+      const addition = button.getAttribute('data-addition');
+      selectedadditions.push(addition);
+  });
+  return selectedadditions;
+  }
+    
+  
+  
 
 const optionsGroup = document.querySelector('.options'); 
 if (optionsGroup) {
