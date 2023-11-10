@@ -1,5 +1,6 @@
 package dk.aau.student.AktuelMenu;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 public class DaySelector {
@@ -12,26 +13,10 @@ public class DaySelector {
     boolean sunday;
 
     public boolean isToday(){
-        return switch (LocalDateTime.now().getDayOfWeek()){
-            case MONDAY -> this.monday;
-            case TUESDAY -> this.tuesday;
-            case WEDNESDAY -> this.wednesday;
-            case THURSDAY -> this.thursday;
-            case FRIDAY -> this.friday;
-            case SATURDAY -> this.saturday;
-            case SUNDAY -> this.sunday;
-        };
+        return get(LocalDateTime.now().getDayOfWeek());
     }
-    static DaySelector always(){
-        DaySelector sevenDays = new DaySelector();
-        sevenDays.monday = true;
-        sevenDays.tuesday = true;
-        sevenDays.wednesday = true;
-        sevenDays.thursday = true;
-        sevenDays.friday = true;
-        sevenDays.saturday = true;
-        sevenDays.sunday = true;
-        return sevenDays;
+    public static DaySelector always(){
+        return new DaySelector(true, true, true, true, true, true, true);
     }
 
     // This could be done so much easier with bit flags, but I know for a fact that if I write them,
@@ -44,5 +29,46 @@ public class DaySelector {
         this.friday = friday;
         this.saturday = saturday;
         this.sunday = sunday;
+    }
+
+    public DaySelector(){
+        this(false, false, false, false, false, false, false);
+    }
+
+    public void enable(DayOfWeek day){
+        switch(day){
+            case MONDAY    ->    monday = true;
+            case TUESDAY   ->   tuesday = true;
+            case WEDNESDAY -> wednesday = true;
+            case THURSDAY  ->  thursday = true;
+            case FRIDAY    ->    friday = true;
+            case SATURDAY  ->  saturday = true;
+            case SUNDAY    ->    sunday = true;
+        }
+    }
+
+    public void disable(DayOfWeek day){
+        switch(day){
+            case MONDAY    ->    monday = false;
+            case TUESDAY   ->   tuesday = false;
+            case WEDNESDAY -> wednesday = false;
+            case THURSDAY  ->  thursday = false;
+            case FRIDAY    ->    friday = false;
+            case SATURDAY  ->  saturday = false;
+            case SUNDAY    ->    sunday = false;
+        }
+    }
+
+    public boolean get(DayOfWeek day){
+        return switch(day){
+
+            case MONDAY    -> monday;
+            case TUESDAY   -> tuesday;
+            case WEDNESDAY -> wednesday;
+            case THURSDAY  -> thursday;
+            case FRIDAY    -> friday;
+            case SATURDAY  -> saturday;
+            case SUNDAY    -> sunday;
+        };
     }
 }
