@@ -41,7 +41,7 @@ public class ServletMain extends HttpServlet {
         MenuItem SliderFalafel = new MenuItem("SliderFafel","Slider med falafel, feldsalat og chimichurri af soltørret tomat og peberfrugt",80);
 
 
-        ArrayList<Option> optionsInOrder = new ArrayList<>(List.of(new Option[]{burger.getOptions()[0]}));
+        ArrayList<Option> optionsInOrder = new ArrayList<>(List.of(new Option[]{burger.getOptions()[1]}));
         OrderItem order1 = new OrderItem(burger,optionsInOrder, new ArrayList<>(),"medium");
 
         Order orderExample = new Order(69,69,new ArrayList<>(List.of(order1)));
@@ -49,6 +49,9 @@ public class ServletMain extends HttpServlet {
         System.out.println(orderExample.printForKitchen());
     }
 
+    public void GenerateMenuItem() {
+
+    }
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.getWriter().println("Hello:3");
     }
