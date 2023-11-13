@@ -1,9 +1,34 @@
-function SubmitObjectToServer()
+let ArrayOptName
+let ArrayOptPrice
+let ArrayAdd
+let AddArrCounter
+let OptArrCounter
+
+
+
+function AddOption(name,price)
 {
-    return "niceguy"
+    ArrayOptName[OptArrCounter] = name
+    ArrayOptPrice[OptArrCounter] = price
+    OptArrCounter++
+    //put it in a text list
+}
+
+function AddAddtions(name,price)
+{
+    ArrayAdd[AddArrCounter] = {name:name,price:price}
+    AddArrCounter++
 }
 
 
+const AddOptToListButton = document.getElementById("AddOPtToListBut")
+
+AddOptToListButton.addEventListener('click', (event) => {
+    AddOption(document.getElementById('OptName').value, document.getElementById('OptPrice').value)
+})
+
+
+// next 4 functs are 2 eventlisterens on check boxed which hides/reveals their repsected element on marked or unmarked
 const OptCheck = document.getElementById('RevelOpt')
 OptCheck.addEventListener('change', (event) => {
     if (event.currentTarget.checked) {
