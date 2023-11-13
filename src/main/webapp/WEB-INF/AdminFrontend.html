@@ -14,7 +14,7 @@
     <button id="SubmitBut"> Submit Menu Item</button>
 </form>
     <!-- Toggle feature on food-->
-    <p>opitions <input type = checkbox id ="RevelOpt"> </p><!-- on true reveal below one someone do js :)-->
+    <p>opitions <input type = checkbox id ="RevelOpt"> </p>
    <div hidden="hidden" id = "opt">
     <input type ="text" id ="OptName" placeholder="name of option">
     <input type="number" id="OptPrice" placeholder="Price" >
@@ -30,18 +30,18 @@
    </div>
 
 
-    <!-- make js which on click adds that info to an array-->
 
-<form>
-    addtions <input type = checkbox id = "AddBox">  <!-- on true reveal below one someone do js :)-->
+    addtions <input type = checkbox id = "AddBox">
     <div id = "AddDiv" hidden="hidden">
-    <input type ="text" placeholder="name of option">
-    <input type = "number" placeholder ="Price">
+        <form>
+    <input type ="text" placeholder="name of option" id="AddName">
+    <input type = "number" placeholder ="Price" id="Addprice">
         <br>
+</form>
     <button id="AddAddTolistBut"> Add addtion to list</button>
     </div>
     <br>
-</form>
+
 
 <script src=Adminjs.js></script>
 </body>

@@ -1,15 +1,13 @@
-let ArrayOptName
-let ArrayOptPrice
-let ArrayAdd
-let AddArrCounter
-let OptArrCounter
+let ArrayOpt = []
+let ArrayAdd = []
+let AddArrCounter = 0
+let OptArrCounter = 0
 
 
 
 function AddOption(name,price)
 {
-    ArrayOptName[OptArrCounter] = name
-    ArrayOptPrice[OptArrCounter] = price
+    ArrayOpt[OptArrCounter] = {name:name,price:price}
     OptArrCounter++
     //put it in a text list
 }
@@ -22,9 +20,13 @@ function AddAddtions(name,price)
 
 
 const AddOptToListButton = document.getElementById("AddOPtToListBut")
-
+const AddAddToListButton =document.getElementById("AddAddTolistBut")
 AddOptToListButton.addEventListener('click', (event) => {
     AddOption(document.getElementById('OptName').value, document.getElementById('OptPrice').value)
+})
+
+AddAddToListButton.addEventListener('click',(event) => {
+    AddAddtions(document.getElementById("Addname"),document.getElementById("Addprice"))
 })
 
 
