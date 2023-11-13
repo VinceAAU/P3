@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>QR code generator</title>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+</head>
+<body>
+    <h1>Her kan du generere en QR kode</h1>
+
+    <form id="qrForm">
+        Restaurant: <br/>
+        <input type="radio" name="restaurant" value="Budolfi" id="budolfiOption"> <label for="budolfiOption">Budolfi</label> <br/>
+        <input type="radio" name="restaurant" value="Hasseris" id="hasserisOption"> <label for="hasserisOption">Hasseris</label> <br/>
+        <label for="tableIdInput">Table ID:</label><input type="text" name="tableId" id="tableIdInput"> <br/>
+        <input type="submit" id="qrSubmitButton">
+    </form>
+
+    <div id="qrContainer" hidden="hidden">
+    </div>
+
+    <script src="generate-qr.js"></script>
+</body>
+</html>
