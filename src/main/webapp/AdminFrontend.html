@@ -6,12 +6,12 @@
 </head>
 <body>
 <form>
-    <p> <!-- Menu overall name-->
-    <input type = "text" placeholder="Displayname" name="Displayname">
-    <input type = "text" placeholder="Internalname" name="internalname">
-    </p>
-    <input type = "number" placeholder="price" name = "price">
-    <button id="SubmitBut"> Submit Menu Item</button>
+
+    <input type = "text" placeholder="Displayname" id="DisplayName">
+    <input type = "text" placeholder="Internalname" id="InternalName">
+    <br>
+    <input type = "number" placeholder="price" id = "OrignalPrice">
+
 </form>
     <!-- Toggle feature on food-->
     <p>opitions <input type = checkbox id ="RevelOpt"> </p>
@@ -25,6 +25,7 @@
     <input type="checkbox" id="fingerfood"> fingerfood
     <input type="checkbox" id="lactose"> lack toes in taller ants
        <br>
+       <input type = "text" readonly id="OptText">
     <button id="AddOPtToListBut" > Add option to list</button>
        <br>
    </div>
@@ -37,10 +38,14 @@
     <input type ="text" placeholder="name of option" id="AddName">
     <input type = "number" placeholder ="Price" id="Addprice">
         <br>
+            <input type = "text" readonly id="AddText">
 </form>
     <button id="AddAddTolistBut"> Add addtion to list</button>
     </div>
     <br>
+    <button id="SubmitBut"> Submit Menu Item</button>
+    <br>
+    <button id="Done"> Færdig med menu og fucking send den</button>
 
 
 <script src=Adminjs.js></script>
