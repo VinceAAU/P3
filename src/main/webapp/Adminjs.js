@@ -8,7 +8,11 @@ let MenuCounter = 0
 
 function AddOption(name,price)
 {
-    ArrayOpt[OptArrCounter] = {Name:name.value,Price:price.value}
+    let Allergy= [document.getElementById("vegan").value,document.getElementById("vegeterian").value, document.getElementById("glutenFree").value,document.getElementById("lactose").value,document.getElementById("fingerfood").value]
+
+
+
+    ArrayOpt[OptArrCounter] = {Name:name.value,Price:price.value,Allergy:Allergy}
     OptArrCounter++
     document.getElementById("OptText").value += name.value+": "+ price.value + "\n"
     name.value = null
@@ -86,7 +90,12 @@ function Clearinfo()
     OptArrCounter = 0
 
 }
-
+document.getElementById("Done").addEventListener("click",(event)=>{
+    SendMenuToServer()
+})
+document.getElementById("SubmitBut").addEventListener("click",(event)=>{
+ContructMenu()
+})
 function ContructMenu()
 {
     Menu[MenuCounter] =
