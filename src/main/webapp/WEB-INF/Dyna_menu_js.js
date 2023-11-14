@@ -75,3 +75,43 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+function HTMLgen(Menu_JSON){
+
+  let html = '';
+
+  MenuJSON.Menu.Category.forEach(cat => {
+    html += '<div class="item-container">';
+    html += `<h3>${cat.name}</h3>`;
+    html += `<p>${cat.basePrice / 100} kr</p>`;
+    html += `<div class="option" data-min-selections="${cat.minOptions}" data-max-selections="${cat.maxOptions}">`;
+
+      cat.Menuitem.forEach(item => {
+        if(item.option) {
+          html += '<div class="checkbox-container">';
+          html += `<input type="checkbox" data-option="${item.name}">`;
+          html += `<label> ${item.name}</label>`;
+          html += '</div>';
+        }
+      })
+    html += '</div>';
+
+    html += '<div class="addition">';
+
+      cat.Menuitem.forEach(item => {
+        if (!item.option) {
+
+          html += '<div class="checkbox-container">';
+          html += `<input type="checkbox" data-addition="${item.name}">`;
+          html += `<label>${item.name}</label>`;
+          html += '</div>';
+        }
+      })
+    html += '</div>'
+
+    html += '<label for="item-quantity">quantity:</label>';
+    html += '<input type="number" id="item-quantity" value="1" min="1">';
+    html += `<button class="add-to-order" data-item-name="${cat.name}">`;
+    html += '</div>';
+  })
+  return html;
+}
