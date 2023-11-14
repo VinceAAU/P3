@@ -1,0 +1,56 @@
+{
+  "Menu": {
+    "menuId": "12345",
+    "availableTimes": {
+      "start": "09:00",
+      "end": "17:00",
+      "days": ["Monday", "Tuesday"]
+    },
+    "Category": [
+      {
+        "name": "Appetizers",
+        "basePrice": 500,
+        "minOptions": 0,
+        "maxOptions": 0,
+        "Menuitems": [
+          {
+            "name": "Cheese Sticks",
+            "price": 599,
+            "description": "Melted cheese goodness",
+            "option": false
+          },
+          {
+            "name": "Spinach Dip",
+            "price": 799,
+            "description": "Creamy spinach delight",
+            "option": false
+          }
+        ]
+      },
+      {
+        "name": "Main Course",
+        "basePrice": 1200,
+        "minOptions": 1,
+        "maxOptions": 2,
+        "Menuitems": [
+          {
+            "name": "Chicken Alfredo",
+            "price": 1299,
+            "description": "Creamy chicken pasta",
+            "option": true
+          },
+          {
+            "name": "Steak",
+            "price": 1899,
+            "description": "Juicy grilled steak",
+            "option": true
+          }
+        ]
+      }
+    ]
+  },
+  "discount": {
+    "days": ["Monday", "Tuesday"],
+    "price": -1000
+  }
+}
