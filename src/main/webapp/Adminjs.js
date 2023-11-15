@@ -9,23 +9,27 @@ let MenuCounter = 0
 function AddOption(name,price)
 {
     let Allergy= [document.getElementById("vegan").value,document.getElementById("vegeterian").value, document.getElementById("glutenFree").value,document.getElementById("lactose").value,document.getElementById("fingerfood").value]
+//I clearly use hannah montage linux because I fear no god with my methods of importing variables
+    let description =document.getElementById("OptDesc")
 
-
-
-    ArrayOpt[OptArrCounter] = {Name:name.value,Price:price.value,Allergy:Allergy}
+    ArrayOpt[OptArrCounter] = {Name:name.value,Price:price.value,description:description.value,allergy:Allergy}
     OptArrCounter++
     document.getElementById("OptText").value += name.value+": "+ price.value + "\n"
     name.value = null
     price.value = null
+    description.value = null
+
 }
 
 function AddAddtions(name,price)
 {
-    ArrayAdd[AddArrCounter] = {Name:name.value,Price:price.value}
+    let description =document.getElementById("AddDesc")
+    ArrayAdd[AddArrCounter] = {Name:name.value,Price:price.value,description:description.value}
     AddArrCounter++
     document.getElementById("AddText").value += name.value+": "+ price.value + "\n"
     name.value = null
     price.value = null
+    description.value = null
 }
 
 
@@ -100,17 +104,40 @@ function ContructMenu()
 {
     Menu[MenuCounter] =
         {
-            InternalName:document.getElementById("InternalName").value,
-            DisplayName:document.getElementById("DisplayName").value,
-            Price:document.getElementById("OrignalPrice").value,
-            Options:ArrayOpt,
-            Addtions:ArrayAdd
+            name:document.getElementById("InternalName").value,
+            DisplayName:document.getElementById("DisplayName").value, //not needed?
+            basePrice:document.getElementById("OrignalPrice").value,
+            minOptions:0,
+            maxOptions:0,
+            options:ArrayOpt,
+            additions:ArrayAdd
         }
+
     MenuCounter++
     Clearinfo()
 }
 
+
+
 function SendMenuToServer()
 {
+    let json = {
+    menu: {
+        menuId: document.getElementById("MenuId"),
+            availableTimes: {
+            start: document.getElementById("StartTime"),
+                end: document.getElementById("Apocalypse"),
+                days: ["Monday", "Tuesday"] //GRRRRRR add html for this
+        },
+        items:Menu
+        ,
+            "discount": {
+            "days": ["Monday", "Tuesday"],
+                "price": -1000
+        }
+    }
+}
+
+
 
 }

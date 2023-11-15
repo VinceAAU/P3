@@ -17,6 +17,7 @@
     <p>opitions <input type = checkbox id ="RevelOpt"> </p>
    <div hidden="hidden" id = "opt">
     <input type ="text" id ="OptName" placeholder="name of option">
+    <input type ="text" id ="OptDesc" placeholder="Desc of option">
     <input type="number" id="OptPrice" placeholder="Price" >
        <br>
     <input type="checkbox" id="vegan"> vegan
@@ -25,7 +26,7 @@
     <input type="checkbox" id="fingerfood"> fingerfood
     <input type="checkbox" id="lactose"> lack toes in taller ants
        <br>
-       <input type = "text" readonly id="OptText">
+       <input type = "text" readonly id="OptText"> <!-- needs a better format. It is a one-liner-->
     <button id="AddOPtToListBut" > Add option to list</button>
        <br>
    </div>
@@ -36,14 +37,23 @@
     <div id = "AddDiv" hidden="hidden">
         <form>
     <input type ="text" placeholder="name of option" id="AddName">
+    <input type ="text" placeholder="Descton of option" id="AddDesc">
     <input type = "number" placeholder ="Price" id="Addprice">
         <br>
-            <input type = "text" readonly id="AddText">
+            <input type = "text" readonly id="AddText"> <!-- needs a better format-->
 </form>
     <button id="AddAddTolistBut"> Add addtion to list</button>
     </div>
     <br>
     <button id="SubmitBut"> Submit Menu Item</button>
+<form>
+    <input type =text placeholder="menuId" id="MenuId">
+    <br>
+    <input type="text" placeholder="00:00 start time" id="StartTime"> <!-- :3 why does this font make my 3 look like a fish with a hole in it rather than a cute cat mouth :C-->
+    <input type="text" placeholder="00:00 end time" id="Apocalypse">
+
+
+</form>
     <br>
     <button id="Done"> Færdig med menu og send den</button>
 
