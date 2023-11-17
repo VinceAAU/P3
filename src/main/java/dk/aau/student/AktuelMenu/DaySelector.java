@@ -2,6 +2,8 @@ package dk.aau.student.AktuelMenu;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DaySelector {
     boolean monday;
@@ -70,5 +72,11 @@ public class DaySelector {
             case SATURDAY  -> saturday;
             case SUNDAY    -> sunday;
         };
+    }
+
+    public DayOfWeek[] toArray(){
+        return Arrays.stream(DayOfWeek.values())
+                .filter(this::get)
+                .toArray(DayOfWeek[]::new); //All hail the glorious oneliners
     }
 }

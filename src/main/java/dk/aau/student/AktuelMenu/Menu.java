@@ -1,5 +1,6 @@
 package dk.aau.student.AktuelMenu;
 
+import org.json.JSONObject;
 import org.json.JSONString;
 
 import java.util.ArrayList;
@@ -30,6 +31,11 @@ public class Menu implements JSONString {
     //TODO: implement
     @Override
     public String toJSONString() {
-        return "{\"hi\": \"hi\"}";
+        JSONObject menu = new JSONObject();
+        menu.put("menuId", name); //TODO: Implement an actual ID system
+        menu.put("availableTimes", availabilities);
+        menu.put("items", menuItems);
+
+        return menu.toString();
     }
 }
