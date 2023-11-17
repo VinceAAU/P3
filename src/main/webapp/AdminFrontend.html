@@ -5,6 +5,7 @@
     <title>Adminfront uwu daddy</title>
 </head>
 <body>
+<h1>Create Menu Item</h1>
 <form>
 
     <input type = "text" placeholder="Displayname" id="DisplayName">
@@ -20,11 +21,11 @@
     <input type ="text" id ="OptDesc" placeholder="Desc of option">
     <input type="number" id="OptPrice" placeholder="Price" >
        <br>
-    <input type="checkbox" id="vegan"> vegan
-    <input type="checkbox" id="glutenFree"> Gluten free
-    <input type="checkbox" id="vegeterian"> veganterisk
-    <input type="checkbox" id="fingerfood"> fingerfood
-    <input type="checkbox" id="lactose"> lack toes in taller ants
+    <input type="checkbox" id="vegan"> <label for="vegan">Vegan</label>
+    <input type="checkbox" id="glutenFree"> <label for="glutenFree">Gluten free</label>
+    <input type="checkbox" id="vegeterian"> <label for="vegeterian">veganterisk</label>
+    <input type="checkbox" id="fingerfood"> <label for="fingerfood">fingerfood</label>
+    <input type="checkbox" id="lactose"> <label for="lactose">lack toes in taller ants</label>
        <br>
     <button id="AddOPtToListBut" > Add option to list</button>
        <br>
@@ -51,10 +52,28 @@
     <br>
     <button id="SubmitBut"> Submit Menu Item</button>
 <form>
+    <h1>Submitting The Menu</h1>
     <input type =text placeholder="menuId" id="MenuId">
     <br>
     <input type="text" placeholder="00:00 start time" id="StartTime"> <!-- :3 why does this font make my 3 look like a fish with a hole in it rather than a cute cat mouth :C-->
     <input type="text" placeholder="00:00 end time" id="Apocalypse">
+    <br>
+    <input type="checkbox" id="moooooooon-day">
+    <label for="moooooooon-day">Monday</label>
+    <input type="checkbox" id="tuesday">
+    <label for="tuesday">Tuesday</label>
+    <input type="checkbox" id="wednesday">
+    <label for="wednesday">Wednesday</label>
+    <input type="checkbox" id="thursday">
+    <label for="thursday"> Thursday</label>
+    <input type="checkbox" id="friday">
+    <label for="friday">Friday</label>
+    <input type="checkbox" id="saturday">
+    <label for="saturday">Saturday</label>
+    <input type="checkbox" id="sunday">
+    <label for="sunday">Sunday</label>
+    <br>
+    What is your favriot color?<input type="color">
 
 
 </form>
@@ -83,6 +102,21 @@
 </form>
 <button id="GoToAddButton">Go to this Addition</button>
 
+<h1>Delete info</h1>
+<form>
+    <input type="number" id="removeOptArrayForm">
+</form>
+<button id="removeOptArrayButton"> Remove this Option </button>
+<br>
+<form>
+    <input type="number" id="removeAddArrayForm">
+</form>
+<button id="removeAddArrayButton"> Remove this Addtion </button>
+<br>
+<form>
+    <input type="number" id="removeItemArrayForm">
+</form>
+<button id="removeItemArrayButton"> Remove this Item </button>
 
 <script src=Adminjs.js></script>
 </body>

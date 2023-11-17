@@ -37,7 +37,7 @@
             "name": "Chicken Alfredo",
             "price": 1299,
             "description": "Creamy chicken pasta",
-            "allergy": [true,true,true,true] //there is a better way to do this
+            "allergy": [true,true,true,true]
           },
           {
             "name": "Steak",

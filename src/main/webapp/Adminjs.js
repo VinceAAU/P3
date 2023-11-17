@@ -15,7 +15,7 @@ function AddOption()
     let description =document.getElementById("OptDesc")
 
     ArrayOpt[OptArrCounter] = {name:name.value,price:price.value,description:description.value,allergy:Allergy}
-    OptArrCounter++
+    OptArrCounter = ArrayOpt.length
     writeTextArea("OptText",ArrayOpt)
     name.value = null
     price.value = null
@@ -29,7 +29,7 @@ function AddAddtions()
     let price = document.getElementById("addPrice")
     let description =document.getElementById("addDesc")
     ArrayAdd[AddArrCounter] = {name:name.value,price:price.value,description:description.value}
-    AddArrCounter++
+    AddArrCounter = ArrayAdd.length
     writeTextArea("AddText",ArrayAdd)
     name.value = null
     price.value = null
@@ -120,10 +120,19 @@ function ContructMenu()
     MenuCounter = Menu.length
     Clearinfo()
 }
+document.getElementById("Done").addEventListener('click',(event => {ImportMenu()}))
 function ImportMenu()
 {
   //get menu from server
-  Menu = thing
+    let thing
+  Menu = thing.items
+
+    document.getElementById("MenuId").value =thing.menuId
+
+    document.getElementById("StartTime").value = thing.availableTimes.start
+
+    document.getElementById("Apocalypse").value = thing.availableTimes.end
+
 }
 
 function GoToItem(Number)
@@ -141,13 +150,45 @@ function GoToItem(Number)
 
 function SendMenuToServer()
 {
+
+    let dayArray=[]
+
+    if (document.getElementById("moooooooon-day").value)
+    {
+        dayArray.push("Monday");
+    }
+    if (document.getElementById("tuesday").value)
+    {
+        dayArray.push("Tuesday");
+    }
+    if (document.getElementById("wednesday").value)
+    {
+        dayArray.push("Wednesday")
+    }
+    if (document.getElementById("thursday").value)
+    {
+        dayArray.push("Thursday")
+    }
+    if (document.getElementById("friday").value)
+    {
+        dayArray.push("Friday")
+    }
+    if (document.getElementById("saturday").value)
+    {
+        dayArray.push("Saturday")
+    }
+    if (document.getElementById("sunday").value)
+    {
+        dayArray.push("Sunday")
+    }
+
     let json = {
     menu: {
         menuId: document.getElementById("MenuId"),
             availableTimes: {
             start: document.getElementById("StartTime"),
                 end: document.getElementById("Apocalypse"),
-                days: ["Monday", "Tuesday"] //GRRRRRR add html for this
+                days:dayArray
         },
         items:Menu
         ,
@@ -156,7 +197,9 @@ function SendMenuToServer()
                 price: -1000
         }
     }
+
 }
+
 
 }
 
@@ -190,10 +233,21 @@ document.getElementById("GoToAddButton").addEventListener("click",(event)=>{
     document.getElementById("addDesc").value = ArrayAdd[AddArrCounter].description
 
 })
+//event listens for buttons that removes a thing of the array
+document.getElementById("removeAddArrayButton").addEventListener('click',(event=>
+{
+    ArrayAdd.splice(document.getElementById("removeAddArrayForm").value,1)
+}))
+document.getElementById("removeOptArrayButton").addEventListener('click',(event=>
+{
+    ArrayOpt.splice(document.getElementById("removeOptArrayForm").value,1)
+}))
+document.getElementById("removeItemArrayButton").addEventListener('click',(event=>
+{
+    Menu.splice(document.getElementById("removeItemArrayForm").value,1)
+}))
+
 
 //todo: add menu's to resturangs.
-//todo: Delete things from array aka delete opt,add,items: ask vince for best method
-//todo: Create menu from json
+//todo: Create menu from json, now i just need to do done
 //todo: Send Jason sennan >:(
-//name to menu, resturang name
-//
