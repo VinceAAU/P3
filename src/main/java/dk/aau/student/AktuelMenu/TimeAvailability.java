@@ -13,4 +13,11 @@ public class TimeAvailability{
         this.end = end;
         days = daySelector;
     }
+
+    public boolean isAvailable(){
+        return
+                days.isToday() &&
+                start.isBefore(LocalTime.now()) &&
+                end.isAfter(LocalTime.now());
+    }
 }
