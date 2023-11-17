@@ -76,42 +76,37 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
-function HTMLgen(Menu_JSON){
+function HTMLgen(Menu){
 
   let html = '';
 
-  MenuJSON.Menu.Category.forEach(cat => {
+  Menu.items.forEach(item => {
     html += '<div class="item-container">';
-    html += `<h3>${cat.name}</h3>`;
-    html += `<p>${cat.basePrice / 100} kr</p>`;
-    html += `<div class="option" data-min-selections="${cat.minOptions}" data-max-selections="${cat.maxOptions}">`;
+    html += `<h3>${item.name}</h3>`;
+    html += `<p>${item.basePrice / 100} kr</p>`;
+    html += `<div class="option" data-min-selections="${item.minOptions}" data-max-selections="${item.maxOptions}">`;
 
-      cat.Menuitem.forEach(item => {
-        if(item.option) {
-          html += '<div class="checkbox-container">';
-          html += `<input type="checkbox" data-option="${item.name}">`;
-          html += `<label> ${item.name}</label>`;
-          html += '</div>';
-        }
+      item.options.forEach(option => {
+        html += '<div class="checkbox-container">';
+        html += `<input type="checkbox" data-option="${option.name}">`;
+        html += `<label> ${option.name}</label>`;
+        html += '</div>';
       })
     html += '</div>';
 
     html += '<div class="addition">';
 
-      cat.Menuitem.forEach(item => {
-        if (!item.option) {
-
-          html += '<div class="checkbox-container">';
-          html += `<input type="checkbox" data-addition="${item.name}">`;
-          html += `<label>${item.name}</label>`;
-          html += '</div>';
-        }
+      item.additions.forEach(addition => {
+        html += '<div class="checkbox-container">';
+        html += `<input type="checkbox" data-addition="${addition.name}">`;
+        html += `<label>${addition.name}</label>`;
+        html += '</div>';
       })
     html += '</div>'
 
     html += '<label for="item-quantity">quantity:</label>';
     html += '<input type="number" id="item-quantity" value="1" min="1">';
-    html += `<button class="add-to-order" data-item-name="${cat.name}">`;
+    html += `<button class="add-to-order" data-item-name="${item.name}">`;
     html += '</div>';
   })
   return html;
