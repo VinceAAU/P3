@@ -6,6 +6,8 @@ class Order_Item {
   }
 }
 
+let orderItems = [];
+
 document.addEventListener("DOMContentLoaded", function () {
   let optionGroups = document.querySelectorAll('.option');
 
@@ -63,7 +65,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       let quantity = parseInt(itemContainer.querySelector('#item-quantity').value, 10);
 
-      let orderItems = [];
       for (let i = 0; i < quantity; i++) {
         let orderItem = new Order_Item(itemName);
         orderItem.selectedOptions = selectedOptions.slice();
@@ -115,3 +116,13 @@ function HTMLgen(Menu_JSON){
   })
   return html;
 }
+
+const sendUrl = 'http://localhost:8080/AktuelMenu/OrderSent'
+
+fetch(sendUrl, {
+  method: 'POST',
+
+  body: JSON.stringify({orderItems})
+})
+
+
