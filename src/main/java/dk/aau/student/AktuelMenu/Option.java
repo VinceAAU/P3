@@ -36,4 +36,18 @@ public class Option implements JSONString {
 
         return json.toString();
     }
+
+    public static Option fromJSONObject(JSONObject optionJSON){
+        Option option = new Option(
+                optionJSON.getString("name"),
+                optionJSON.getString("description"),
+                optionJSON.getInt("price")
+        );
+
+        for(Object label : optionJSON.getJSONArray("labels").toList()){
+            option.addLabel(Label.valueOf(label.toString().toUpperCase()));
+        }
+
+        return option;
+    }
 }

@@ -1,5 +1,6 @@
 package dk.aau.student.AktuelMenu;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONString;
 
@@ -37,5 +38,24 @@ public class Menu implements JSONString {
         menu.put("items", menuItems);
 
         return menu.toString();
+    }
+
+    public static Menu fromJSONObject(JSONObject menuJSON) {
+        Menu menu = new Menu(
+                menuJSON.getString("menuId"),
+                TimeAvailability.fromJSONObject(
+                        menuJSON.getJSONObject("availableTimes")
+                )
+        );
+
+        //TODO: Move discount from menu to menuitem
+
+        JSONArray itemsJSON = menuJSON.getJSONArray("items");
+
+        for (int i = 0; i < itemsJSON.length(); i++) {
+            menu.addItem(MenuItem.fromJSONObject(itemsJSON.getJSONObject(i)));
+        }
+
+        return menu;
     }
 }

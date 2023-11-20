@@ -5,12 +5,30 @@ import org.json.JSONObject;
 import org.json.JSONString;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MenuItem implements JSONString {
     private int price;
     private String internalName;
     private String displayName;
     private Discount discount = null;
+
+    public static MenuItem fromJSONObject(JSONObject itemJSON) {
+        MenuItem item = new MenuItem(
+                itemJSON.getString("name"),
+                itemJSON.getString("displayName"),
+                itemJSON.getInt("basePrice")
+        );
+        //TODO: Figure out if description exists or not
+
+        item.setMaximumOptions(itemJSON.getInt("maxOptions"));
+        item.setMinimumOptions(itemJSON.getInt("minOptions"));
+
+        for (Object optionJSON : (itemJSON.getJSONArray("options").toList())){
+            item.addOption(Option.fromJSONObject((JSONObject) optionJSON));
+        }
+        return item;
+    }
 
     public String getInternalName() {
         return internalName;
@@ -21,6 +39,9 @@ public class MenuItem implements JSONString {
         this.price = price;
         options = new ArrayList<>();
         additions = new ArrayList<>();
+
+        minimumOptions = -1;
+        maximumOptions = -1;
     }
 
     public Option[] getOptions(){
@@ -32,6 +53,14 @@ public class MenuItem implements JSONString {
 
     private int minimumOptions;
     private int maximumOptions;
+
+    public void setMinimumOptions(int minimumOptions) {
+        this.minimumOptions = minimumOptions;
+    }
+
+    public void setMaximumOptions(int maximumOptions) {
+        this.maximumOptions = maximumOptions;
+    }
 
     public void addOption(Option option){
         options.add(option);

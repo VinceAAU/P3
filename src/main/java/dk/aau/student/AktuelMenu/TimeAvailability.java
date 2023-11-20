@@ -1,9 +1,10 @@
 package dk.aau.student.AktuelMenu;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONString;
 
+import java.sql.Time;
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 public class TimeAvailability implements JSONString {
@@ -33,5 +34,16 @@ public class TimeAvailability implements JSONString {
         availability.put("days", days.toArray());
 
         return availability.toString();
+    }
+
+    public static TimeAvailability fromJSONObject(JSONObject timeJSON) {
+        DaySelector ds = DaySelector.never();
+        timeJSON.getJSONArray("days").toList().forEach(d -> ds.enable(DayOfWeek.valueOf(((String) d).toUpperCase())));
+
+        return new TimeAvailability(
+                LocalTime.parse(timeJSON.getString("start")),
+                LocalTime.parse(timeJSON.getString("end")),
+                ds
+        );
     }
 }
