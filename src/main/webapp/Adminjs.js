@@ -1,87 +1,87 @@
-let ArrayOpt = []
-let ArrayAdd = []
-let Menu = []
-let AddArrCounter = 0
-let OptArrCounter = 0
-let MenuCounter = 0
+let arrayOpt = []
+let arrayAdd = []
+let menuItem = []
+let addArrCounter = 0
+let optArrCounter = 0
+let menuCounter = 0
 
 
-function AddOption()
+function addOption()
 {
     let name =document.getElementById('OptName')
     let price = document.getElementById('OptPrice')
-    let Allergy= [document.getElementById("vegan").value,document.getElementById("vegeterian").value, document.getElementById("glutenFree").value,document.getElementById("lactose").value,document.getElementById("fingerfood").value]
-//I clearly use hannah montage linux because I fear no god with my methods of importing variables
+    let allergy= [document.getElementById("vegan").value,document.getElementById("vegeterian").value, document.getElementById("glutenFree").value,document.getElementById("lactose").value,document.getElementById("fingerfood").value]
+//I clearly use hannah montage linux because I fear no god with my methods of doing that line
     let description =document.getElementById("OptDesc")
 
-    ArrayOpt[OptArrCounter] = {name:name.value,price:price.value,description:description.value,allergy:Allergy}
-    OptArrCounter = ArrayOpt.length
-    writeTextArea("OptText",ArrayOpt)
+    arrayOpt[optArrCounter] = {name:name.value,price:price.value,description:description.value,allergy:allergy}
+    optArrCounter = arrayOpt.length
+    writeTextArea("OptText",arrayOpt)
     name.value = null
     price.value = null
     description.value = null
 
 }
 
-function AddAddtions()
+function addAddtions()
 {
     let name = document.getElementById("addName")
     let price = document.getElementById("addPrice")
     let description =document.getElementById("addDesc")
-    ArrayAdd[AddArrCounter] = {name:name.value,price:price.value,description:description.value}
-    AddArrCounter = ArrayAdd.length
-    writeTextArea("AddText",ArrayAdd)
+    arrayAdd[addArrCounter] = {name:name.value,price:price.value,description:description.value}
+    addArrCounter = arrayAdd.length
+    writeTextArea("AddText",arrayAdd)
     name.value = null
     price.value = null
     description.value = null
 }
 
 
-const AddOptToListButton = document.getElementById("AddOPtToListBut")
-const AddAddToListButton =document.getElementById("AddAddTolistBut")
-AddOptToListButton.addEventListener('click', (event) => {
-    AddOption()
+const addOptToListButton = document.getElementById("AddOPtToListBut")
+const addAddToListButton =document.getElementById("AddAddTolistBut")
+addOptToListButton.addEventListener('click', (event) => {
+    addOption()
 })
 
-AddAddToListButton.addEventListener('click',(event) => {
-    AddAddtions()
+addAddToListButton.addEventListener('click',(event) => {
+    addAddtions()
 })
 
 
 // next 4 functs are 2 eventlisterens on check boxed which hides/reveals their repsected element on marked or unmarked
-const OptCheck = document.getElementById('RevelOpt')
-OptCheck.addEventListener('change', (event) => {
+const optCheck = document.getElementById('RevelOpt')
+optCheck.addEventListener('change', (event) => {
     if (event.currentTarget.checked) {
-        RevealOpt(false)
+        revealOpt(false)
     }
     else
     {
-        RevealOpt(true)
+        revealOpt(true)
     }
 })
 
 const addCheck = document.getElementById('AddBox')
 addCheck.addEventListener('change', (event) => {
     if (event.currentTarget.checked) {
-        RevealAdd(false)
+        revealAdd(false)
     }
     else
     {
-        RevealAdd(true)
+        revealAdd(true)
     }
 })
-function RevealOpt(input)
+function revealOpt(input)
 {
     let opt = document.getElementById("opt")
     opt.hidden = input
 }
 
-function RevealAdd(input)
+function revealAdd(input)
 {
  let add = document.getElementById("AddDiv")
     add.hidden = input
 }
-function Clearinfo()
+function clearinfo()
 {
     document.getElementById("DisplayName").value = null
     document.getElementById("InternalName").value = null
@@ -92,10 +92,10 @@ function Clearinfo()
     document.getElementById("AddBox").checked = false
     document.getElementById("AddText").value = null
     document.getElementById("OptText").value = null
-    ArrayOpt = []
-    ArrayAdd = []
-    AddArrCounter = 0
-    OptArrCounter = 0
+    arrayOpt = []
+    arrayAdd = []
+    addArrCounter = 0
+    optArrCounter = 0
 
 }
 document.getElementById("Done").addEventListener("click",(event)=>{
@@ -106,26 +106,26 @@ ContructMenu()
 })
 function ContructMenu()
 {
-    Menu[MenuCounter] =
+    menuItem[menuCounter] =
         {
             name:document.getElementById("InternalName").value,
             DisplayName:document.getElementById("DisplayName").value, //not needed?
             basePrice:document.getElementById("OrignalPrice").value,
             minOptions:0,
             maxOptions:0,
-            options:ArrayOpt,
-            additions:ArrayAdd
+            options:arrayOpt,
+            additions:arrayAdd
         }
 
-    MenuCounter = Menu.length
-    Clearinfo()
+    menuCounter = menuItem.length
+    clearinfo()
 }
-document.getElementById("Done").addEventListener('click',(event => {ImportMenu()}))
+document.getElementById("ImportMenuBotton").addEventListener('click',(event => {ImportMenu()}))
 function ImportMenu()
 {
   //get menu from server
     let thing
-  Menu = thing.items
+  menuItem = thing.items
 
     document.getElementById("MenuId").value =thing.menuId
 
@@ -137,14 +137,14 @@ function ImportMenu()
 
 function GoToItem(Number)
 {
-    MenuCounter = Number
-    ArrayAdd = Menu[Number].additions
-    ArrayOpt = Menu[Number].options
-    document.getElementById("DisplayName").value = Menu[Number].name
-    document.getElementById("OrignalPrice").value = Menu[Number].basePrice
-    writeTextArea("OptText",ArrayOpt)
-    writeTextArea("AddText",ArrayAdd)
-// set forms to Menu[Number]
+    menuCounter = Number
+    arrayAdd = menuItem[Number].additions
+    arrayOpt = menuItem[Number].options
+    document.getElementById("DisplayName").value = menuItem[Number].name
+    document.getElementById("OrignalPrice").value = menuItem[Number].basePrice
+    writeTextArea("OptText",arrayOpt)
+    writeTextArea("AddText",arrayAdd)
+
 }
 
 
@@ -190,7 +190,7 @@ function SendMenuToServer()
                 end: document.getElementById("Apocalypse"),
                 days:dayArray
         },
-        items:Menu
+        items:menuItem
         ,
             discount: {
             days: ["Monday", "Tuesday"],
@@ -198,13 +198,17 @@ function SendMenuToServer()
         }
     }
 
-}
-    const sendUrl = 'http://localhost:8080//AktuelMenu/MenuSent'
+    }
+    const sendUrl = 'http://localhost:8080/P3_war/AktuelMenu/MenuSent'
 
     fetch(sendUrl,{
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin':'http://localhost:8080',
+            'Access-Control-Allow-Methods':'POST',
+            'Access-Control-Allow-Credentials':'true',
+            'Content-Type':'application/json',
+            'Accept':'application/json'
         },
         body: JSON.stringify(json)
     })
@@ -235,39 +239,38 @@ function writeTextArea(textId,array)
 }
 
 //When you click a button the respected function is called
-document.getElementById("Done").addEventListener("click", (event)=>{SendMenuToServer})
 document.getElementById("SetItemButton").addEventListener('click',(event)=>{GoToItem(document.getElementById("SetItemForm").value)})
 //unlike these buttons who change a gobale varible and set value in froms
 document.getElementById("GoToOptButton").addEventListener("click",(event)=>{
-    OptArrCounter = document.getElementById("GoToOptForm").value
-    document.getElementById("OptName").value = ArrayOpt[OptArrCounter].name
-    document.getElementById("OptPrice").value = ArrayOpt[OptArrCounter].price
-    document.getElementById("OptDesc").value = ArrayOpt[OptArrCounter].description
+    optArrCounter = document.getElementById("GoToOptForm").value
+    document.getElementById("OptName").value = arrayOpt[optArrCounter].name
+    document.getElementById("OptPrice").value = arrayOpt[optArrCounter].price
+    document.getElementById("OptDesc").value = arrayOpt[optArrCounter].description
 
 
 })
 document.getElementById("GoToAddButton").addEventListener("click",(event)=>{
-    AddArrCounter = document.getElementById("GoToAddForm").value
-    document.getElementById("addName").value = ArrayAdd[AddArrCounter].name
-    document.getElementById("addPrice").value = ArrayAdd[AddArrCounter].price
-    document.getElementById("addDesc").value = ArrayAdd[AddArrCounter].description
+    addArrCounter = document.getElementById("GoToAddForm").value
+    document.getElementById("addName").value = arrayAdd[addArrCounter].name
+    document.getElementById("addPrice").value = arrayAdd[addArrCounter].price
+    document.getElementById("addDesc").value = arrayAdd[addArrCounter].description
 
 })
 //event listens for buttons that removes a thing of the array
 document.getElementById("removeAddArrayButton").addEventListener('click',(event=>
 {
-    ArrayAdd.splice(document.getElementById("removeAddArrayForm").value,1)
+    arrayAdd.splice(document.getElementById("removeAddArrayForm").value,1)
 }))
 document.getElementById("removeOptArrayButton").addEventListener('click',(event=>
 {
-    ArrayOpt.splice(document.getElementById("removeOptArrayForm").value,1)
+    arrayOpt.splice(document.getElementById("removeOptArrayForm").value,1)
 }))
 document.getElementById("removeItemArrayButton").addEventListener('click',(event=>
 {
-    Menu.splice(document.getElementById("removeItemArrayForm").value,1)
+    menuItem.splice(document.getElementById("removeItemArrayForm").value,1)
 }))
 
 
 //todo: add menu's to resturangs.
-//todo: Create menu from json, now i just need to do done
-//todo: Send Jason sennan >:(
+//todo: ask for json to get a menu
+

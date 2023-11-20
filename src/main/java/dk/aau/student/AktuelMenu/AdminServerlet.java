@@ -10,16 +10,16 @@ import netscape.javascript.JSObject;
 
 import java.io.IOException;
 
+
+
 @WebServlet(name="MenuSent", value = "/AktuelMenu/MenuSent")
 public class AdminServerlet extends HttpServlet {
 
-
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
-
-
-        System.out.println("WE DID IT");
-        //jObj.menu.items[0].name
+    public void init() throws ServletException {
+        System.out.println("WE DID IT2");
+        super.init();
     }
+
+
 }
