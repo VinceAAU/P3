@@ -7,7 +7,7 @@
 <body>
 <h1>Create Menu Item</h1>
 <form>
-
+<!--todo: give all inputs max,mins, and other things so the user does not exeded his limits -->
     <input type = "text" placeholder="Displayname" id="DisplayName">
     <input type = "text" placeholder="Internalname" id="InternalName">
     <br>
@@ -29,6 +29,10 @@
        <br>
     <button id="AddOPtToListBut" > Add option to list</button>
        <br>
+       <input type ="number" id="maxOpt" placeholder="Max Options">
+       <input type ="number" id="minOpt" placeholder="Min Options">
+       <br>
+
        <textarea readonly id="OptText"></textarea>
    </div>
 
@@ -41,8 +45,8 @@
     <input type ="text" placeholder="name of option" id="addName">
     <input type ="text" placeholder="Descton of option" id="addDesc">
     <input type = "number" placeholder ="Price" id="addPrice">
-        <br>
 
+            <br>
 </form>
     <button id="AddAddTolistBut"> Add addtion to list</button>
         <br>
@@ -50,6 +54,25 @@
         <textarea readonly id="AddText"> </textarea>
     </div>
     <br>
+Discount
+<br>
+<input type="checkbox" id="discMonday">
+<label for="discMonday">Monday</label>
+<input type="checkbox" id="discTuesday">
+<label for="discTuesday">Tuesday</label>
+<input type="checkbox" id="discWednesday">
+<label for="discWednesday">Wednesday</label>
+<input type="checkbox" id="discThursday">
+<label for="discThursday"> Thursday</label>
+<input type="checkbox" id="discFriday">
+<label for="discFriday">Friday</label>
+<input type="checkbox" id="discSaturday">
+<label for="discSaturday">Saturday</label>
+<input type="checkbox" id="discSunday">
+<label for="discSunday">Sunday</label>
+<br>
+<input type="number" id="discountPrice" placeholder="Discount Price">
+<input type="number" id="discountAmount" placeholder="Discount Amount">
     <button id="SubmitBut"> Submit Menu Item</button>
 <form>
     <h1>Submitting The Menu</h1>

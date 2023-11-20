@@ -111,6 +111,8 @@ function clearinfo()
     document.getElementById("AddBox").checked = false
     document.getElementById("AddText").value = null
     document.getElementById("OptText").value = null
+    document.getElementById("maxOpt").value = null
+    document.getElementById("minOpt").value = null
     arrayOpt = []
     arrayAdd = []
     addArrCounter = 0
@@ -125,15 +127,37 @@ ContructMenu()
 })
 function ContructMenu()
 {
+    let discountArray = []
+    if (document.getElementById("discMonday"))
+    {discountArray.push("MONDAY")}
+    if (document.getElementById("discTuesday"))
+    {discountArray.push("TUESDAY")}
+    if (document.getElementById("discWednesday"))
+    {discountArray.push("WEDNESDAY")}
+    if (document.getElementById("discThursday"))
+    {discountArray.push("THURSDAY")}
+    if (document.getElementById("discFriday"))
+    {discountArray.push("FRIDAY")}
+    if (document.getElementById("discSaturday"))
+    {discountArray.push("SATURDAY")}
+    if (document.getElementById("discSunday"))
+    {discountArray.push("SUNDAY")}
+
+
     menuItem[menuCounter] =
         {
             name:document.getElementById("InternalName").value,
             displayName:document.getElementById("DisplayName").value, //not needed?
             basePrice:document.getElementById("OrignalPrice").value,
-            minOptions:0, //todo: this
-            maxOptions:0, //todo: this, both need hmtl side to input
+            minOptions: document.getElementById("minOpt").value,
+            maxOptions:document.getElementById("maxOpt").value,
             options:arrayOpt,
-            additions:arrayAdd
+            additions:arrayAdd,
+            discount:{
+                days:discountArray,
+                price:document.getElementById("discountPrice").value,
+                amount:document.getElementById("discountAmount").value
+            }
         }
 
     menuCounter = menuItem.length
@@ -211,11 +235,6 @@ function SendMenuToServer()
                 days:dayArray
         },
         items:menuItem
-        ,
-            discount: {
-            days: ["Monday", "Tuesday"],
-                price: -1000
-        }
     }
 
 
