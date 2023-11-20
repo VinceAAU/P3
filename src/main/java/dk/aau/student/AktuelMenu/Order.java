@@ -23,4 +23,12 @@ public class Order {
 
         return order.toString();
     }
+
+    public int getTableId() {
+        return tableId;
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
 }

@@ -35,4 +35,7 @@ public class OrderItem {
 
         return output.toString();
     }
+    public int getPrice(){
+        return menuItem.getPrice();
+    }
 }

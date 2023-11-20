@@ -35,7 +35,6 @@ public class MenuItem implements JSONString {
         return internalName;
     }
 
-    public String getDisplayName() {return displayName;}
     public MenuItem (String internalName, String displayName, int price){
         this.internalName = internalName;
         this.displayName = displayName;
@@ -93,4 +92,12 @@ public class MenuItem implements JSONString {
         return json.toString();
     }
 
+
+    public int getPrice(){
+        return price;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
 }
