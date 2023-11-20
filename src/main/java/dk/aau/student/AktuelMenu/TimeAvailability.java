@@ -37,13 +37,10 @@ public class TimeAvailability implements JSONString {
     }
 
     public static TimeAvailability fromJSONObject(JSONObject timeJSON) {
-        DaySelector ds = DaySelector.never();
-        timeJSON.getJSONArray("days").toList().forEach(d -> ds.enable(DayOfWeek.valueOf(((String) d).toUpperCase())));
-
         return new TimeAvailability(
                 LocalTime.parse(timeJSON.getString("start")),
                 LocalTime.parse(timeJSON.getString("end")),
-                ds
+                DaySelector.fromJSONArray(timeJSON.getJSONArray("days"))
         );
     }
 }

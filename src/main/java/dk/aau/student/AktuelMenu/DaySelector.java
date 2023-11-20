@@ -1,5 +1,7 @@
 package dk.aau.student.AktuelMenu;
 
+import org.json.JSONArray;
+
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,6 +15,15 @@ public class DaySelector {
     boolean friday;
     boolean saturday;
     boolean sunday;
+
+    public static DaySelector fromJSONArray(JSONArray daysJSON) {
+        DaySelector ds = DaySelector.never();
+        //TODO: Make this less terse
+        //Alternative TODO: Keep it like this, and hope that someone I don't like gets asked about lambdas in the exam
+        daysJSON.toList().forEach(d -> ds.enable(DayOfWeek.valueOf(((String) d).toUpperCase())));
+
+        return ds;
+    }
 
     public boolean isToday(){
         return get(LocalDateTime.now().getDayOfWeek());
