@@ -198,7 +198,9 @@ function SendMenuToServer()
         }
     }
 
+
     }
+    let penis = "peis"
     const sendUrl = 'http://localhost:8080/P3_war/AktuelMenu/MenuSent'
 
     fetch(sendUrl,{
@@ -210,7 +212,7 @@ function SendMenuToServer()
             'Content-Type':'application/json',
             'Accept':'application/json'
         },
-        body: JSON.stringify(json)
+        body: JSON.stringify(penis)
     })
         .then(response => {
             if (!response.ok) {

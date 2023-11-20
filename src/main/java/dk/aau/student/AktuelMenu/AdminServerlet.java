@@ -17,9 +17,11 @@ public class AdminServerlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
+
         System.out.println("WE DID IT2");
         super.init();
     }
+
 
 
 }
