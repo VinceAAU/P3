@@ -1,6 +1,6 @@
 package dk.aau.student.AktuelMenu;
 
-public enum Allergen {
+public enum Label {
     VEGAN,
     VEGETARIAN,
     GLUTEN_FREE,

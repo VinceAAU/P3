@@ -1,12 +1,15 @@
 package dk.aau.student.AktuelMenu;
 
+import org.json.JSONObject;
+import org.json.JSONString;
+
 import java.util.ArrayList;
 
-public class Option{
+public class Option implements JSONString {
     private String internalName;
     private String displayName;
 
-    private ArrayList<Allergen> allergens;
+    private ArrayList<Label> labels;
     private int price;
 
     String getInternalName(){
@@ -17,9 +20,20 @@ public class Option{
         this.internalName = internalName;
         this.displayName = displayName;
         this.price = price;
-        this.allergens = new ArrayList<>();
+        this.labels = new ArrayList<>();
     }
-    public void addAllergen(Allergen allergen){
-        allergens.add(allergen);
+    public void addLabel(Label label){
+        labels.add(label);
+    }
+
+    @Override
+    public String toJSONString() {
+        JSONObject json = new JSONObject();
+
+        json.put("name", displayName);
+        json.put("price", price);
+        json.put("labels", labels.toArray());
+
+        return json.toString();
     }
 }

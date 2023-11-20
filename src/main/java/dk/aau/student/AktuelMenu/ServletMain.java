@@ -3,6 +3,7 @@ package dk.aau.student.AktuelMenu;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.time.LocalTime;
@@ -20,7 +21,7 @@ public class ServletMain extends HttpServlet {
         burger.addOption(new Option("kylling","kylling",0));
         burger.addOption(new Option("Bøf","Bøf",0));
         Option vegiBurger = new Option("Vegi","Vegi",0);
-        vegiBurger.addAllergen(Allergen.VEGETARIAN);
+        vegiBurger.addLabel(Label.VEGETARIAN);
         burger.addOption(vegiBurger);
         menu.addItem(burger);
 
@@ -47,6 +48,12 @@ public class ServletMain extends HttpServlet {
         Order orderExample = new Order(69,69,new ArrayList<>(List.of(order1)));
 
         System.out.println(orderExample.printForKitchen());
+
+        System.out.println(new JSONObject(menu.toJSONString()).toString(4));
+
+        Restaurant budofol = new Restaurant("Budofol's Restaurant");
+        budofol.addMenu(menu);
+        Restaurant.allRestaurants.add(budofol);
     }
 
     public void GenerateMenuItem() {
