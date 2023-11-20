@@ -19,7 +19,8 @@ public class MenuItem implements JSONString {
                 itemJSON.getString("displayName"),
                 itemJSON.getInt("basePrice")
         );
-        //TODO: Figure out if description exists or not
+        //TODO: Test for blank discount
+        item.setDiscount(Discount.fromJSONObject(itemJSON.getJSONObject("description")));
 
         item.setMaximumOptions(itemJSON.getInt("maxOptions"));
         item.setMinimumOptions(itemJSON.getInt("minOptions"));
@@ -68,6 +69,13 @@ public class MenuItem implements JSONString {
 
     public Option[] getAdditions(){
         return additions.toArray(new Option[0]);
+    }
+
+    public void setDiscount(Discount discount){
+        this.discount = discount;
+    }
+    public void removeDiscount(){
+        discount = null;
     }
 
     @Override
