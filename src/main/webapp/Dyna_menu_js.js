@@ -6,6 +6,8 @@ class Order_Item {
   }
 }
 
+let orderItems = [];
+
 //We could avoid having an EventListener if we just load the script after the HTML (so put it at the bottom of <body>)
 document.addEventListener("DOMContentLoaded", function () {
   let optionGroups = document.querySelectorAll('.option');

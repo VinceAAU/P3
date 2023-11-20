@@ -21,6 +21,16 @@ public class Menu implements JSONString {
         menuItems.add(item);
     }
 
+
+    public MenuItem getMenuItemByDisplayName(String displayName){
+        for (MenuItem item : menuItems) {
+            if (item.getDisplayName().equals(displayName)){
+                return item;
+            }
+        }
+        return null;
+    }
+
     public boolean isAvailable(){
         return availabilities.isAvailable();
     }
