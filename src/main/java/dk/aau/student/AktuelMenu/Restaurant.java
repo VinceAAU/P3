@@ -20,7 +20,6 @@ public class Restaurant{
         return name;
     }
 
-    //TODO: Test thoroughly as if my life depends on it (because to be honest, it probably does)
     public Menu[] availableMenus(){
         return menus.stream().filter(Menu::isAvailable).toArray(Menu[]::new); //I DON'T KNOW WHAT THIS DOES OR WHY THIS WORKS AND WHYU IT WASN'T WORKING BEFORE. PLEASE DO NOT ASK ABOUT THIS FOR THE EXAM BECAUSE IT IS A PIECE OF DEVILRY AND I WILL NEVER KNOW THE TRUTH ABOUT IT. MUST TEST MUST TEST MUST TEST. TESTING IS NOT OPTIONAL HERE, BECAUSE I DON'T KNOW HOW THIS WORKS SO WE MUST MAKE SURE THAT I'M NOT COMPLETELY OFF
     }
