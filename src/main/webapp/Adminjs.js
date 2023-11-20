@@ -10,11 +10,30 @@ function addOption()
 {
     let name =document.getElementById('OptName')
     let price = document.getElementById('OptPrice')
-    let allergy= [document.getElementById("vegan").value,document.getElementById("vegeterian").value, document.getElementById("glutenFree").value,document.getElementById("lactose").value,document.getElementById("fingerfood").value]
-//I clearly use hannah montage linux because I fear no god with my methods of doing that line
+
+
+    let labels= []
+
+    if (document.getElementById("vegan").checked)
+    {
+        labels.push("VEGAN")
+    }
+    if (document.getElementById("vegeterian").checked)
+    {
+        labels.push("VEGETARIAN")}
+    if (document.getElementById("glutenFree").checked)
+    {
+        labels.push("GLUTEN_FREE")}
+    if (document.getElementById("lactose").checked)
+    {
+        labels.push("LACTOSE_FREE")}
+    if (document.getElementById("fingerfood").checked)
+    {
+        labels.push("FINGER_FOOD")}
+
     let description =document.getElementById("OptDesc")
 
-    arrayOpt[optArrCounter] = {name:name.value,price:price.value,description:description.value,allergy:allergy}
+    arrayOpt[optArrCounter] = {name:name.value,price:price.value,description:description.value,labels:labels}
     optArrCounter = arrayOpt.length
     writeTextArea("OptText",arrayOpt)
     name.value = null
@@ -109,10 +128,10 @@ function ContructMenu()
     menuItem[menuCounter] =
         {
             name:document.getElementById("InternalName").value,
-            DisplayName:document.getElementById("DisplayName").value, //not needed?
+            displayName:document.getElementById("DisplayName").value, //not needed?
             basePrice:document.getElementById("OrignalPrice").value,
-            minOptions:0,
-            maxOptions:0,
+            minOptions:0, //todo: this
+            maxOptions:0, //todo: this, both need hmtl side to input
             options:arrayOpt,
             additions:arrayAdd
         }
@@ -140,7 +159,8 @@ function GoToItem(Number)
     menuCounter = Number
     arrayAdd = menuItem[Number].additions
     arrayOpt = menuItem[Number].options
-    document.getElementById("DisplayName").value = menuItem[Number].name
+    document.getElementById("DisplayName").value = menuItem[Number].description
+    document.getElementById("InternalName").value =menuItem[Number].name
     document.getElementById("OrignalPrice").value = menuItem[Number].basePrice
     writeTextArea("OptText",arrayOpt)
     writeTextArea("AddText",arrayAdd)
@@ -153,31 +173,31 @@ function SendMenuToServer()
 
     let dayArray=[]
 
-    if (document.getElementById("moooooooon-day").value)
+    if (document.getElementById("moooooooon-day").checked)
     {
         dayArray.push("Monday");
     }
-    if (document.getElementById("tuesday").value)
+    if (document.getElementById("tuesday").checked)
     {
         dayArray.push("Tuesday");
     }
-    if (document.getElementById("wednesday").value)
+    if (document.getElementById("wednesday").checked)
     {
         dayArray.push("Wednesday")
     }
-    if (document.getElementById("thursday").value)
+    if (document.getElementById("thursday").checked)
     {
         dayArray.push("Thursday")
     }
-    if (document.getElementById("friday").value)
+    if (document.getElementById("friday").checked)
     {
         dayArray.push("Friday")
     }
-    if (document.getElementById("saturday").value)
+    if (document.getElementById("saturday").checked)
     {
         dayArray.push("Saturday")
     }
-    if (document.getElementById("sunday").value)
+    if (document.getElementById("sunday").checked)
     {
         dayArray.push("Sunday")
     }
@@ -186,8 +206,8 @@ function SendMenuToServer()
     menu: {
         menuId: document.getElementById("MenuId"),
             availableTimes: {
-            start: document.getElementById("StartTime"),
-                end: document.getElementById("Apocalypse"),
+            start: document.getElementById("StartTime").value,
+                end: document.getElementById("Apocalypse").value,
                 days:dayArray
         },
         items:menuItem
