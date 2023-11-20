@@ -16,4 +16,14 @@ public class Menu{
     public void addItem(MenuItem item){
         menuItems.add(item);
     }
+
+
+    public MenuItem getMenuItemByDisplayName(String displayName){
+        for (MenuItem item : menuItems) {
+            if (item.getDisplayName().equals(displayName)){
+                return item;
+            }
+        }
+        return null;
+    }
 }

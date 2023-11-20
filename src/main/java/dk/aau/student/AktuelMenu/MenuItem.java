@@ -13,6 +13,8 @@ public class MenuItem{
     public String getInternalName() {
         return internalName;
     }
+
+    public String getDisplayName() {return displayName;}
     public MenuItem (String internalName, String displayName, int price){
         this.internalName = internalName;
         this.displayName = displayName;
@@ -26,4 +28,5 @@ public class MenuItem{
     public Option[] getOptions(){
         return options.getOptions();
     }
+
 }
