@@ -1,8 +1,12 @@
 package dk.aau.student.AktuelMenu;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONString;
+
 import java.time.LocalTime;
 
-public class TimeAvailability{
+public class TimeAvailability implements JSONString {
     private LocalTime start;
     private LocalTime end;
 
@@ -12,5 +16,22 @@ public class TimeAvailability{
         this.start = start;
         this.end = end;
         days = daySelector;
+    }
+
+    public boolean isAvailable(){
+        return
+                days.isToday() &&
+                start.isBefore(LocalTime.now()) &&
+                end.isAfter(LocalTime.now());
+    }
+
+    @Override
+    public String toJSONString() {
+        JSONObject availability = new JSONObject();
+        availability.put("start", start.toString());
+        availability.put("end", end.toString());
+        availability.put("days", days.toArray());
+
+        return availability.toString();
     }
 }
