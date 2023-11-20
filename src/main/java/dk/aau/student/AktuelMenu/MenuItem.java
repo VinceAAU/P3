@@ -26,4 +26,12 @@ public class MenuItem{
     public Option[] getOptions(){
         return options.getOptions();
     }
+
+    public int getPrice(){
+        return price;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
 }
