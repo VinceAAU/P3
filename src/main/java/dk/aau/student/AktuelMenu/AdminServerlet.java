@@ -9,7 +9,7 @@ import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
 
 import java.io.IOException;
-
+import java.util.stream.Collectors;
 
 
 @WebServlet(name="MenuSent", value = "/AktuelMenu/MenuSent")
@@ -22,6 +22,15 @@ public class AdminServerlet extends HttpServlet {
         super.init();
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
 
+
+
+
+
+
+    }
 }
