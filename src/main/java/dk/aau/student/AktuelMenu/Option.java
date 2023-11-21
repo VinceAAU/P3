@@ -26,6 +26,7 @@ public class Option implements JSONString {
         labels.add(label);
     }
 
+    //The JSON does not include the internal name, because the customer doesn't need to know it (only the kitchen does)
     @Override
     public String toJSONString() {
         JSONObject json = new JSONObject();

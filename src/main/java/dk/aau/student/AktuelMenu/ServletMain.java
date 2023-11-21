@@ -15,6 +15,7 @@ import java.util.List;
 public class ServletMain extends HttpServlet {
     @Override
     public void init() throws ServletException {
+        //TODO: Move all this stuff to test
         Menu menu = new Menu("budofol",new TimeAvailability(LocalTime.of(8,0,30),LocalTime.of(20,0,30),DaySelector.always()));
         // construct menu item then add to menu uwu
         MenuItem burger = new MenuItem("Burger", "Burger", 12);
@@ -56,9 +57,6 @@ public class ServletMain extends HttpServlet {
         Restaurant.allRestaurants.add(budofol);
     }
 
-    public void GenerateMenuItem() {
-
-    }
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.getWriter().println("Hello:3");
     }

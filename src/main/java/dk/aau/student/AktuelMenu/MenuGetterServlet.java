@@ -25,6 +25,7 @@ public class MenuGetterServlet extends HttpServlet {
 
         Restaurant restaurant;
         try {
+            //noinspection OptionalGetWithoutIsPresent
             restaurant = Restaurant.allRestaurants.stream().filter(r -> r.getName().equals(restaurantId)).findFirst().get();
         } catch (NoSuchElementException e) {
             resp.sendError(404, "Restaurant " + restaurantId + " does not exist");
