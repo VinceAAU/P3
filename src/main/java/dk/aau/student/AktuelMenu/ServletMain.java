@@ -16,7 +16,7 @@ public class ServletMain extends HttpServlet {
     @Override
     public void init() throws ServletException {
         //TODO: Move all this stuff to test
-        Menu menu = new Menu("budofol",new TimeAvailability(LocalTime.of(8,0,30),LocalTime.of(20,0,30),DaySelector.always()));
+        Menu menu = new Menu("123",new TimeAvailability(LocalTime.of(8,0,30),LocalTime.of(20,0,30),DaySelector.always()));
         // construct menu item then add to menu uwu
         MenuItem burger = new MenuItem("Burger", "Burger", 12);
         burger.addOption(new Option("kylling","kylling",0));

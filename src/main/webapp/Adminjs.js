@@ -31,14 +31,14 @@ function addOption()
     {
         labels.push("FINGER_FOOD")}
 
-    let description =document.getElementById("OptDesc")
+    let displayName =document.getElementById("OptDesc")
 
-    arrayOpt[optArrCounter] = {name:name.value,price:price.value,description:description.value,labels:labels}
+    arrayOpt[optArrCounter] = {internalName:name.value,price:price.value,displayName:displayName.value,labels:labels}
     optArrCounter = arrayOpt.length
     writeTextArea("OptText",arrayOpt)
     name.value = null
     price.value = null
-    description.value = null
+    displayName.value = null
 
 }
 
@@ -46,13 +46,13 @@ function addAddtions()
 {
     let name = document.getElementById("addName")
     let price = document.getElementById("addPrice")
-    let description =document.getElementById("addDesc")
-    arrayAdd[addArrCounter] = {name:name.value,price:price.value,description:description.value}
+    let displayName =document.getElementById("addDesc")
+    arrayAdd[addArrCounter] = {internalName:name.value,price:price.value,displayName:displayName.value}
     addArrCounter = arrayAdd.length
     writeTextArea("AddText",arrayAdd)
     name.value = null
     price.value = null
-    description.value = null
+    displayName.value = null
 }
 
 
@@ -146,7 +146,7 @@ function ContructMenu()
 
     menuItem[menuCounter] =
         {
-            name:document.getElementById("InternalName").value,
+            internalName:document.getElementById("InternalName").value,
             displayName:document.getElementById("DisplayName").value, //not needed?
             basePrice:document.getElementById("OrignalPrice").value,
             minOptions: document.getElementById("minOpt").value,
@@ -167,14 +167,45 @@ document.getElementById("ImportMenuBotton").addEventListener('click',(event => {
 function ImportMenu()
 {
   //get menu from server
-    let thing
-  menuItem = thing.items
+    let givenJson
+    const originUrl = 'http://localhost:8080/P3_war//AktuelMenu/MenuGet'
 
-    document.getElementById("MenuId").value =thing.menuId
+    fetch(originUrl,{
+        method: 'POST',
+        headers: {
+            'Access-Control-Allow-Origin':'http://localhost:8080',
+            'Access-Control-Allow-Methods':'POST',
+            'Access-Control-Allow-Credentials':'true',
+            'Content-Type':'application/json',
+            'Accept':'application/json'
+        },body:document.getElementById("ImportMenuForm").value
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Success:', data);
+            menuItem = data.items
 
-    document.getElementById("StartTime").value = thing.availableTimes.start
+            document.getElementById("MenuId").value =data.menuId
 
-    document.getElementById("Apocalypse").value = thing.availableTimes.end
+            document.getElementById("StartTime").value = data.availableTimes.start
+
+            document.getElementById("Apocalypse").value = data.availableTimes.end
+
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+
+
+
+
+  //menuItem = givenJson.items
+
 
 }
 
@@ -183,8 +214,8 @@ function GoToItem(Number)
     menuCounter = Number
     arrayAdd = menuItem[Number].additions
     arrayOpt = menuItem[Number].options
-    document.getElementById("DisplayName").value = menuItem[Number].description
-    document.getElementById("InternalName").value =menuItem[Number].name
+    document.getElementById("DisplayName").value = menuItem[Number].displayName
+    document.getElementById("InternalName").value =menuItem[Number].internalName
     document.getElementById("OrignalPrice").value = menuItem[Number].basePrice
     writeTextArea("OptText",arrayOpt)
     writeTextArea("AddText",arrayAdd)
@@ -274,8 +305,8 @@ function writeTextArea(textId,array)
     text.value = ""
     for(let i=0; array.length > i;i++)
     {
-        array[i].name
-        text.value += array[i].name + ": " + array[i].price + "\n"
+        array[i].internalName
+        text.value += array[i].internalName + ": " + array[i].price + "\n"
     }
 }
 
@@ -284,17 +315,17 @@ document.getElementById("SetItemButton").addEventListener('click',(event)=>{GoTo
 //unlike these buttons who change a gobale varible and set value in froms
 document.getElementById("GoToOptButton").addEventListener("click",(event)=>{
     optArrCounter = document.getElementById("GoToOptForm").value
-    document.getElementById("OptName").value = arrayOpt[optArrCounter].name
+    document.getElementById("OptName").value = arrayOpt[optArrCounter].internalName
     document.getElementById("OptPrice").value = arrayOpt[optArrCounter].price
-    document.getElementById("OptDesc").value = arrayOpt[optArrCounter].description
+    document.getElementById("OptDesc").value = arrayOpt[optArrCounter].displayName
 
 
 })
 document.getElementById("GoToAddButton").addEventListener("click",(event)=>{
     addArrCounter = document.getElementById("GoToAddForm").value
-    document.getElementById("addName").value = arrayAdd[addArrCounter].name
+    document.getElementById("addName").value = arrayAdd[addArrCounter].internalName
     document.getElementById("addPrice").value = arrayAdd[addArrCounter].price
-    document.getElementById("addDesc").value = arrayAdd[addArrCounter].description
+    document.getElementById("addDesc").value = arrayAdd[addArrCounter].displayName
 
 })
 //event listens for buttons that removes a thing of the array
@@ -312,6 +343,5 @@ document.getElementById("removeItemArrayButton").addEventListener('click',(event
 }))
 
 
-//todo: add menu's to resturangs.
-//todo: ask for json to get a menu
+
 
