@@ -21,11 +21,12 @@ public class SendMenuServlet extends HttpServlet {
         System.out.println(menuId);
         for (Restaurant restaurant:Restaurant.allRestaurants) {
             Menu searchingMenu = restaurant.getMenu(menuId);
-            if (searchingMenu != null)
-            {
+            if (searchingMenu != null) {
                 menuJSONstring = searchingMenu.toJSONString();
             }
         }
+
+        if(menuJSONstring.isEmpty()) resp.sendError(404, "Menu '" + menuId + "' not found.");
 
         resp.getWriter().println(menuJSONstring);
         System.out.println(menuJSONstring);
