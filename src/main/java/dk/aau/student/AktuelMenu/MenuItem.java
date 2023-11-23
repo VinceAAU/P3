@@ -82,7 +82,8 @@ public class MenuItem implements JSONString {
     @Override
     public String toJSONString() {
         JSONObject json = new JSONObject();
-        json.put("name", displayName);
+        json.put("displayName", displayName);
+        json.put("internalName",internalName);
         json.put("basePrice", price);
         json.put("minOptions", minimumOptions);
         json.put("maxOptions", maximumOptions);

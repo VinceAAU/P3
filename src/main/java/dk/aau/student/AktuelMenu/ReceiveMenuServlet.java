@@ -12,14 +12,15 @@ import java.util.stream.Collectors;
 
 
 @WebServlet(name="MenuSent", value = "/AktuelMenu/MenuSent")
-public class AdminServlet extends HttpServlet {
+public class ReceiveMenuServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
 
-        System.out.println("WE DID IT2");
+
         super.init();
     }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

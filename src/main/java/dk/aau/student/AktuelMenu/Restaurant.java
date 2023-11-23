@@ -33,4 +33,15 @@ public class Restaurant{
     public void addMenu(Menu menu){
         menus.add(menu);
     }
+
+    public Menu getMenu(String id) {
+        for (Menu menu : menus) {
+
+            if (menu.getName().equals(id)) {
+                return menu;
+            }
+
+        }
+        return null;
+    }
 }

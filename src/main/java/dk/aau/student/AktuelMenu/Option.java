@@ -31,7 +31,8 @@ public class Option implements JSONString {
     public String toJSONString() {
         JSONObject json = new JSONObject();
 
-        json.put("name", displayName);
+        json.put("displayName", displayName);
+        json.put("internalName",internalName);
         json.put("price", price);
         json.put("labels", labels.toArray());
 
