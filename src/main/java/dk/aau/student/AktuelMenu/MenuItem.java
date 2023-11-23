@@ -16,7 +16,7 @@ public class MenuItem implements JSONString {
         return internalName;
     }
 
-    public String getDisplayName() {return displayName;}
+    public String getDisplayNsame() {return displayName;}
     public MenuItem (String internalName, String displayName, int price){
         this.internalName = internalName;
         this.displayName = displayName;

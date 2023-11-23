@@ -11,6 +11,13 @@ import java.io.IOException;
 @WebServlet(name = "orderinput", value = "/OrderSent")
 public class OrderServlet extends HttpServlet {
 
+
+    private final Menu menu; //dependency injection
+
+    public OrderServlet(Menu menu){
+        this.menu = menu;
+    }//constructer for injection
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         BufferedReader reader = request.getReader();
         StringBuilder requestBody = new StringBuilder();
@@ -19,9 +26,13 @@ public class OrderServlet extends HttpServlet {
         while ((line = reader.readLine())!=null){
             requestBody.append(line);
         }
-        String Order = requestBody.toString();
+        String orderItemName = requestBody.toString();
 
-        MenuItem orderMenuItem = menu.getMenuItemByDisplayName(itemName);
+        MenuItem menuItem = getMenuItemByDisplayName(orderItemName);
+
     }
 
+    private MenuItem getMenuItemByDisplayName(String orderItemName) {
+        return menu.getMenuItemByDisplayName(orderItemName);
+    }
 }
