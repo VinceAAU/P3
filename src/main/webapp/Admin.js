@@ -1,5 +1,5 @@
 import {Option} from 'option.js';
-import {MenuItem} from "./menuItem";
+import {MenuItem} from "./menu-item";
 import {Discount} from "./discount";
 
 let options = [];
