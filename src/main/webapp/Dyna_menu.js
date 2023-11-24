@@ -7,6 +7,20 @@ class Order_Item {
 }
 
 let orderItems = [];
+const menuClassesURL = '/AktuelMenu/OrderSent';
+
+document.addEventListener('DOMContentLoaded', function () {
+    fetch(menuClassesURL,{
+
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+});
 
 //We could avoid having an EventListener if we just load the script after the HTML (so put it at the bottom of <body>)
 document.addEventListener("DOMContentLoaded", function () {
@@ -94,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }))
         }));
 
-        const sendURL = 'http://localhost:8080/AktuelMenu/OrderSent';
+        const sendURL = '/AktuelMenu/OrderSent';
 
         fetch(sendURL, {
             method: 'POST',
