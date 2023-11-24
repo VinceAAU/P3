@@ -77,6 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log(orderItems);
     });
   });
+
   let sendOrderButton = document.getElementById('send-order-button');
 
   sendOrderButton.addEventListener('click', function () {
@@ -100,6 +101,8 @@ document.addEventListener("DOMContentLoaded", function () {
       body: JSON.stringify(orderItemsJSON),
     })
   });
+})
+
 function HTMLgen(Menu){
 
   let html = '';
@@ -134,4 +137,4 @@ function HTMLgen(Menu){
     html += '</div>';
   })
   return html;
-}}
+}

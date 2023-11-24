@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import java.util.List;
 import java.util.ArrayList;
 
 @WebServlet(name = "orderinput", value = "/OrderSent")
@@ -93,4 +92,3 @@ public class OrderServlet extends HttpServlet {
     }
 
 }
-
