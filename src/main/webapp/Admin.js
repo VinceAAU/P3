@@ -1,10 +1,36 @@
-import {Option} from 'option.js';
-import {MenuItem} from "./menuItem";
-import {Discount} from "./discount";
+//import {Option} from 'option.js'; importing from non modules is illegal
+//import {MenuItem} from "./menuItem";
+//import {Discount} from "./discount";
+
+class Option{
+    internalName = "";
+    displayName = "";
+    labels = [];
+    price = 0;
+}
+class Discount {
+    days = []
+    price= 0;
+    amount = 0;
+}
+class MenuItem {
+     price=0;
+     internalName="";
+     displayName ="";
+     discount = {
+         days:[],
+         price:0,
+         amount:0}
+     }
+
+
 
 let options = [];
 let additions = [];
 let menuItem = [];
+let optionsCounter= 0 //VIGTIGT til at rette på mine arrays istedet for at gentilføje
+let additonsCounter = 0
+let itemCounter = 0
 
 /**
  * Reads the options that have been selected, adds it to the global options array, and puts it into the text area
@@ -29,7 +55,8 @@ function addOption() {
 
     let displayName =document.getElementById("OptDesc")
 
-    options.push(option);
+    options[optionsCounter] = (option);
+    optionsCounter = options.length
     writeTextArea("OptText",options)
     document.querySelector("#OptName").value = null //Are we sure this is the right way to reset these?
     document.querySelector("#OptPrice").value = null
@@ -45,7 +72,8 @@ function addAddition() {
     addition.internalName = document.getElementById("addName").value;
     addition.price = document.getElementById("addPrice").value;
     addition.displayName =document.getElementById("addDesc").value;
-    additions.push(addition);
+    additions[additonsCounter] = addition;
+    additonsCounter = additions.length
     writeTextArea("AddText",additions)
     document.querySelector("#addName").value = null
     document.querySelector("#addPrice").value = null
@@ -63,7 +91,7 @@ document.querySelector("#AddAddTolistBut").addEventListener('click',addAddition)
 /**
  * Handles the dynamic showing of the options editor
  */
-document.querySelector("#revelOpt").addEventListener('change', (event) => {
+document.getElementById("RevelOpt").addEventListener('change', (event) => {
     if (event.currentTarget.checked) {
         revealOpt(false);
     } else {
@@ -74,7 +102,7 @@ document.querySelector("#revelOpt").addEventListener('change', (event) => {
 /**
  * Handles the dynamic showing of the additions editor
  */
-document.querySelector("#AddBox").addEventListener('change', (event) => {
+document.getElementById("AddBox").addEventListener('change', (event) => {
     if (event.currentTarget.checked) {
         revealAdd(false);
     } else {
@@ -144,7 +172,8 @@ function constructMenu()
         document.querySelector("#discountAmount").value
     );
 
-    menuItem.push(item);
+    menuItem[itemCounter] =item;
+    itemCounter = menuItem.length;
     clearInfo();
 }
 
@@ -203,6 +232,8 @@ function GoToItem(Number)
     document.getElementById("OrignalPrice").value = menuItem[Number].basePrice
     writeTextArea("OptText",options)
     writeTextArea("AddText",additions)
+    itemCounter=number
+
 
 }
 
@@ -304,6 +335,7 @@ document.getElementById("GoToOptButton").addEventListener("click",()=>{
     document.getElementById("OptName").value = options[selectedOption].internalName;
     document.getElementById("OptPrice").value = options[selectedOption].price;
     document.getElementById("OptDesc").value = options[selectedOption].displayName;
+    optionsCounter = selectedOption;
 
 
 })
@@ -312,6 +344,7 @@ document.getElementById("GoToAddButton").addEventListener("click",()=>{
     document.getElementById("addName").value = additions[selectedAddition].internalName;
     document.getElementById("addPrice").value = additions[selectedAddition].price;
     document.getElementById("addDesc").value = additions[selectedAddition].displayName;
+    additonsCounter = selectedAddition;
 })
 //event listens for buttons that removes a thing of the array
 document.getElementById("removeAddArrayButton").addEventListener('click',(()=>
