@@ -87,11 +87,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     let orderItemsJSON = orderItems.map(orderItem => ({
-      orders: orderItems.map(orderItem => ({
-        name: orderItem.name,
-        selectedOptions: orderItem.selectedOptions,
-        selectedAdditions: orderItem.selectedAdditions
-      })) // Missing closing parenthesis here
+      orders: orderItem.map(item => ({
+        name: item.name,
+        selectedOptions: item.selectedOptions,
+        selectedAdditions: item.selectedAdditions
+      }))
     }));
 
     const sendURL = 'http://localhost:8080/AktuelMenu/OrderSent';
