@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             let quantity = parseInt(itemContainer.querySelector('#item-quantity').value, 10);
 
-            let orderItems = [];
+            orderItems = [];
             for (let i = 0; i < quantity; i++) {
                 let orderItem = new Order_Item(itemName);
                 orderItem.selectedOptions = selectedOptions.slice();
@@ -77,7 +77,31 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log(orderItems);
         });
     });
-});
+
+    let sendOrderButton = document.getElementById('send-order-button');
+
+    sendOrderButton.addEventListener('click', function () {
+        if (orderItems.length === 0) {
+            console.log('No items in the order.');
+            return;
+        }
+
+        let orderItemsJSON = orderItems.map(orderItem => ({
+            orders: orderItem.map(item => ({
+                name: item.name,
+                selectedOptions: item.selectedOptions,
+                selectedAdditions: item.selectedAdditions
+            }))
+        }));
+
+        const sendURL = 'http://localhost:8080/AktuelMenu/OrderSent';
+
+        fetch(sendURL, {
+            method: 'POST',
+            body: JSON.stringify(orderItemsJSON),
+        })
+    });
+})
 
 function HTMLgen(Menu) {
 
