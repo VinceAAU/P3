@@ -177,6 +177,7 @@ function constructMenu()
     clearInfo();
 }
 
+
 //Why make a function for this? Why not just put it into a lambda?
 document.querySelector("#ImportMenuBotton").addEventListener('click', importMenu);
 function importMenu() {
