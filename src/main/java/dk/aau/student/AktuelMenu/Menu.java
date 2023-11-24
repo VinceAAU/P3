@@ -30,6 +30,24 @@ public class Menu implements JSONString {
         return null;
     }
 
+    public Option getOptionByDisplayName(MenuItem menuItem, String displayName) {
+            for (Option option : menuItem.getOptions()) {
+                if (option.getDisplayName().equals(displayName)) {
+                    return option;
+                }
+            }
+        return null;
+    }
+
+    public Option getAdditionByDisplayName(MenuItem menuItem, String displayName) {
+            for (Option addition : menuItem.getAdditions()) {
+                if (addition.getDisplayName().equals(displayName)) {
+                    return addition;
+                }
+            }
+        return null;
+    }
+
     public boolean isAvailable(){
         return availabilities.isAvailable();
     }
