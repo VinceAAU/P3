@@ -1,36 +1,13 @@
-//import {Option} from 'option.js'; importing from non modules is illegal
-//import {MenuItem} from "./menuItem";
-//import {Discount} from "./discount";
-
-class Option{
-    internalName = "";
-    displayName = "";
-    labels = [];
-    price = 0;
-}
-class Discount {
-    days = []
-    price= 0;
-    amount = 0;
-}
-class MenuItem {
-     price=0;
-     internalName="";
-     displayName ="";
-     discount = {
-         days:[],
-         price:0,
-         amount:0}
-     }
-
-
+import {Option} from './option.js';
+import {MenuItem} from "./menu-item.js";
+import {Discount} from "./discount.js";
 
 let options = [];
+let currentOption = 0;
 let additions = [];
-let menuItem = [];
-let optionsCounter= 0 //VIGTIGT til at rette på mine arrays istedet for at gentilføje
-let additonsCounter = 0
-let itemCounter = 0
+let currentAddition = 0;
+let menuItems = [];
+let currentItem = 0;
 
 /**
  * Reads the options that have been selected, adds it to the global options array, and puts it into the text area
@@ -39,6 +16,7 @@ function addOption() {
     const option = new Option();
 
     option.internalName = document.getElementById('OptName').value;
+    option.displayName = document.getElementById("OptDesc").value;
     option.price = document.getElementById('OptPrice').value;
 
 
@@ -53,14 +31,15 @@ function addOption() {
     if (document.getElementById("fingerfood").checked)
         option.labels.push("FINGER_FOOD")
 
-    let displayName =document.getElementById("OptDesc")
+    //Deselect all label checkboxes
+    document.querySelectorAll("#opt input[type=checkbox]").forEach(e => e.checked=false);
 
-    options[optionsCounter] = (option);
-    optionsCounter = options.length
+    options[currentOption] = option;
+    currentOption = options.length;
     writeTextArea("OptText",options)
     document.querySelector("#OptName").value = null //Are we sure this is the right way to reset these?
-    document.querySelector("#OptPrice").value = null
-    displayName.value = null
+    document.querySelector("#OptPrice").value = null;
+    document.querySelector("#OptDesc").value = null;
 
 }
 
@@ -72,8 +51,8 @@ function addAddition() {
     addition.internalName = document.getElementById("addName").value;
     addition.price = document.getElementById("addPrice").value;
     addition.displayName =document.getElementById("addDesc").value;
-    additions[additonsCounter] = addition;
-    additonsCounter = additions.length
+    additions[currentAddition] = addition;
+    currentAddition = additions.length;
     writeTextArea("AddText",additions)
     document.querySelector("#addName").value = null
     document.querySelector("#addPrice").value = null
@@ -91,7 +70,7 @@ document.querySelector("#AddAddTolistBut").addEventListener('click',addAddition)
 /**
  * Handles the dynamic showing of the options editor
  */
-document.getElementById("RevelOpt").addEventListener('change', (event) => {
+document.querySelector("#RevelOpt").addEventListener('change', (event) => {
     if (event.currentTarget.checked) {
         revealOpt(false);
     } else {
@@ -102,7 +81,7 @@ document.getElementById("RevelOpt").addEventListener('change', (event) => {
 /**
  * Handles the dynamic showing of the additions editor
  */
-document.getElementById("AddBox").addEventListener('change', (event) => {
+document.querySelector("#AddBox").addEventListener('change', (event) => {
     if (event.currentTarget.checked) {
         revealAdd(false);
     } else {
@@ -172,11 +151,10 @@ function constructMenu()
         document.querySelector("#discountAmount").value
     );
 
-    menuItem[itemCounter] =item;
-    itemCounter = menuItem.length;
+    menuItems[currentItem] = item;
+    currentItem = menuItems.length;
     clearInfo();
 }
-
 
 //Why make a function for this? Why not just put it into a lambda?
 document.querySelector("#ImportMenuBotton").addEventListener('click', importMenu);
@@ -203,7 +181,7 @@ function importMenu() {
         })
         .then(data => {
             console.log('Success:', data);
-            menuItem = data.items
+            menuItems = data.items
 
             document.getElementById("MenuId").value =data.menuId
 
@@ -219,22 +197,21 @@ function importMenu() {
 
 
 
-  //menuItem = givenJson.items
+  //menuItems = givenJson.items
 
 
 }
 
-function GoToItem(Number)
+function GoToItem(number)
 {
-    additions = menuItem[Number].additions
-    options = menuItem[Number].options
-    document.getElementById("DisplayName").value = menuItem[Number].displayName
-    document.getElementById("InternalName").value =menuItem[Number].internalName
-    document.getElementById("OrignalPrice").value = menuItem[Number].basePrice
+    additions = menuItems[number].additions
+    options = menuItems[number].options
+    currentItem = number;
+    document.getElementById("DisplayName").value = menuItems[number].displayName
+    document.getElementById("InternalName").value =menuItems[number].internalName
+    document.getElementById("OrignalPrice").value = menuItems[number].basePrice
     writeTextArea("OptText",options)
     writeTextArea("AddText",additions)
-    itemCounter=number
-
 
 }
 
@@ -245,33 +222,19 @@ function sendMenuToServer()
     let dayArray=[]
 
     if (document.getElementById("monday").checked)
-    {
         dayArray.push("Monday");
-    }
     if (document.getElementById("tuesday").checked)
-    {
         dayArray.push("Tuesday");
-    }
     if (document.getElementById("wednesday").checked)
-    {
         dayArray.push("Wednesday")
-    }
     if (document.getElementById("thursday").checked)
-    {
         dayArray.push("Thursday")
-    }
     if (document.getElementById("friday").checked)
-    {
         dayArray.push("Friday")
-    }
     if (document.getElementById("saturday").checked)
-    {
         dayArray.push("Saturday")
-    }
     if (document.getElementById("sunday").checked)
-    {
         dayArray.push("Sunday")
-    }
 
     let json = {
     menu: {
@@ -281,7 +244,7 @@ function sendMenuToServer()
                 end: document.getElementById("Apocalypse").value,
                 days:dayArray
         },
-        items:menuItem
+        items:menuItems
     }
 
 
@@ -333,10 +296,26 @@ document.getElementById("SetItemButton").addEventListener('click',()=>{
 //unlike these buttons who change a gobale varible and set value in froms
 document.getElementById("GoToOptButton").addEventListener("click",()=>{
     let selectedOption = document.getElementById("GoToOptForm").value;
-    document.getElementById("OptName").value = options[selectedOption].internalName;
-    document.getElementById("OptPrice").value = options[selectedOption].price;
-    document.getElementById("OptDesc").value = options[selectedOption].displayName;
-    optionsCounter = selectedOption;
+
+    let option = options[selectedOption];
+
+    document.getElementById("OptName").value = option.internalName;
+    document.getElementById("OptPrice").value = option.price;
+    document.getElementById("OptDesc").value = option.displayName;
+
+    if(option.labels.includes('VEGAN'))
+        document.querySelector("#vegan").checked = true;
+    if(option.labels.includes('VEGETARIAN'))
+        document.querySelector("#vegetarian").checked = true;
+    if(option.labels.includes('GLUTEN_FREE'))
+        document.querySelector("#glutenFree").checked = true;
+    if(option.labels.includes('LACTOSE_FREE'))
+        document.querySelector("#lactose").checked = true;
+    if(option.labels.includes('FINGER_FOOD'))
+        document.querySelector("#fingerfood").checked = true;
+
+
+    currentOption = selectedOption;
 
 
 })
@@ -345,20 +324,23 @@ document.getElementById("GoToAddButton").addEventListener("click",()=>{
     document.getElementById("addName").value = additions[selectedAddition].internalName;
     document.getElementById("addPrice").value = additions[selectedAddition].price;
     document.getElementById("addDesc").value = additions[selectedAddition].displayName;
-    additonsCounter = selectedAddition;
+    currentAddition = selectedAddition;
 })
 //event listens for buttons that removes a thing of the array
 document.getElementById("removeAddArrayButton").addEventListener('click',(()=>
 {
-    additions.splice(document.getElementById("removeAddArrayForm").value,1)
+    additions.splice(document.getElementById("removeAddArrayForm").value,1);
+    writeTextArea("AddText", additions);
 }))
 document.getElementById("removeOptArrayButton").addEventListener('click',(()=>
 {
-    options.splice(document.getElementById("removeOptArrayForm").value,1)
+    options.splice(document.getElementById("removeOptArrayForm").value,1);
+    writeTextArea("OptText", options);
 }))
 document.getElementById("removeItemArrayButton").addEventListener('click',(()=>
 {
-    menuItem.splice(document.getElementById("removeItemArrayForm").value,1)
+    menuItems.splice(document.getElementById("removeItemArrayForm").value,1);
+    writeTextArea("ItemText", menuItems);
 }))
 
 

@@ -1,4 +1,4 @@
-import {Discount} from "./discount";
+import {Discount} from "./discount.js";
 
 export {MenuItem}
 
