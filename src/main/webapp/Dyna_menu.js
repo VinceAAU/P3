@@ -1,3 +1,4 @@
+//defining a class for the selected order to be sent back to server
 class Order_Item {
     constructor(name) {
         this.name = name;
@@ -6,10 +7,16 @@ class Order_Item {
     }
 }
 
-let orderItems = [];
-const menuClassesURL = '/AktuelMenu/OrderSent';
+let orderItems = [];//array for order_item objects
+const menuClassesURL = '/AktuelMenu/OrderSent';//url for getting menu from server
+const sendURL = '/AktuelMenu/OrderSent';
 
-document.addEventListener('DOMContentLoaded', function () {
+
+//We could avoid having an EventListener if we just load the script after the HTML (so put it at the bottom of <body>)
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    //unfinished fetch for getting menu from server
     fetch(menuClassesURL,{
 
     })
@@ -20,22 +27,21 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => {
             console.error('Error:', error);
         });
-});
 
-//We could avoid having an EventListener if we just load the script after the HTML (so put it at the bottom of <body>)
-document.addEventListener("DOMContentLoaded", function () {
+    //ittereates over option groups to handle checkbox selections
     let optionGroups = document.querySelectorAll('.option');
-
     optionGroups.forEach(function (optionGroup) {
+
+        //get the minimum and maximum options form html
         let minSelections = optionGroup.getAttribute('data-min-selections');
         let maxSelections = optionGroup.getAttribute('data-max-selections');
 
+        //adds event listener to each checkbox in the option group
         let checkboxes = optionGroup.querySelectorAll('input[type="checkbox"]');
-
         checkboxes.forEach(function (checkbox) {
             checkbox.addEventListener('change', function () {
+                //checks if number of selected checkboxes exceeds the maximum allowed
                 let checkedCount = optionGroup.querySelectorAll('input[type="checkbox"]:checked').length;
-
                 if (checkedCount > maxSelections) {
                     alert('Maximum selections exceeded.');
                     checkbox.checked = false;
@@ -43,16 +49,14 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     });
-});
 
-document.addEventListener("DOMContentLoaded", function () {
+    //event listener for "add to order" buttons
     let addToOrderButtons = document.querySelectorAll('.add-to-order');
-
     addToOrderButtons.forEach(function (addToOrderButton) {
         addToOrderButton.addEventListener('click', function () {
+
             // Find the closest item container
             let itemContainer = addToOrderButton.closest('.item-container');
-
             if (!itemContainer) {
                 console.error('Could not find the closest .item-container element.');
                 return;
@@ -60,14 +64,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Find the option group within the item container
             let optionGroup = itemContainer.querySelector('.option');
-
             if (!optionGroup) {
                 console.error('Could not find the .option element within the item container.');
                 return;
             }
 
+            //extracts item details and selected options and additions
             let itemName = itemContainer.querySelector('h3').textContent.trim();
-
             let selectedOptions = [];
             optionGroup.querySelectorAll('input[type="checkbox"]:checked').forEach(function (checkbox) {
                 selectedOptions.push(checkbox.getAttribute('data-option'));
@@ -78,9 +81,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 selectedAdditions.push(checkbox.getAttribute('data-addition'));
             });
 
+            //get quantity form the input field on curret item
             let quantity = parseInt(itemContainer.querySelector('#item-quantity').value, 10);
 
-            orderItems = [];
+            //creates the order_item objects and puts them in the orderItems array
             for (let i = 0; i < quantity; i++) {
                 let orderItem = new Order_Item(itemName);
                 orderItem.selectedOptions = selectedOptions.slice();
@@ -92,14 +96,16 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // adds event listener for "send order" button
     let sendOrderButton = document.getElementById('send-order-button');
-
     sendOrderButton.addEventListener('click', function () {
+       // checks if there are orders in the array to send
         if (orderItems.length === 0) {
             console.log('No items in the order.');
             return;
         }
 
+        //Json setup for the orderitems array
         let orderItemsJSON = orderItems.map(orderItem => ({
             orders: orderItem.map(item => ({
                 name: item.name,
@@ -108,8 +114,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }))
         }));
 
-        const sendURL = '/AktuelMenu/OrderSent';
 
+        //fetch for sending order to server(needs to be fleshed out)
         fetch(sendURL, {
             method: 'POST',
             body: JSON.stringify(orderItemsJSON),

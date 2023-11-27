@@ -17,15 +17,18 @@ import java.util.ArrayList;
 public class OrderServlet extends HttpServlet {
 
 
-    private final Menu menu; //dependency injection
-    private final Option option;
+    private final Menu menu; //dependency injection (for menu)
+    private final Option option; //dependency injection (for option)
 
+    //constructer for dependency injection
     public OrderServlet(Menu menu, Option option){
         this.menu = menu;
         this.option = option;
-    }//constructer for injection
+    }
 
+    //dopost for handeling HTTP requests
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+       //reads the request body
         BufferedReader reader = request.getReader();
         StringBuilder requestBody = new StringBuilder();
         String line;
@@ -33,15 +36,19 @@ public class OrderServlet extends HttpServlet {
         while ((line = reader.readLine())!=null){
             requestBody.append(line);
         }
+
+        //parses the json array from the request
         JSONArray orderArray = new JSONArray(requestBody.toString());
         ArrayList<OrderItem> orderItems = new ArrayList<>();
-
+            //iterrate over each orderitem in jsonarray
             for (int i = 0; i < orderArray.length();i++) {
                 JSONObject orderObject = orderArray.getJSONObject(i);
 
+                //extracts orderitem name and finds matching menuitem
                 String orderItemName = orderObject.getString("name");
                 MenuItem menuItem = getMenuItemByDisplayName(orderItemName);
 
+                //extracts selected options array
                 JSONArray selectedOptionsArray = orderObject.getJSONArray("selectedOptions");
                 ArrayList<Option> selectedOptions = new ArrayList<>();
 
@@ -51,6 +58,7 @@ public class OrderServlet extends HttpServlet {
                     selectedOptions.add(selectedOption);
                 }
 
+                //extracts selected addition array
                 JSONArray selectedAdditionsArray = orderObject.getJSONArray("selectedAdditions");
                 ArrayList<Option> selectedAdditions = new ArrayList<>();
 
@@ -60,20 +68,26 @@ public class OrderServlet extends HttpServlet {
                     selectedAdditions.add(selectedAddition);
                 }
 
+                //extracts comment
                 String comment = orderObject.getString("comment");
 
+                // creates an orderItem object using the found data
                 OrderItem orderItem = new OrderItem(menuItem, selectedOptions, selectedAdditions,comment);
                 orderItems.add(orderItem);
             }
         int tableId = 1; //need to change to get from json
         int orderId = 1; //don't remember what it represents so placeholder for now
 
+        //creates order objercts to hold order items
         Order Order = new Order(tableId,orderId,orderItems);
     }
 
+    //helper method to get MenuItem by display name
     private MenuItem getMenuItemByDisplayName(String orderItemName) {
         return menu.getMenuItemByDisplayName(orderItemName);
     }
+
+    //helper method to get option by display name within Menuitem
     private Option getOptionByDisplayName(MenuItem menuItem, String displayName) {
         for (Option opt : menuItem.getOptions()) {
             if (opt.getDisplayName().equals(displayName)) {
@@ -82,6 +96,8 @@ public class OrderServlet extends HttpServlet {
         }
         return null;
     }
+
+    //helper method to get addition by display name within a MenuItem
     private Option getAdditionByDisplayName(MenuItem menuItem, String displayName) {
         for (Option add : menuItem.getAdditions()) {
             if (add.getDisplayName().equals(displayName)) {
