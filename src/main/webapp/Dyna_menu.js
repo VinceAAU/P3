@@ -22,8 +22,10 @@ document.addEventListener("DOMContentLoaded", function () {
     })
         .then(response => {
             return response.json()})
-        .then(data => {
-            console.log(data);
+        .then(Menu => {
+            console.log(Menu);
+            let generatedHTML = HTMLgen(Menu);
+            document.getElementById("menuContainer").innerHTML = generatedHTML;
         })
         .catch(error => {
             console.error('Error:', error);
