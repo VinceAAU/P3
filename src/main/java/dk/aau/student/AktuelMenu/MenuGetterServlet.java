@@ -18,6 +18,7 @@ import java.util.NoSuchElementException;
 public class MenuGetterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("request recivede");
         resp.setContentType("application/json");
         JSONArray jsonResponse = new JSONArray();
 

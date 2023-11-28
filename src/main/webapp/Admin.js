@@ -9,9 +9,9 @@ let currentAddition = 0;
 let menuItems = [];
 let currentItem = 0;
 
-/**
- * Reads the options that have been selected, adds it to the global options array, and puts it into the text area
- */
+
+ // Reads the options that have been selected, adds it to the global options array, and puts it into the text area
+
 function addOption() {
     const option = new Option();
 
