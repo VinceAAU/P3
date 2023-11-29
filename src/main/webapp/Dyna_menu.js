@@ -8,7 +8,7 @@ class Order_Item {
 }
 
 let orderItems = [];//array for order_item objects
-const menuClassesURL = '/AktuelMenu/OrderSent';//url for getting menu from server
+const menuClassesURL = 'menu.json?restaurant=Budofol\'s Restaurant';//url for getting menu from server
 const sendURL = '/AktuelMenu/OrderSent';
 
 
@@ -17,12 +17,15 @@ const sendURL = '/AktuelMenu/OrderSent';
 document.addEventListener("DOMContentLoaded", function () {
 
     //unfinished fetch for getting menu from server
-    fetch(menuClassesURL,{
+    fetch(menuClassesURL ,{
 
     })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
+        .then(response => {
+            return response.json()})
+        .then(Menu => {
+            console.log(Menu);
+            let generatedHTML = HTMLgen(Menu);
+            document.getElementById("menuContainer").innerHTML = generatedHTML;
         })
         .catch(error => {
             console.error('Error:', error);
