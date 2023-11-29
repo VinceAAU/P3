@@ -35,7 +35,7 @@ public class ReceiveMenuServlet extends HttpServlet {
 
         Restaurant.allRestaurants.get(0).addMenu(menu);
 //todo:make the path proper
-        String path = "C:/Users/tobia/Desktop/TestFolderForMenus" +menu.getName() +".txt";
+        String path = "C:/Users/tobia/Desktop/" +menu.getName() +".txt";
 
 
 
