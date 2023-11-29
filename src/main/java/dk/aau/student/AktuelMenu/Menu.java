@@ -69,10 +69,10 @@ public class Menu implements JSONString {
     }
 
     public static Menu fromJSONObject(JSONObject menuJSON) {
+
         Menu menu = new Menu(
                 menuJSON.getString("menuId"),
-                TimeAvailability.fromJSONObject(
-                        menuJSON.getJSONObject("availableTimes")
+                TimeAvailability.fromJSONObject(menuJSON.getJSONObject("availableTimes")
                 )
         );
 

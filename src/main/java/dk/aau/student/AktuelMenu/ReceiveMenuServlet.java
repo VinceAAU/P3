@@ -7,7 +7,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.stream.Collectors;
 
 
@@ -26,8 +31,29 @@ public class ReceiveMenuServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         JSONObject uploadedMenu = new JSONObject(req.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
 
-        Menu menu = Menu.fromJSONObject(uploadedMenu);
+        Menu menu = Menu.fromJSONObject(uploadedMenu.getJSONObject("menu"));
 
         Restaurant.allRestaurants.get(0).addMenu(menu);
+
+        String path = "C:/Users/nicol/Desktop/tomcatboi/" +menu.getName() +".txt";
+
+
+
+        try {
+            FileWriter fileWriter = new FileWriter(path);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(menu.toJSONString());
+            bufferedWriter.close();
+            fileWriter.close();
+        }catch (IOException i)
+        {
+            System.out.println(i);
+        }
+
+
+
+        System.out.println(menu.toJSONString());
+        resp.setStatus(200);
+
     }
 }

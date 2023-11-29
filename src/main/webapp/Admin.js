@@ -1,13 +1,35 @@
 import {Option} from './option.js';
 import {MenuItem} from "./menu-item.js";
 import {Discount} from "./discount.js";
-
+let BIGBOI;
 let options = [];
 let currentOption = 0;
 let additions = [];
 let currentAddition = 0;
 let menuItems = [];
 let currentItem = 0;
+
+
+fetch("https://google.com",
+    {
+        method:'Post',
+        headers:{
+
+        },
+        body:1})
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+
 
 /**
  * Reads the options that have been selected, adds it to the global options array, and puts it into the text area
@@ -140,16 +162,30 @@ function constructMenu()
 
     item.internalName = document.querySelector("#InternalName").value;
     item.displayName = document.querySelector("#DisplayName").value;
+    if (item.internalName == "" || item.displayName == "")
+    {
+        alert("Missing name")
+        return
+    }
     item.basePrice = document.querySelector("#OrignalPrice").value;
     item.minOptions = document.querySelector("#minOpt").value;
+    if (item.minOptions == "")
+        item.minOptions = 1
     item.maxOptions = document.querySelector("#maxOpt").value;
+    if(item.maxOptions == "")
+        item.maxOptions = 1
     item.options = options; //Using global variables like this isn't particularly object-oriented >:(
     item.additions = additions; //Ditto
-    item.discount = new Discount(
-        days,
-        document.querySelector("#discountPrice").value,
-        document.querySelector("#discountAmount").value
-    );
+    item.discount = { //i know its a bad practice so i only use it a few cases since the varible is handy cross function
+        days:days,
+        price:document.querySelector("#discountPrice").value,
+        amount:document.querySelector("#discountAmount").value
+    };
+    if (item.discount.price == "" || item.discount.amount == "")
+    {
+        item.discount.price = 0
+        item.discount.amount = 0
+    }
 
     menuItems[currentItem] = item;
     currentItem = menuItems.length;
@@ -193,8 +229,10 @@ function importMenu() {
         .catch((error) => {
             console.error('Error:', error);
         });
-
-
+    //
+    currentOption = 0
+    currentAddition = 0
+    currentItem = menuItems.length
 
 
   //menuItems = givenJson.items
@@ -210,9 +248,12 @@ function GoToItem(number)
     document.getElementById("DisplayName").value = menuItems[number].displayName
     document.getElementById("InternalName").value =menuItems[number].internalName
     document.getElementById("OrignalPrice").value = menuItems[number].basePrice
+    document.getElementById("minOpt").value = menuItems[number].minOptions
+    document.getElementById("maxOpt").value = menuItems[number].maxOptions
     writeTextArea("OptText",options)
     writeTextArea("AddText",additions)
-
+    document.getElementById("discountAmount").value = menuItems[number].discount.amount
+    document.getElementById("discountPrice").value = menuItems[number].discount.price
 }
 
 
@@ -236,20 +277,28 @@ function sendMenuToServer()
     if (document.getElementById("sunday").checked)
         dayArray.push("Sunday")
 
+
+
+
+
     let json = {
     menu: {
-        menuId: document.getElementById("MenuId"),
-            availableTimes: {
+        menuId: document.getElementById("MenuId").value,
+        availableTimes: {
             start: document.getElementById("StartTime").value,
                 end: document.getElementById("Apocalypse").value,
                 days:dayArray
         },
-        items:menuItems
+        items:menuItems,
     }
 
 
     }
-
+    if (json.menu.menuId =="" || json.menu.availableTimes.start =="" || json.menu.availableTimes.end == "")
+    {
+        alert("missing menu submiting info")
+        return
+    }
     const sendUrl = 'http://localhost:8080/P3_war/AktuelMenu/MenuSent'
 
     fetch(sendUrl,{
@@ -270,10 +319,10 @@ function sendMenuToServer()
             return response.json();
         })
         .then(data => {
-            console.log('Success:', data);
+            console.log('Success:');
         })
         .catch((error) => {
-            console.error('Error:', error);
+            console.error('Error:');
         });
 
 }
