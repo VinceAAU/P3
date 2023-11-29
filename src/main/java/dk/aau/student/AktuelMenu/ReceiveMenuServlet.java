@@ -34,7 +34,7 @@ public class ReceiveMenuServlet extends HttpServlet {
         Menu menu = Menu.fromJSONObject(uploadedMenu.getJSONObject("menu"));
 
         Restaurant.allRestaurants.get(0).addMenu(menu);
-
+//todo:make the path proper
         String path = "C:/Users/nicol/Desktop/tomcatboi/" +menu.getName() +".txt";
 
 
