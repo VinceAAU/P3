@@ -35,4 +35,7 @@ public class Discount implements JSONString {
         this.amount = amount;
         this.days = days;
     }
+    public boolean applies() {
+        return days.isToday();
+    }
 }
