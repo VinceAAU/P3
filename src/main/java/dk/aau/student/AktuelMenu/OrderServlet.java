@@ -1,5 +1,6 @@
 package dk.aau.student.AktuelMenu;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,39 +12,46 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 
-@WebServlet(name = "ordersent", value = "/OrderSent")
+@WebServlet(name = "ordersent", value = {"/OrderSent"})
 public class OrderServlet extends HttpServlet {
+
+    public void init() throws ServletException{
+        super.init();
+        System.out.println("OrderServlet initialized");
+    }
 
 
     private final Menu menu; //dependency injection (for menu)
     private final Option option; //dependency injection (for option)
 
     //constructer for dependency injection
-    public OrderServlet(Menu menu, Option option){
-        this.menu = menu;
-        this.option = option;
+    public OrderServlet() {
+        this.menu = new Menu("dependencyMenu",new TimeAvailability(LocalTime.MIDNIGHT,LocalTime.MIDNIGHT,DaySelector.never()));
+        this.option = new Option("dependencyOption","dependencyOptions",0);
     }
+
 
     //dopost for handeling HTTP requests
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         //reads the request
-        System.out.print("order request recivede");
+        System.out.print("order request recivede.\n");
         BufferedReader reader = request.getReader();
-        System.out.print("read into bufferedReader");
+        System.out.print("read into bufferedReader\n");
         StringBuilder requestBody = new StringBuilder();
-        System.out.print("requestbody made");
+        System.out.print("requestbody made\n");
         String line;
 
         while ((line = reader.readLine())!=null){
             requestBody.append(line);
-        }System.out.print("lines placed in requestbody");
+        }System.out.print("lines placed in requestbody\n");
 
         //parses the json array from the request
         JSONArray orderArray = new JSONArray(requestBody.toString());
-        System.out.print("orderarray created");
+        System.out.print("orderarray created\n");
         ArrayList<OrderItem> orderItems = new ArrayList<>();
             //iterrate over each orderitem in jsonarray
             for (int i = 0; i < orderArray.length();i++) {
@@ -71,7 +79,6 @@ public class OrderServlet extends HttpServlet {
                     String orderAdditionName = selectedAdditionsArray.getString(j);
                     Option selectedAddition = getAdditionByDisplayName(menuItem, orderAdditionName);
                     selectedAdditions.add(selectedAddition);
-                }
 
                 //extracts comment
                 String comment = orderObject.getString("comment");
