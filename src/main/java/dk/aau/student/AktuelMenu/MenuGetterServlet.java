@@ -35,7 +35,8 @@ public class MenuGetterServlet extends HttpServlet {
 
         for (Menu m : restaurant.availableMenus()){
             jsonResponse.put(m);
-        }
+            System.out.println("menu contains" + m);
+        }System.out.println("menu sent");
 
         jsonResponse.write(resp.getWriter());
     }

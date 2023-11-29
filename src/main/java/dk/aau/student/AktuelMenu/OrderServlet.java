@@ -13,7 +13,7 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 
-@WebServlet(name = "orderinput", value = "/OrderSent")
+@WebServlet(name = "ordersent", value = "/OrderSent")
 public class OrderServlet extends HttpServlet {
 
 
@@ -28,17 +28,22 @@ public class OrderServlet extends HttpServlet {
 
     //dopost for handeling HTTP requests
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-       //reads the request body
+
+        //reads the request
+        System.out.print("order request recivede");
         BufferedReader reader = request.getReader();
+        System.out.print("read into bufferedReader");
         StringBuilder requestBody = new StringBuilder();
+        System.out.print("requestbody made");
         String line;
 
         while ((line = reader.readLine())!=null){
             requestBody.append(line);
-        }
+        }System.out.print("lines placed in requestbody");
 
         //parses the json array from the request
         JSONArray orderArray = new JSONArray(requestBody.toString());
+        System.out.print("orderarray created");
         ArrayList<OrderItem> orderItems = new ArrayList<>();
             //iterrate over each orderitem in jsonarray
             for (int i = 0; i < orderArray.length();i++) {

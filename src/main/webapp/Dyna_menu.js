@@ -9,13 +9,13 @@ class Order_Item {
 
 let orderItems = [];//array for order_item objects
 const menuClassesURL = 'menu.json?restaurant=Budofol\'s Restaurant';//url for getting menu from server
-const sendURL = '/AktuelMenu/OrderSent';
+const sendURL = 'http://localhost:8080/P3_war/OrderSent';
 
 
 //We could avoid having an EventListener if we just load the script after the HTML (so put it at the bottom of <body>)
 
 document.addEventListener("DOMContentLoaded", function () {
-
+    console.log('DOM content loaded');
     //unfinished fetch for getting menu from server
     fetch(menuClassesURL ,{
 
@@ -24,8 +24,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return response.json()})
         .then(Menu => {
             console.log(Menu);
-            let generatedHTML = HTMLgen(Menu);
-            document.getElementById("menuContainer").innerHTML = generatedHTML;
+
+            document.getElementById("menuContainer").innerHTML = HTMLgen(Menu);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -54,12 +54,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     //event listener for "add to order" buttons
-    let addToOrderButtons = document.querySelectorAll('.add-to-order');
-    addToOrderButtons.forEach(function (addToOrderButton) {
-        addToOrderButton.addEventListener('click', function () {
+    document.getElementById("menuContainer").addEventListener("click", function (event) {
+        // Check if the clicked element has the "add-to-order" class
+        if (event.target.classList.contains("add-to-order")) {
+            // Handle the click on the "Add to Order" button
+            console.log('Add to Order button clicked');
 
             // Find the closest item container
-            let itemContainer = addToOrderButton.closest('.item-container');
+            let itemContainer = event.target.closest('.item-container');
             if (!itemContainer) {
                 console.error('Could not find the closest .item-container element.');
                 return;
@@ -96,12 +98,13 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             console.log(orderItems);
-        });
+        }
     });
 
     // adds event listener for "send order" button
     let sendOrderButton = document.getElementById('send-order-button');
     sendOrderButton.addEventListener('click', function () {
+        console.log('Send Order button clicked');
        // checks if there are orders in the array to send
         if (orderItems.length === 0) {
             console.log('No items in the order.');
@@ -110,54 +113,69 @@ document.addEventListener("DOMContentLoaded", function () {
 
         //Json setup for the orderitems array
         let orderItemsJSON = orderItems.map(orderItem => ({
-            orders: orderItem.map(item => ({
-                name: item.name,
-                selectedOptions: item.selectedOptions,
-                selectedAdditions: item.selectedAdditions
-            }))
+            name: orderItem.name,
+            selectedOptions: orderItem.selectedOptions,
+            selectedAdditions: orderItem.selectedAdditions
         }));
-
 
         //fetch for sending order to server(needs to be fleshed out)
         fetch(sendURL, {
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify(orderItemsJSON),
         })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                // Handle success (if needed)
+                console.log('Order sent successfully');
+            })
+            .catch(error => {
+                // Handle errors
+                console.error('Error sending order:', error);
+            });
     });
 })
 
 function HTMLgen(Menu) {
-
     let html = '';
+    console.log('Menu:', Menu);
+    if (Menu && Menu.length > 0 && Menu[0].items) {
+        Menu[0].items.forEach(item => {
+            html += '<div class="item-container">';
+            html += `<h3>${item.displayName}</h3>`;
+            html += `<p>${item.basePrice / 100} kr</p>`;
+            html += `<div class="option" data-min-selections="${item.minOptions}" data-max-selections="${item.maxOptions}">`;
 
-    Menu.items.forEach(item => {
-        html += '<div class="item-container">';
-        html += `<h3>${item.name}</h3>`;
-        html += `<p>${item.basePrice / 100} kr</p>`;
-        html += `<div class="option" data-min-selections="${item.minOptions}" data-max-selections="${item.maxOptions}">`;
-
-        item.options.forEach(option => {
-            html += '<div class="checkbox-container">';
-            html += `<input type="checkbox" data-option="${option.name}">`;
-            html += `<label> ${option.name}</label>`;
+            item.options.forEach(option => {
+                html += '<div class="checkbox-container">';
+                html += `<input type="checkbox" data-option="${option.displayName}">`;
+                html += `<label> ${option.displayName}</label>`;
+                html += '</div>';
+            })
             html += '</div>';
-        })
-        html += '</div>';
 
-        html += '<div class="addition">';
+            html += '<div class="addition">';
 
-        item.additions.forEach(addition => {
-            html += '<div class="checkbox-container">';
-            html += `<input type="checkbox" data-addition="${addition.name}">`;
-            html += `<label>${addition.name}</label>`;
+            item.additions.forEach(addition => {
+                html += '<div class="checkbox-container">';
+                html += `<input type="checkbox" data-addition="${addition.displayName}">`;
+                html += `<label>${addition.displayName}</label>`;
+                html += '</div>';
+            })
+            html += '</div>'
+
+            html += '<label for="item-quantity">quantity:</label>';
+            html += '<input type="number" id="item-quantity" value="1" min="1">';
+            html += `<button class="add-to-order" data-item-name="${item.displayName}">Add to Order</button>`;
             html += '</div>';
-        })
-        html += '</div>'
+        });
+    } else {
+        console.error('Menu or Menu[0].items is undefined');
+    }
 
-        html += '<label for="item-quantity">quantity:</label>';
-        html += '<input type="number" id="item-quantity" value="1" min="1">';
-        html += `<button class="add-to-order" data-item-name="${item.name}">`;
-        html += '</div>';
-    })
     return html;
 }
