@@ -79,6 +79,7 @@ public class OrderServlet extends HttpServlet {
                     String orderAdditionName = selectedAdditionsArray.getString(j);
                     Option selectedAddition = getAdditionByDisplayName(menuItem, orderAdditionName);
                     selectedAdditions.add(selectedAddition);
+                }
 
                 //extracts comment
                 String comment = orderObject.getString("comment");
