@@ -59,18 +59,24 @@ public class OrderServlet extends HttpServlet {
 
                 //extracts orderitem name and finds matching menuitem
                 String orderItemName = orderObject.getString("name");
+                System.out.println("orderItemName " + orderItemName);
                 MenuItem menuItem = getMenuItemByDisplayName(orderItemName);
 
                 //extracts selected options array
                 JSONArray selectedOptionsArray = orderObject.getJSONArray("selectedOptions");
                 ArrayList<Option> selectedOptions = new ArrayList<>();
+                System.out.println("item registered");
 
                 for (int j = 0; j < selectedOptionsArray.length(); j++) {
                     String orderOptionName = selectedOptionsArray.getString(j);
+                    System.out.println("menuitem " + menuItem);
+                    System.out.println("orderOptionName " + orderOptionName);
                     Option selectedOption = getOptionByDisplayName(menuItem, orderOptionName);
                     selectedOptions.add(selectedOption);
+                    System.out.println("option registered");
                 }
 
+                System.out.println("bypassed for loop");
                 //extracts selected addition array
                 JSONArray selectedAdditionsArray = orderObject.getJSONArray("selectedAdditions");
                 ArrayList<Option> selectedAdditions = new ArrayList<>();
@@ -79,6 +85,7 @@ public class OrderServlet extends HttpServlet {
                     String orderAdditionName = selectedAdditionsArray.getString(j);
                     Option selectedAddition = getAdditionByDisplayName(menuItem, orderAdditionName);
                     selectedAdditions.add(selectedAddition);
+                    System.out.println("addition registered");
                 }
 
                 //extracts comment
@@ -87,12 +94,14 @@ public class OrderServlet extends HttpServlet {
                 // creates an orderItem object using the found data
                 OrderItem orderItem = new OrderItem(menuItem, selectedOptions, selectedAdditions,comment);
                 orderItems.add(orderItem);
+                System.out.println("orderItem made");
             }
         int tableId = 1; //need to change to get from json
         int orderId = 1; //don't remember what it represents so placeholder for now
 
         //creates order objercts to hold order items
         Order Order = new Order(tableId,orderId,orderItems);
+        System.out.println("order made");
     }
 
     //helper method to get MenuItem by display name
