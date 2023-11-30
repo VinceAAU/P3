@@ -22,7 +22,6 @@ public class MenuGetterServlet extends HttpServlet {
 
     public void init(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String filePath = "/../savefiles/Frokost__Aften.json";
-        Menu.fromJSONObject()
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             StringBuilder content = new StringBuilder();
             String line;
@@ -32,9 +31,6 @@ public class MenuGetterServlet extends HttpServlet {
             String menu = String.valueOf(content);
             Menu.fromJSONObject(new JSONObject(menu));
             Restaurant.allRestaurants.get(0).addMenu(menu);
-
-
-            res.getWriter().write(menu); //(use this to test menu string for the content :D )
         }catch (IOException e) {
             e.printStackTrace();
             res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
