@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebListener;
 
 import java.time.LocalTime;
 
+//currently all redundent and unused no reason to read it outside of what killed the cat
 @WebListener
 public class ContextListener implements ServletContextListener {
 
