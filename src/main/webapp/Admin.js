@@ -143,19 +143,19 @@ document.getElementById("SubmitBut").addEventListener("click",constructMenu);
 function constructMenu()
 {
     let days = [];
-    if (document.getElementById("discMonday"))
+    if (document.getElementById("discMonday").checked)
         days.push("MONDAY");
-    if (document.getElementById("discTuesday"))
+    if (document.getElementById("discTuesday").checked)
         days.push("TUESDAY");
-    if (document.getElementById("discWednesday"))
+    if (document.getElementById("discWednesday").checked)
         days.push("WEDNESDAY");
-    if (document.getElementById("discThursday"))
+    if (document.getElementById("discThursday").checked)
         days.push("THURSDAY");
-    if (document.getElementById("discFriday"))
+    if (document.getElementById("discFriday").checked)
         days.push("FRIDAY");
-    if (document.getElementById("discSaturday"))
+    if (document.getElementById("discSaturday").checked)
         days.push("SATURDAY");
-    if (document.getElementById("discSunday"))
+    if (document.getElementById("discSunday").checked)
         days.push("SUNDAY");
 
     let item = new MenuItem();
@@ -225,6 +225,21 @@ function importMenu() {
 
             document.getElementById("Apocalypse").value = data.availableTimes.end
 
+            if (data.availableTimes.days.includes("MONDAY",0)){
+                document.getElementById("monday").checked = true;}
+            if (data.availableTimes.days.includes("TUESDAY",0)){
+                document.getElementById("tuesday").checked = true;}
+            if (data.availableTimes.days.includes("WEDNESDAY",0)){
+                document.getElementById("wednesday").checked = true;}
+            if (data.availableTimes.days.includes("THURSDAY",0)){
+                document.getElementById("thursday").checked = true;}
+            if (data.availableTimes.days.includes("FRIDAY",0)){
+                document.getElementById("friday").checked = true;}
+            if (data.availableTimes.days.includes("SATURDAY",0)){
+                document.getElementById("saturday").checked = true;}
+            if (data.availableTimes.days.includes("SUNDAY",0)){
+                document.getElementById("sunday").checked = true;}
+
         })
         .catch((error) => {
             console.error('Error:', error);
@@ -254,6 +269,20 @@ function GoToItem(number)
     writeTextArea("AddText",additions)
     document.getElementById("discountAmount").value = menuItems[number].discount.amount
     document.getElementById("discountPrice").value = menuItems[number].discount.price
+    if (menuItems[number].discount.days.includes("MONDAY",0))
+    {document.getElementById("discMonday").checked=true}
+    if (menuItems[number].discount.days.includes("TUESDAY",0))
+    {document.getElementById("discTuesday").checked = true}
+    if (menuItems[number].discount.days.includes("WEDNESDAY",0))
+    {document.getElementById("discWednesday").checked=true}
+    if (menuItems[number].discount.days.includes("THURSDAY",0))
+    {document.getElementById("discThursday").checked=true}
+    if (menuItems[number].discount.days.includes("FRIDAY",0))
+    {document.getElementById("discFriday").checked = true}
+    if (menuItems[number].discount.days.includes("SATURDAY",0))
+    {document.getElementById("discSaturday").checked=true}
+    if (menuItems[number].discount.days.includes("SUNDAY",0))
+    {document.getElementById("discSunday").checked=true}
 }
 
 

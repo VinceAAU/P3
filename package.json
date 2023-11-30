@@ -1,0 +1,21 @@
+{
+  "name": "p3-frontend",
+  "version": "1.0.0",
+  "browser": "./src/main/webapp/Dyna_menu.js",
+  "type": "module",
+  "directories": {
+    "lib": "./src/main/webapp",
+    "test": "./src/test/webapp"
+  },
+  "scripts": {
+    "test": "ava"
+  },
+  "devDependencies": {
+    "ava": "^5.3.1"
+  },
+  "ava": {
+    "files": [
+      "!./target/**/*"
+    ]
+  }
+}

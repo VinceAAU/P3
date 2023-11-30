@@ -1,11 +1,11 @@
 package dk.aau.student.AktuelMenu;
 
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONString;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MenuItem implements JSONString {
     private int price;
@@ -14,10 +14,15 @@ public class MenuItem implements JSONString {
     private Discount discount = null;
 
     public static MenuItem fromJSONObject(JSONObject itemJSON) {
+        int basePrice = 0;
+        try{
+            basePrice = itemJSON.getInt("basePrice"); //We have to do it like this in case the basePrice is ""
+        } catch(JSONException ignored){}
+
         MenuItem item = new MenuItem(
                 itemJSON.getString("internalName"),
                 itemJSON.getString("displayName"),
-                itemJSON.getInt("basePrice")
+                basePrice
         );
         //TODO: Test for blank discount
         item.setDiscount(Discount.fromJSONObject(itemJSON.getJSONObject("discount")));
@@ -26,7 +31,14 @@ public class MenuItem implements JSONString {
         item.setMinimumOptions(itemJSON.getInt("minOptions"));
 
         for (Object optionJSON : (itemJSON.getJSONArray("options"))){
-            item.addOption(Option.fromJSONObject((JSONObject) optionJSON));
+            try {
+                item.addOption(Option.fromJSONObject((JSONObject) optionJSON));
+            } catch(ClassCastException ignore) { continue; } //Sometimes we will get a null option. This handles that
+        }
+        for (Object additionJSON : (itemJSON.getJSONArray("additions"))){
+            try {
+                item.addAddition(Option.fromJSONObject((JSONObject) additionJSON));
+            } catch(ClassCastException ignore) { continue; }
         }
         return item;
     }
@@ -70,6 +82,10 @@ public class MenuItem implements JSONString {
 
     public Option[] getAdditions(){
         return additions.toArray(new Option[0]);
+    }
+
+    public void addAddition(Option addition){
+        additions.add(addition);
     }
 
     public void setDiscount(Discount discount){
