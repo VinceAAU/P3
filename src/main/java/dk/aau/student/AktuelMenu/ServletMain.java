@@ -27,6 +27,7 @@ public class ServletMain extends HttpServlet {
         vegiBurger.addLabel(Label.VEGETARIAN);
         burger.addOption(vegiBurger);
         menu.addItem(burger);
+        System.out.println("menu" + menu);
 
         MenuItem variant = new MenuItem("xVarianter", "Vælg 3 varianter eller flere", 0);
         variant.addOption(new Option("Andelår", "Confiteret andelår med skysauce", 105));

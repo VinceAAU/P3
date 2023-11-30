@@ -7,38 +7,44 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.DayOfWeek;
-import java.time.LocalTime;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
-@WebServlet(name = "Menu getter servlet", value="/menu.json")
+@WebServlet(name = "MenuGetterServlet", value="/menu.json")
 public class MenuGetterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("request recivede");
+        System.out.println("Request received");
         resp.setContentType("application/json");
         JSONArray jsonResponse = new JSONArray();
 
         String restaurantId = req.getParameter("restaurant");
 
-        Restaurant restaurant;
-        try {
-            //noinspection OptionalGetWithoutIsPresent
-            restaurant = Restaurant.allRestaurants.stream().filter(r -> r.getName().equals(restaurantId)).findFirst().get();
-        } catch (NoSuchElementException e) {
-            resp.sendError(404, "Restaurant " + restaurantId + " does not exist");
+        Optional<Restaurant> optionalRestaurant = Restaurant.allRestaurants.stream()
+                .filter(r -> r.getName().equals(restaurantId))
+                .findFirst();
+
+        if (!optionalRestaurant.isPresent()) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Restaurant " + restaurantId + " does not exist");
             return;
         }
 
-        for (Menu m : restaurant.availableMenus()){
-            jsonResponse.put(m);
-            System.out.println("menu contains" + m);
-        }System.out.println("menu sent");
+        Restaurant restaurant = optionalRestaurant.get();
+        System.out.println(restaurant.availableMenus());
+        for (Menu m : restaurant.availableMenus()) {
+            System.out.println("used for loop");
+            JSONObject menuJson = new JSONObject(m.toJSONString());
+            jsonResponse.put(menuJson);
+            System.out.println("Menu contains: " + m);
+        }
+        System.out.println("Menu sent");
 
-        jsonResponse.write(resp.getWriter());
+        PrintWriter writer = resp.getWriter();
+        jsonResponse.write(writer);
+        writer.close();
     }
 }
 

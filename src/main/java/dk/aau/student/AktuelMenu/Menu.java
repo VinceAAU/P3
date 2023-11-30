@@ -60,12 +60,21 @@ public class Menu implements JSONString {
     //TODO: implement
     @Override
     public String toJSONString() {
-        JSONObject menu = new JSONObject();
-        menu.put("menuId", name); //TODO: Implement an actual ID system
-        menu.put("availableTimes", availabilities);
-        menu.put("items", menuItems);
+        JSONObject menuJson = new JSONObject();
+        menuJson.put("menuId", name);
 
-        return menu.toString();
+        // Convert TimeAvailability to JSONString
+        menuJson.put("availableTimes", availabilities.toJSONString());
+
+        // Convert MenuItems to JSONString
+        JSONArray itemsJsonArray = new JSONArray();
+        for (MenuItem item : menuItems) {
+            itemsJsonArray.put(item.toJSONString());
+        }
+        menuJson.put("items", itemsJsonArray);
+        System.out.println("JSON Representation of Menu: " + menuJson);
+
+        return menuJson.toString();
     }
 
     public static Menu fromJSONObject(JSONObject menuJSON) {
