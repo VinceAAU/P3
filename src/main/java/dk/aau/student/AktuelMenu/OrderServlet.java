@@ -82,7 +82,7 @@ public class OrderServlet extends HttpServlet {
 
         ServletContext context = getServletContext();
         synchronized (context) {
-            context.setAttribute("orderidplaceholder",order);
+            context.setAttribute("orderIdPlaceholder",order);
         }
 
         System.out.println("order created");
