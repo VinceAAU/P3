@@ -17,11 +17,7 @@ import java.io.BufferedReader;
 public class ServletMain extends HttpServlet {
     @Override
     public void init() throws ServletException {
-        Menu menu = new Menu("123",new TimeAvailability(LocalTime.of(8,0,30),LocalTime.of(20,0,30),DaySelector.always()));
 
-        Restaurant budofol = new Restaurant("Budofol's Restaurant");
-        budofol.addMenu(menu);
-        Restaurant.allRestaurants.add(budofol);
     }
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException,IOException {
