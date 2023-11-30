@@ -18,34 +18,9 @@ import java.util.stream.Collectors;
 @WebServlet(name="MenuSent", value = "/AktuelMenu/MenuSent")
 public class ReceiveMenuServlet extends HttpServlet {
 
-    private String menuSaveLocation;
 
     @Override
     public void init() {
-        //Figure out if you're using Windows or UNIX, and set menuSaveLocation based on that
-        String osName = System.getProperty("os.name");
-        if(osName.startsWith("Windows")){
-            String appData = System.getenv("APPDATA");
-            menuSaveLocation = appData + "\\aktuel-menus\\";
-        } else if(osName.startsWith("Mac")) {
-            throw new UnsupportedOperationException("MacOS is not supported at the moment, because we don't currently have any of those computers to test on:)");
-        } else /* Assume it's a UNIX system */ {
-            String dataDir = System.getenv("XDG_DATA_HOME");
-            if(dataDir==null) { //If $XDG_DATA_HOME is not set, which it often is not
-                dataDir = System.getenv("HOME") + "/.local/share"; //The $XDG_DATA_HOME default, according to the specs
-            }
-            menuSaveLocation = dataDir + "/aktuel-menus/";
-        }
-
-        //Create menuSaveLocation if not existent
-        File saveDir = new File(menuSaveLocation);
-        if(!saveDir.exists() || !saveDir.isDirectory()) {//Make the directory (and parent directories) if necessary
-            boolean success = saveDir.mkdirs();
-            if(!success) {
-                System.err.println("ERROR: Could not create directory '" + menuSaveLocation + "'. Using current working directory instead");
-                menuSaveLocation = System.getProperty("user.dir");
-            }
-        }
     }
 
 
@@ -63,7 +38,7 @@ public class ReceiveMenuServlet extends HttpServlet {
         }
 
         //Rather than building our paths as a String, we use Paths.get(), because it's safer (handles things like "..", hopefully)
-        Path path = Paths.get(menuSaveLocation, menu.getName()+".json");
+        Path path = Paths.get((String) getServletContext().getAttribute("menuSaveLocation"), menu.getName()+".json");
 
         try {
             path.toFile().createNewFile();
