@@ -11,6 +11,48 @@ let orderItems = [];//array for order_item objects
 const menuClassesURL = 'menu.json?restaurant=Budofol\'s Restaurant';//url for getting menu from server
 const sendURL = 'http://localhost:8080/P3_war/OrderSent';
 
+var coll = document.getElementsByClassName("Cart-collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+    });
+}
+
+function cartPrint(orderItems){
+    let cartPrintHTML = document.createElement("ul");
+    for (let j=0; j < orderItems.length; j++){
+        let orderPrintItem = document.createElement("li");
+        orderPrintItem.innerText = orderItems[j].name;
+        let orderPrintItemExtra = document.createElement("ul");
+        for (let q=0; q < orderItems[j].selectedOptions.length; q++){
+            let orderPrintItemExtraOptions = document.createElement("li");
+            orderPrintItemExtraOptions.innerText = orderItems[j].selectedOptions[q];
+            orderPrintItemExtra.appendChild(orderPrintItemExtraOptions);
+        }
+        for (let q=0; q < orderItems[j].selectedAdditions.length; q++) {
+            let orderPrintItemExtraAddition = document.createElement("li");
+            orderPrintItemExtraAddition.innerText = orderItems[j].selectedAdditions[q];
+            orderPrintItemExtra.appendChild(orderPrintItemExtraAddition);
+        }
+        orderPrintItem.appendChild(orderPrintItemExtra);
+        cartPrintHTML.appendChild(orderPrintItem)
+    }
+    document.getElementById("JS-printer").innerHTML = "";
+    document.getElementById("JS-printer").appendChild(cartPrintHTML);
+}
+
+document.getElementById("cart-button").addEventListener("click",() => cartPrint(orderItems));
+
+
+
 
 //We could avoid having an EventListener if we just load the script after the HTML (so put it at the bottom of <body>)
 

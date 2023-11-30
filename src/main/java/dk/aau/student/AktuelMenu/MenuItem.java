@@ -117,4 +117,14 @@ public class MenuItem implements JSONString {
     public String getDisplayName() {
         return displayName;
     }
+
+    public Discount getDiscount(){
+        return discount;
+    }
+
+
+    public int getDiscountInt() {
+        int discountInt = discount.getPrice();
+        return discountInt;
+    }
 }
