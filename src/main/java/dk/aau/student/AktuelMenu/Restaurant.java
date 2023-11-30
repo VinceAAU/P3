@@ -38,6 +38,7 @@ public class Restaurant{
         menus.add(menu);
     }
 
+    //Returns null if menu is not found
     public Menu getMenu(String id) {
         for (Menu menu : menus) {
 
@@ -47,5 +48,17 @@ public class Restaurant{
 
         }
         return null;
+    }
+
+    //If there is no menu with that id, it just won't update anything
+    public void updateMenu(Menu menu){
+        String id = menu.getName();
+
+        for (int i = 0; i < menus.size(); i++) {
+            if(menus.get(i).getName().equals(id)){
+                menus.set(i, menu);
+                break; //There should only be one menu with a specific ID
+            }
+        }
     }
 }
