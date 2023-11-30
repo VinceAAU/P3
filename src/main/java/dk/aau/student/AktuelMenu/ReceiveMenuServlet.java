@@ -55,7 +55,12 @@ public class ReceiveMenuServlet extends HttpServlet {
 
         Menu menu = Menu.fromJSONObject(uploadedMenu.getJSONObject("menu"));
 
-        Restaurant.allRestaurants.get(0).addMenu(menu);
+        Restaurant restaurant = Restaurant.allRestaurants.get(0); //TODO: Actually get restaurant input
+        if(restaurant.getMenu(menu.getName())==null) {
+            restaurant.addMenu(menu);
+        } else {
+            restaurant.updateMenu(menu);
+        }
 
         //Rather than building our paths as a String, we use Paths.get(), because it's safer (handles things like "..", hopefully)
         Path path = Paths.get(menuSaveLocation, menu.getName()+".json");

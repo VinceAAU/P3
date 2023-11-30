@@ -31,10 +31,14 @@ public class MenuItem implements JSONString {
         item.setMinimumOptions(itemJSON.getInt("minOptions"));
 
         for (Object optionJSON : (itemJSON.getJSONArray("options"))){
-            item.addOption(Option.fromJSONObject((JSONObject) optionJSON));
+            try {
+                item.addOption(Option.fromJSONObject((JSONObject) optionJSON));
+            } catch(ClassCastException ignore) { continue; } //Sometimes we will get a null option. This handles that
         }
         for (Object additionJSON : (itemJSON.getJSONArray("additions"))){
-            item.addAddition(Option.fromJSONObject((JSONObject) additionJSON));
+            try {
+                item.addAddition(Option.fromJSONObject((JSONObject) additionJSON));
+            } catch(ClassCastException ignore) { continue; }
         }
         return item;
     }
