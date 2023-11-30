@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Adminfront uwu daddy</title>
+    <title>Adminfront uwu daddy :3 rawr xd</title>
 </head>
 <body>
 <h1>Create Menu Item</h1>
@@ -13,48 +13,49 @@
     <input type = "number" placeholder="price" id = "OrignalPrice">
 
 </form>
-    <!-- Toggle feature on food-->
-    <p><label for="RevelOpt">Options</label> <input type = checkbox id ="RevelOpt"> </p>
-    <div hidden="hidden" id = "opt">
+<!-- Toggle feature on food-->
+<p><label for="RevelOpt">Options</label> <input type = checkbox id ="RevelOpt"> </p>
+<div hidden="hidden" id = "opt">
     <input type ="text" id ="OptName" placeholder="name of option">
     <input type ="text" id ="OptDesc" placeholder="Desc of option">
     <input type="number" id="OptPrice" placeholder="Price" >
-       <br>
+    <br>
     <input type="checkbox" id="vegan"> <label for="vegan">Vegan</label>
     <input type="checkbox" id="glutenFree"> <label for="glutenFree">Gluten free</label>
     <input type="checkbox" id="vegetarian"> <label for="vegetarian">veganterisk</label>
     <input type="checkbox" id="fingerfood"> <label for="fingerfood">fingerfood</label>
     <input type="checkbox" id="lactose"> <label for="lactose">lack toes in taller ants</label>
-       <br>
-    <button id="AddOPtToListBut" > Add option to list</button>
-       <br>
-       <input type ="number" id="maxOpt" placeholder="Max Options">
-       <input type ="number" id="minOpt" placeholder="Min Options">
-       <br>
-
-       <textarea readonly id="OptText"></textarea>
-   </div>
-
-
-
-
-    <label for="AddBox">Additions</label> <input type = checkbox id = "AddBox">
-    <div id = "AddDiv" hidden="hidden">
-        <form>
-    <input type ="text" placeholder="name of option" id="addName">
-    <input type ="text" placeholder="Descton of option" id="addDesc">
-    <input type = "number" placeholder ="Price" id="addPrice">
-
-            <br>
-</form>
-    <button id="AddAddTolistBut"> Add addtion to list</button>
-        <br>
-
-        <textarea readonly id="AddText"> </textarea>
-    </div>
     <br>
+    <button id="AddOPtToListBut" > Add option to list</button>
+    <br>
+    <input type ="number" id="maxOpt" placeholder="Max Options">
+    <input type ="number" id="minOpt" placeholder="Min Options">
+    <br>
+
+    <textarea readonly id="OptText"></textarea>
+</div>
+
+
+
+
+<label for="AddBox">Additions</label> <input type = checkbox id = "AddBox">
+<div id = "AddDiv" hidden="hidden">
+    <form>
+        <input type ="text" placeholder="name of option" id="addName">
+        <input type ="text" placeholder="Descton of option" id="addDesc">
+        <input type = "number" placeholder ="Price" id="addPrice">
+
+        <br>
+    </form>
+    <button id="AddAddTolistBut"> Add addtion to list</button>
+    <br>
+
+    <textarea readonly id="AddText"> </textarea>
+</div>
+<br>
 Discount
 <br>
+<div id="discountDiv"> <!-- maybe hidden? -->
 <input type="checkbox" id="discMonday">
 <label for="discMonday">Monday</label>
 <input type="checkbox" id="discTuesday">
@@ -70,9 +71,11 @@ Discount
 <input type="checkbox" id="discSunday">
 <label for="discSunday">Sunday</label>
 <br>
+</div>
 <input type="number" id="discountPrice" placeholder="Discount Price">
 <input type="number" id="discountAmount" placeholder="Discount Amount">
-    <button id="SubmitBut"> Submit Menu Item</button>
+<button id="SubmitBut"> Submit Menu Item</button>
+<br>
 
 <textarea readonly id="ItemText"></textarea>
 <form>
@@ -100,13 +103,13 @@ Discount
 
 
 </form>
-    <br>
-    <button id="Done"> Færdig med menu og send den</button>
+<br>
+<button id="Done"> Færdig med menu og send den</button>
 
 <h1>Import info </h1>
 
 <form>
-    <input type="number" id="ImportMenuForm">
+    <input type="text" id="ImportMenuForm">
 </form>
 <button id="ImportMenuBotton">Import menu id</button>
 <br>

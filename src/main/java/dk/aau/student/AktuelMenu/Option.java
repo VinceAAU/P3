@@ -43,8 +43,8 @@ public class Option implements JSONString {
 
     public static Option fromJSONObject(JSONObject optionJSON){
         Option option = new Option(
-                optionJSON.getString("name"),
-                optionJSON.getString("description"),
+                optionJSON.getString("internalName"),
+                optionJSON.getString("displayName"),
                 optionJSON.getInt("price")
         );
 

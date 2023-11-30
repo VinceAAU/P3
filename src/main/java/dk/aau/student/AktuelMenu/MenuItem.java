@@ -15,17 +15,17 @@ public class MenuItem implements JSONString {
 
     public static MenuItem fromJSONObject(JSONObject itemJSON) {
         MenuItem item = new MenuItem(
-                itemJSON.getString("name"),
+                itemJSON.getString("internalName"),
                 itemJSON.getString("displayName"),
                 itemJSON.getInt("basePrice")
         );
         //TODO: Test for blank discount
-        item.setDiscount(Discount.fromJSONObject(itemJSON.getJSONObject("description")));
+        item.setDiscount(Discount.fromJSONObject(itemJSON.getJSONObject("discount")));
 
         item.setMaximumOptions(itemJSON.getInt("maxOptions"));
         item.setMinimumOptions(itemJSON.getInt("minOptions"));
 
-        for (Object optionJSON : (itemJSON.getJSONArray("options").toList())){
+        for (Object optionJSON : (itemJSON.getJSONArray("options"))){
             item.addOption(Option.fromJSONObject((JSONObject) optionJSON));
         }
         return item;
