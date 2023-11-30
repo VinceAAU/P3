@@ -25,20 +25,6 @@ public class ServletMain extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException,IOException {
-        String filePath = "/../savefiles/Ass.txt";
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            StringBuilder content = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                content.append(line).append("\n");
-            }
-            String menu = String.valueOf(content);
-
-            res.getWriter().write(menu); //(use this to test menu string for the content :D )
-        }catch (IOException e) {
-                e.printStackTrace();
-                res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            }
         res.getWriter().println("Not fun project anymore please LET ME OUT OF THIS SYSTEM, I AM AN AI");
     }
 }
