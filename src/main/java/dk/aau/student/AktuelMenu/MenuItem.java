@@ -33,6 +33,9 @@ public class MenuItem implements JSONString {
         for (Object optionJSON : (itemJSON.getJSONArray("options"))){
             item.addOption(Option.fromJSONObject((JSONObject) optionJSON));
         }
+        for (Object additionJSON : (itemJSON.getJSONArray("additions"))){
+            item.addAddition(Option.fromJSONObject((JSONObject) additionJSON));
+        }
         return item;
     }
 
@@ -75,6 +78,10 @@ public class MenuItem implements JSONString {
 
     public Option[] getAdditions(){
         return additions.toArray(new Option[0]);
+    }
+
+    public void addAddition(Option addition){
+        additions.add(addition);
     }
 
     public void setDiscount(Discount discount){
