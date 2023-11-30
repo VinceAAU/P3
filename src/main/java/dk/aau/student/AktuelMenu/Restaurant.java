@@ -16,6 +16,10 @@ public class Restaurant{
     private ArrayList<Menu> menus;
     private ArrayList<Order> orders;
 
+    public ArrayList<Menu> getMenus() {
+        return menus;
+    }
+
     public String getName() {
         return name;
     }
