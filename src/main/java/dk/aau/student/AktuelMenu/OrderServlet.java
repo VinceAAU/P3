@@ -1,5 +1,6 @@
 package dk.aau.student.AktuelMenu;
 
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -78,7 +79,12 @@ public class OrderServlet extends HttpServlet {
         int orderId = 1; // Extract from JSON if needed
 
         Order order = new Order(tableId, orderId, orderItems);
-        // TODO: Process the order as needed (store in database, send to kitchen)
+
+        ServletContext context = getServletContext();
+        synchronized (context) {
+            context.setAttribute("orderidplaceholder",order);
+        }
+
         System.out.println("order created");
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
