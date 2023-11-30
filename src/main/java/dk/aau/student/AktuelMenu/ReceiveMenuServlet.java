@@ -34,8 +34,12 @@ public class ReceiveMenuServlet extends HttpServlet {
         Menu menu = Menu.fromJSONObject(uploadedMenu.getJSONObject("menu"));
 
         Restaurant.allRestaurants.get(0).addMenu(menu);
-//todo:make the path proper
-        String path = "C:/Users/tobia/Desktop/" +menu.getName() +".txt";
+        File theDir = new File("/../savefiles");
+        if (!theDir.exists()){
+            theDir.mkdirs();
+        }
+
+        String path = "/../savefiles/" +menu.getName() +".txt";
 
 
 
