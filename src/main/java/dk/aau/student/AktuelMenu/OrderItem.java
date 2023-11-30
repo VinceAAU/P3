@@ -1,7 +1,6 @@
 package dk.aau.student.AktuelMenu;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class OrderItem {
     private MenuItem menuItem;
@@ -9,11 +8,14 @@ public class OrderItem {
     private ArrayList<Option> options;
     private ArrayList<Option> additions;
 
+    private int price;
+
     private String comment;
     public OrderItem (MenuItem menuItem, ArrayList<Option> options, ArrayList<Option> additions,String comment){
         this.menuItem = menuItem;
         this.options = options;
         this.additions = additions;
+        this.price = menuItem.getPrice();
         this.comment = comment;
     }
     String printForKitchen(){
@@ -35,7 +37,15 @@ public class OrderItem {
 
         return output.toString();
     }
-    public int getPrice(){
+    public int calcPrice(){
+        if (menuItem.getDiscount() != null){
+            int calcedPrice = menuItem.getPrice();
+            int calcDiscount = menuItem.getDiscountInt();
+            calcedPrice = Math.addExact(calcedPrice,calcDiscount);
+            this.price = calcedPrice;
+            return calcedPrice;
+        }
         return menuItem.getPrice();
+
     }
 }
