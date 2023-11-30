@@ -16,11 +16,15 @@ import java.io.PrintWriter;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @WebServlet(name = "Menu getter servlet", value="/menu.json")
 public class MenuGetterServlet extends HttpServlet {
 
     public void init(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        JSONObject uploadedMenu = new JSONObject(req.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
+
+        Restaurant restaurant = Restaurant.allRestaurants.get(0); //TODO: Actually get restaurant input
         String filePath = "/../savefiles/Frokost__Aften.json";
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             StringBuilder content = new StringBuilder();
@@ -28,9 +32,10 @@ public class MenuGetterServlet extends HttpServlet {
             while ((line = br.readLine()) != null) {
                 content.append(line).append("\n");
             }
-            String menu = String.valueOf(content);
+            Menu menu = Menu.fromJSONObject(uploadedMenu.getJSONObject(String.valueOf(content)));
             Menu.fromJSONObject(new JSONObject(menu));
             Restaurant.allRestaurants.get(0).addMenu(menu);
+
         }catch (IOException e) {
             e.printStackTrace();
             res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
