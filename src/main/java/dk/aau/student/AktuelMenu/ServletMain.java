@@ -5,18 +5,46 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import org.json.JSONObject;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.BufferedReader;
 
 @WebServlet(name = "mainServlet", value="/index.html")
 
 public class ServletMain extends HttpServlet {
     @Override
     public void init() throws ServletException {
-        //TODO: Move all this stuff to test
         Menu menu = new Menu("123",new TimeAvailability(LocalTime.of(8,0,30),LocalTime.of(20,0,30),DaySelector.always()));
+
+        Restaurant budofol = new Restaurant("Budofol's Restaurant");
+        budofol.addMenu(menu);
+        Restaurant.allRestaurants.add(budofol);
+    }
+
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException,IOException {
+        String filePath = "/../savefiles/Ass.txt";
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            StringBuilder content = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+            String menu = String.valueOf(content);
+
+            res.getWriter().write(menu); //(use this to test menu string for the content :D )
+        }catch (IOException e) {
+                e.printStackTrace();
+                res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
+        res.getWriter().println("Not fun project anymore please LET ME OUT OF THIS SYSTEM, I AM AN AI");
+    }
+}
+
+/*        //TODO: Move all this stuff to test
+
         // construct menu item then add to menu uwu
         MenuItem burger = new MenuItem("Burger", "Burger", 12);
         burger.addOption(new Option("kylling","kylling",0));
@@ -51,13 +79,4 @@ public class ServletMain extends HttpServlet {
         System.out.println(orderExample.printForKitchen());
 
         System.out.println(new JSONObject(menu.toJSONString()).toString(4));
-
-        Restaurant budofol = new Restaurant("Budofol's Restaurant");
-        budofol.addMenu(menu);
-        Restaurant.allRestaurants.add(budofol);
-    }
-
-    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
-        res.getWriter().println("Hello:3");
-    }
-}
+ */
