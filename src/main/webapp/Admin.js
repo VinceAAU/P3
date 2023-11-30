@@ -312,6 +312,7 @@ function sendMenuToServer()
 
     let json = {
     menu: {
+        restaurant:document.getElementById("restaurantForm").value,
         menuId: document.getElementById("MenuId").value,
         availableTimes: {
             start: document.getElementById("StartTime").value,
@@ -327,6 +328,18 @@ function sendMenuToServer()
     {
         alert("missing menu submiting info")
         return
+    }
+    if (json.menu.availableTimes.start.length != 5)
+    {
+        alert("invalid start method typed\n" +
+            "9:00 should be written 09:00")
+        return;
+    }
+    if (json.menu.availableTimes.end.length != 5)
+    {
+        alert("invalid end method typed\n" +
+            "9:00 should be written 09:00")
+        return;
     }
     const sendUrl = 'http://localhost:8080/P3_war/AktuelMenu/MenuSent'
 
