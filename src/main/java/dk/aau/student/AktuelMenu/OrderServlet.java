@@ -36,72 +36,62 @@ public class OrderServlet extends HttpServlet {
 
     //dopost for handeling HTTP requests
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        //reads the request
-        System.out.print("order request recivede.\n");
         BufferedReader reader = request.getReader();
-        System.out.print("read into bufferedReader\n");
         StringBuilder requestBody = new StringBuilder();
-        System.out.print("requestbody made\n");
         String line;
-
-        while ((line = reader.readLine())!=null){
+        while ((line = reader.readLine()) != null) {
             requestBody.append(line);
-        }System.out.print("lines placed in requestbody\n");
+        }
 
-        //parses the json array from the request
         JSONArray orderArray = new JSONArray(requestBody.toString());
-        System.out.print("orderarray created\n");
         ArrayList<OrderItem> orderItems = new ArrayList<>();
-            //iterrate over each orderitem in jsonarray
-            for (int i = 0; i < orderArray.length();i++) {
-                JSONObject orderObject = orderArray.getJSONObject(i);
 
-                //extracts orderitem name and finds matching menuitem
-                String orderItemName = orderObject.getString("name");
-                System.out.println("orderItemName " + orderItemName);
-                MenuItem menuItem = getMenuItemByDisplayName(orderItemName);
+        for (int i = 0; i < orderArray.length(); i++) {
+            JSONObject orderObject = orderArray.getJSONObject(i);
+            String orderItemName = orderObject.getString("name");
+            MenuItem menuItem = getMenuItemByDisplayName(orderItemName);
 
-                //extracts selected options array
-                JSONArray selectedOptionsArray = orderObject.getJSONArray("selectedOptions");
-                ArrayList<Option> selectedOptions = new ArrayList<>();
-                System.out.println("item registered");
-
-                for (int j = 0; j < selectedOptionsArray.length(); j++) {
-                    String orderOptionName = selectedOptionsArray.getString(j);
-                    System.out.println("menuitem " + menuItem);
-                    System.out.println("orderOptionName " + orderOptionName);
-                    Option selectedOption = getOptionByDisplayName(menuItem, orderOptionName);
-                    selectedOptions.add(selectedOption);
-                    System.out.println("option registered");
-                }
-
-                System.out.println("bypassed for loop");
-                //extracts selected addition array
-                JSONArray selectedAdditionsArray = orderObject.getJSONArray("selectedAdditions");
-                ArrayList<Option> selectedAdditions = new ArrayList<>();
-
-                for (int j = 0; j < selectedAdditionsArray.length(); j++) {
-                    String orderAdditionName = selectedAdditionsArray.getString(j);
-                    Option selectedAddition = getAdditionByDisplayName(menuItem, orderAdditionName);
-                    selectedAdditions.add(selectedAddition);
-                    System.out.println("addition registered");
-                }
-
-                //extracts comment
-                String comment = orderObject.getString("comment");
-
-                // creates an orderItem object using the found data
-                OrderItem orderItem = new OrderItem(menuItem, selectedOptions, selectedAdditions,comment);
-                orderItems.add(orderItem);
-                System.out.println("orderItem made");
+            if (menuItem == null) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Menu item not found: " + orderItemName);
+                return;
             }
-        int tableId = 1; //need to change to get from json
-        int orderId = 1; //don't remember what it represents so placeholder for now
 
-        //creates order objercts to hold order items
-        Order Order = new Order(tableId,orderId,orderItems);
-        System.out.println("order made");
+            JSONArray selectedOptionsArray = orderObject.getJSONArray("selectedOptions");
+            ArrayList<Option> selectedOptions = new ArrayList<>();
+            for (int j = 0; j < selectedOptionsArray.length(); j++) {
+                String orderOptionName = selectedOptionsArray.getString(j);
+                Option selectedOption = getOptionByDisplayName(menuItem, orderOptionName);
+                if (selectedOption != null) {
+                    selectedOptions.add(selectedOption);
+                }
+            }
+
+            JSONArray selectedAdditionsArray = orderObject.getJSONArray("selectedAdditions");
+            ArrayList<Option> selectedAdditions = new ArrayList<>();
+            for (int j = 0; j < selectedAdditionsArray.length(); j++) {
+                String orderAdditionName = selectedAdditionsArray.getString(j);
+                Option selectedAddition = getAdditionByDisplayName(menuItem, orderAdditionName);
+                if (selectedAddition != null) {
+                    selectedAdditions.add(selectedAddition);
+                }
+            }
+
+            String comment = orderObject.optString("comment", ""); // optString will handle null or missing 'comment'
+
+            OrderItem orderItem = new OrderItem(menuItem, selectedOptions, selectedAdditions, comment);
+            orderItems.add(orderItem);
+        }
+
+        int tableId = 1; // Extract from JSON if needed
+        int orderId = 1; // Extract from JSON if needed
+
+        Order order = new Order(tableId, orderId, orderItems);
+        // TODO: Process the order as needed (store in database, send to kitchen)
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"message\": \"Order received and processed\"}");
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 
     //helper method to get MenuItem by display name

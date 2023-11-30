@@ -69,7 +69,8 @@ public class Menu implements JSONString {
         // Convert MenuItems to JSONString
         JSONArray itemsJsonArray = new JSONArray();
         for (MenuItem item : menuItems) {
-            itemsJsonArray.put(item.toJSONString());
+            JSONObject itemJson = new JSONObject(item.toJSONString()); // Convert string to JSONObject
+            itemsJsonArray.put(itemJson);
         }
         menuJson.put("items", itemsJsonArray);
         System.out.println("JSON Representation of Menu: " + menuJson);
