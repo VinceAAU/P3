@@ -23,7 +23,7 @@ public class MenuGetterServlet extends HttpServlet {
 
     public void init(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         JSONObject uploadedMenu = new JSONObject(req.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
-        String filePath = "/../savefiles/Frokost__Aften.json"; //todo Remember to MAKE IT THE ACTUAL FILEPATH <3
+        String filePath = getServletContext().getAttribute("menuSaveLocation")+"/Frokost__Aften.json"; //todo Remember to MAKE IT THE ACTUAL FILEPATH <3
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             StringBuilder content = new StringBuilder();
             String line;
