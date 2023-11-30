@@ -23,8 +23,6 @@ public class MenuGetterServlet extends HttpServlet {
 
     public void init(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         JSONObject uploadedMenu = new JSONObject(req.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
-
-        Restaurant restaurant = Restaurant.allRestaurants.get(0); //TODO: Actually get restaurant input
         String filePath = "/../savefiles/Frokost__Aften.json";
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             StringBuilder content = new StringBuilder();
