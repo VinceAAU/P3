@@ -1,11 +1,15 @@
 package dk.aau.student.AktuelMenu;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONString;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.IntFunction;
 
-public class Restaurant{
+public class Restaurant implements JSONString {
     //I THINK THIS IS A HORRIBLE WAY OF DOING THINGS
     //PLEASE TELL ME IF THIS IS AS HORRIBLE AS I THINK IT IS
     //I FEEL SHAME FOR EVEN HAVING CONSIDERED WRITING THIS
@@ -60,5 +64,23 @@ public class Restaurant{
                 break; //There should only be one menu with a specific ID
             }
         }
+    }
+
+
+    @Override
+    public String toJSONString() {
+        JSONObject res = new JSONObject();
+        res.put("name", name);
+        res.put("menus", menus);
+        return res.toString();
+    }
+
+    public static Restaurant fromJSONObject(JSONObject jsonObject) {
+        Restaurant res = new Restaurant(jsonObject.getString("name"));
+
+        JSONArray menuArrayJSON = jsonObject.getJSONArray("menus");
+        menuArrayJSON.forEach(mJSON -> res.addMenu(Menu.fromJSONObject((JSONObject) mJSON)));
+
+        return res;
     }
 }

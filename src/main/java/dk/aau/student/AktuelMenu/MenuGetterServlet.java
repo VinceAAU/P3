@@ -9,10 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.NoSuchElementException;
@@ -22,22 +19,14 @@ import java.util.Optional;
 @WebServlet(name = "MenuGetterServlet", value="/menu.json")
 public class MenuGetterServlet extends HttpServlet {
 
-    public void init(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        JSONObject uploadedMenu = new JSONObject(req.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
-        String filePath = getServletContext().getAttribute("menuSaveLocation")+"/Frokost__Aften.json"; //todo Remember to MAKE IT THE ACTUAL FILEPATH <3
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            StringBuilder content = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                content.append(line).append("\n");
-            }
-            Menu menu = Menu.fromJSONObject(uploadedMenu.getJSONObject(String.valueOf(content)));
-            Menu.fromJSONObject(new JSONObject(menu));
-            Restaurant.allRestaurants.get(0).addMenu(menu);
+    @Override
+    public void init() throws ServletException {
+        //Assume that our restaurant is Budolfi. It is a problem that we do this
+        Restaurant restaurant = Restaurant.allRestaurants.stream().filter(r -> r.getName().equals("Budolfi")).findAny().orElse(null);
 
-        }catch (IOException e) {
-            e.printStackTrace();
-            res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        if(restaurant == null){
+            restaurant = new Restaurant("Budolfi");
+            Restaurant.allRestaurants.add(restaurant);
         }
     }
     @Override
@@ -52,7 +41,7 @@ public class MenuGetterServlet extends HttpServlet {
                 .filter(r -> r.getName().equals(restaurantId))
                 .findFirst();
 
-        if (!optionalRestaurant.isPresent()) {
+        if (optionalRestaurant.isEmpty()) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Restaurant " + restaurantId + " does not exist");
             return;
         }

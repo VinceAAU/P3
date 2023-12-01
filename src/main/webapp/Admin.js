@@ -1,7 +1,6 @@
 import {Option} from './option.js';
 import {MenuItem} from "./menu-item.js";
 import {Discount} from "./discount.js";
-let BIGBOI;
 let options = [];
 let currentOption = 0;
 let additions = [];
@@ -10,32 +9,13 @@ let menuItems = [];
 let currentItem = 0;
 
 
-fetch("https://google.com",
-    {
-        method:'Post',
-        headers:{
-
-        },
-        body:1})
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok' + response.statusText);
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
 
 
 /**
  * Reads the options that have been selected, adds it to the global options array, and puts it into the text area
  */
 function addOption() {
-    const option = new Option();
+    let option = new Option();
 
     option.internalName = document.getElementById('OptName').value;
     option.displayName = document.getElementById("OptDesc").value;
@@ -136,6 +116,18 @@ function clearInfo()
     document.getElementById("minOpt").value = null;
     options = [];
     additions = [];
+    currentOption = 0;
+    currentAddition = 0;
+    document.getElementById("discountPrice").value = null;
+    document.getElementById("discountAmount").value = null;
+    document.getElementById("discMonday").check = false;
+    document.getElementById("discTuesday").checked = false;
+    document.getElementById("discThursday").checked = false;
+    document.getElementById("discWednesday").checked = false;
+    document.getElementById("discFriday").checked = false;
+    document.getElementById("discSaturday").checked = false;
+    document.getElementById("discSunday").checked = false;
+
 
 }
 document.getElementById("Done").addEventListener("click",sendMenuToServer);
@@ -188,6 +180,7 @@ function constructMenu()
     }
 
     menuItems[currentItem] = item;
+    writeTextArea("ItemText", menuItems)
     currentItem = menuItems.length;
     clearInfo();
 }
@@ -248,6 +241,7 @@ function importMenu() {
     currentOption = 0
     currentAddition = 0
     currentItem = menuItems.length
+    writeTextArea("ItemText", menuItems)
 
 
   //menuItems = givenJson.items
@@ -375,7 +369,7 @@ function writeTextArea(textId,array)
     text.value = ""
     for(let i=0; array.length > i;i++)
     {
-        array[i].internalName
+
         text.value += array[i].internalName + ": " + array[i].price + "\n"
     }
 }
