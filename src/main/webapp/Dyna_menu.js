@@ -132,7 +132,7 @@ function HTMLgen(Menu) {
             html += '<div class="item-container">';
             html += '<details>'
             html += `<summary>${item.displayName}</summary>`;
-            html += `<p>${item.basePrice / 100} kr</p>`;
+            html += `<p class="priceTag">${item.basePrice / 100} kr</p>`;
             html += `<div class="option" data-min-selections="${item.minOptions}" data-max-selections="${item.maxOptions}">`;
 
             html += '<h4>Options</h4>' //Change this later IDK the english word right now so SUCK IT
@@ -166,6 +166,22 @@ function HTMLgen(Menu) {
     }
 
     return html;
+}
+function showNotification(message, type) {
+    const notificationContainer = document.getElementById('notification-container');
+
+    // Create a new notification element
+    const notification = document.createElement('div');
+    notification.textContent = message;
+    notification.className = `notification ${type}`;
+
+    // Append the notification to the container
+    notificationContainer.appendChild(notification);
+
+    // Remove the notification after a certain duration
+    setTimeout(() => {
+        notification.remove();
+    }, 5000); // Adjust the duration (in milliseconds) as needed
 }
 //event listener for "add to order" buttons
 document.getElementById("menuContainer").addEventListener("click", function (event) {
@@ -201,7 +217,7 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
             selectedAdditions.push(checkbox.getAttribute('data-addition'));
         });
 
-        //get quantity form the input field on curret item
+        //get quantity form the input field on correct item
         let quantity = parseInt(itemContainer.querySelector('#item-quantity').value, 10);
 
         //creates the order_item objects and puts them in the orderItems array
@@ -212,6 +228,7 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
             orderItems.push(orderItem);
         }
 
+        showNotification('Din ordre er tilføjet til kurven!','success')
         console.log(orderItems);
     }
 });

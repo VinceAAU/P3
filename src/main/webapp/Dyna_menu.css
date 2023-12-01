@@ -91,11 +91,18 @@ details > summary {
     text-align: center;
     margin: 60px auto;
     position: relative;
+    transition: 0.5s;
 }
-
+details[open] {
+    margin: 20px;
+    background: lightslategray;
+    transition: 0.5s;
+}
 details {
     border: 1px solid #000;
     display:block;
+    transition:0.5s;
+    background: lightgrey;
 }
 
 div.checkbox-container {
@@ -105,5 +112,31 @@ div.checkbox-container {
 h4{
     margin: 5px 0;
 }
+p.priceTag{
+    text-align: center;
+    font-size: 20px;
+    font-family: 'Raleway', sans-serif;
+    font-weight:bold;
+    margin: auto;
+}
 
+#notification-container{
+    justify-content: center;
+    align-items: center;
+}
 
+.success {
+    color: #000000;
+    position: fixed;
+    width: 95%;
+    top: 300px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    height: 50px;
+    text-align: center;
+    font-size: 15px;
+    font-family: 'Raleway', sans-serif;
+    font-weight:bold;
+    z-index: 3;
+
+}
