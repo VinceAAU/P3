@@ -8,7 +8,7 @@ class Order_Item {
 }
 
 let orderItems = [];//array for order_item objects
-const menuClassesURL = 'menu.json?restaurant=Budofol\'s Restaurant';//url for getting menu from server
+const menuClassesURL = 'menu.json?restaurant=Budolfi';//url for getting menu from server
 const sendURL = 'http://localhost:8080/P3_war/OrderSent';
 
 var coll = document.getElementsByClassName("Cart-collapsible");
@@ -51,28 +51,13 @@ function cartPrint(orderItems){
 
 document.getElementById("cart-button").addEventListener("click",() => cartPrint(orderItems));
 
-// Function to Open the Menu
-function openMenu(jsonFile) {
-    if (jsonFile === 'Morgenmad__Brunch.json'){
-        jsonFile = HTMLgen(Morgenmad__Brunch.json);
-        return jsonFile
-    } else if(jsonFile === 'Frokost__Aften.json'){
-        HTMLgen(Frokost__Aften.json)
-        return jsonFile
-    } else if(jsonFile === 'Smrrebrd.json') {
-        HTMLgen(Smrrebrd.json)
-        return jsonFile
-    }
-
-}
-document.getElementById('menu-button_morning').setAttribute("onClick",openMenu(Morgenmad__Brunch.json))
-document.getElementById('menu-button_evening').setAttribute("onClick",openMenu(Frokost__Aften.json))
-document.getElementById('menu-button_bread').setAttribute("onClick",openMenu(Smrrebrd.json))
 
 
 //We could avoid having an EventListener if we just load the script after the HTML (so put it at the bottom of <body>)
 
 document.addEventListener("DOMContentLoaded", function () {
+
+}, false)
     console.log('DOM content loaded');
     //unfinished fetch for getting menu from server
     fetch(menuClassesURL ,{
@@ -81,6 +66,17 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => {
             return response.json()})
         .then(Menu => {
+            let button = document.createElement('button');
+            button.type = 'button';
+            button.innerHTML = 'Press me';
+            button.className = 'btn-styled';
+
+            button.onclick = function() {
+
+            };
+
+            let container = document.getElementById('menu-selection');
+            container.appendChild(button);
             console.log(Menu);
 
             document.getElementById("menuContainer").innerHTML = HTMLgen(Menu);
@@ -194,9 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => {
                 // Handle errors
                 console.error('Error sending order:', error);
-            });
-    });
-})
+            })})
 
 function HTMLgen(Menu) {
     let html = '';
