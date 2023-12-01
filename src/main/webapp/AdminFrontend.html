@@ -1,35 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Adminfront uwu daddy :3 rawr xd</title>
+    <title>Menu redigering side</title>
+    <link rel="stylesheet" href="Dyna_menu.css">
 </head>
 <body>
 <h1>Create Menu Item</h1>
 <form>
-    <input type = "text" placeholder="Displayname" id="DisplayName">
-    <input type = "text" placeholder="Internalname" id="InternalName">
+    <input type = "text" placeholder="Visnings navn" id="DisplayName">
+    <input type = "text" placeholder="Interne navn" id="InternalName">
     <br>
-    <input type = "number" placeholder="price" id = "OrignalPrice">
+    <input type = "number" placeholder="Pris" id = "OrignalPrice">
 
 </form>
 <!-- Toggle feature on food-->
-<p><label for="RevelOpt">Options</label> <input type = checkbox id ="RevelOpt"> </p>
+<p><label for="RevelOpt">Skal der være flere valg?</label> <input type = checkbox id ="RevelOpt"> </p>
 <div hidden="hidden" id = "opt">
-    <input type ="text" id ="OptName" placeholder="name of option">
-    <input type ="text" id ="OptDesc" placeholder="Desc of option">
-    <input type="number" id="OptPrice" placeholder="Price" >
+    <input type ="text" id ="OptName" placeholder="Navnet af valg">
+    <input type ="text" id ="OptDesc" placeholder="Beskrivelse/Visnings Navn af valg">
+    <input type="number" id="OptPrice" placeholder="Pris" >
     <br>
-    <input type="checkbox" id="vegan"> <label for="vegan">Vegan</label>
-    <input type="checkbox" id="glutenFree"> <label for="glutenFree">Gluten free</label>
-    <input type="checkbox" id="vegetarian"> <label for="vegetarian">veganterisk</label>
-    <input type="checkbox" id="fingerfood"> <label for="fingerfood">fingerfood</label>
-    <input type="checkbox" id="lactose"> <label for="lactose">lack toes in taller ants</label>
+    <input type="checkbox" id="vegan"> <label for="vegan">Vegansk</label>
+    <input type="checkbox" id="glutenFree"> <label for="glutenFree">Gluten fri</label>
+    <input type="checkbox" id="vegetarian"> <label for="vegetarian">Vegetarisk</label>
+    <input type="checkbox" id="fingerfood"> <label for="fingerfood">Finger mad</label>
+    <input type="checkbox" id="lactose"> <label for="lactose"> Indholder lactose</label>
     <br>
-    <button id="AddOPtToListBut" > Add option to list</button>
+    <button id="AddOPtToListBut" > Tilføj Valg</button>
     <br>
-    <input type ="number" id="maxOpt" placeholder="Max Options">
-    <input type ="number" id="minOpt" placeholder="Min Options">
+    <input type ="number" id="maxOpt" placeholder="Maximum valg">
+    <input type ="number" id="minOpt" placeholder="Minimum valg">
     <br>
 
     <textarea readonly id="OptText"></textarea>
@@ -38,111 +39,112 @@
 
 
 
-<label for="AddBox">Additions</label> <input type = checkbox id = "AddBox">
+<label for="AddBox">Skal der være tilføjelser</label> <input type = checkbox id = "AddBox">
 <div id = "AddDiv" hidden="hidden">
     <form>
-        <input type ="text" placeholder="name of option" id="addName">
-        <input type ="text" placeholder="Descton of option" id="addDesc">
-        <input type = "number" placeholder ="Price" id="addPrice">
+        <input type ="text" placeholder="Navn af tilføjelse" id="addName">
+        <input type ="text" placeholder="Beskrivelse af tilføjelse" id="addDesc">
+        <input type = "number" placeholder ="Pris" id="addPrice">
 
         <br>
     </form>
-    <button id="AddAddTolistBut"> Add addtion to list</button>
+    <button id="AddAddTolistBut"> Tilføj tilføjelsen til listen</button>
     <br>
 
     <textarea readonly id="AddText"> </textarea>
 </div>
 <br>
-Discount
+Tilbud
 <br>
 <div id="discountDiv"> <!-- maybe hidden? -->
 <input type="checkbox" id="discMonday">
-<label for="discMonday">Monday</label>
+<label for="discMonday">Mandag</label>
 <input type="checkbox" id="discTuesday">
-<label for="discTuesday">Tuesday</label>
+<label for="discTuesday">Tirsdag</label>
 <input type="checkbox" id="discWednesday">
-<label for="discWednesday">Wednesday</label>
+<label for="discWednesday">Onsdag</label>
 <input type="checkbox" id="discThursday">
-<label for="discThursday"> Thursday</label>
+<label for="discThursday"> Torsdag</label>
 <input type="checkbox" id="discFriday">
-<label for="discFriday">Friday</label>
+<label for="discFriday">Fredag</label>
 <input type="checkbox" id="discSaturday">
-<label for="discSaturday">Saturday</label>
+<label for="discSaturday">Lørdag</label>
 <input type="checkbox" id="discSunday">
-<label for="discSunday">Sunday</label>
+<label for="discSunday">Søndag</label>
 <br>
 </div>
-<input type="number" id="discountPrice" placeholder="Discount Price">
-<input type="number" id="discountAmount" placeholder="Discount Amount">
-<button id="SubmitBut"> Submit Menu Item</button>
+<input type="number" id="discountPrice" placeholder="Tilbuds pris">
+<input type="number" id="discountAmount" placeholder="Mænge til Tilbud">
+<button id="SubmitBut"> Indsæt ret</button>
 <br>
 
 <textarea readonly id="ItemText"></textarea>
 <form>
-    <h1>Submitting The Menu</h1>
-    <input type =text placeholder="menuId" id="MenuId">
+    <h1>Send Menu</h1>
+    <input type =text placeholder="Menu Id" id="MenuId">
     <br>
-    <input type="text" placeholder="00:00 start time" id="StartTime"> <!-- :3 why does this font make my 3 look like a fish with a hole in it rather than a cute cat mouth :C-->
-    <input type="text" placeholder="00:00 end time" id="Apocalypse">
+    <input type="text" placeholder="00:00 Start tid" id="StartTime"> <!-- :3 why does this font make my 3 look like a fish with a hole in it rather than a cute cat mouth :C-->
+    <input type="text" placeholder="00:00 Slut tid" id="Apocalypse">
     <br>
     <input type="checkbox" id="monday">
-    <label for="monday">Monday</label>
+    <label for="monday">Mandag</label>
     <input type="checkbox" id="tuesday">
-    <label for="tuesday">Tuesday</label>
+    <label for="tuesday">Tirsdag</label>
     <input type="checkbox" id="wednesday">
-    <label for="wednesday">Wednesday</label>
+    <label for="wednesday">Onsdag</label>
     <input type="checkbox" id="thursday">
-    <label for="thursday"> Thursday</label>
+    <label for="thursday"> Torsdag</label>
     <input type="checkbox" id="friday">
-    <label for="friday">Friday</label>
+    <label for="friday">Fredag</label>
     <input type="checkbox" id="saturday">
-    <label for="saturday">Saturday</label>
+    <label for="saturday">Lørdag</label>
     <input type="checkbox" id="sunday">
-    <label for="sunday">Sunday</label>
+    <label for="sunday">Søndag</label>
     <br>
 <input type="text" placeholder="Restaurant navn" id = "restaurantForm">
-
 </form>
 <br>
 <button id="Done"> Færdig med menu og send den</button>
 
-<h1>Import info </h1>
+<h1>Ændre info </h1>
 
 <form>
     <input type="text" id="ImportMenuForm">
 </form>
-<button id="ImportMenuBotton">Import menu id</button>
+<button id="ImportMenuBotton">Importer menu id</button>
 <br>
+Den første Genstand er nummer 0
 <form>
-    <input type="number" id="SetItemForm">
+    <input type="number" id="SetItemForm" min="0">
 </form>
-<button id ="SetItemButton">Go That item in this menu</button>
+<button id ="SetItemButton">Gå til denne ret</button>
 <br>
+Ændre på information denne ret
 <form>
-    <input type="number" id="GoToOptForm">
+    <input type="number" id="GoToOptForm" min="0">
 </form>
-<button id="GoToOptButton">Go to this option</button>
+<button id="GoToOptButton">Gå til dette valg</button>
 <br>
 <form>
     <input type="number" id="GoToAddForm">
 </form>
-<button id="GoToAddButton">Go to this Addition</button>
+<button id="GoToAddButton">Gå til denne tilføjelse</button>
 
-<h1>Delete info</h1>
+<h1>Slet information</h1>
 <form>
     <input type="number" id="removeOptArrayForm">
 </form>
-<button id="removeOptArrayButton"> Remove this Option </button>
+<button id="removeOptArrayButton">Fjern valg</button>
 <br>
 <form>
     <input type="number" id="removeAddArrayForm">
 </form>
-<button id="removeAddArrayButton"> Remove this Addition </button>
+<button id="removeAddArrayButton"> Fjern tilføjelse </button>
 <br>
 <form>
     <input type="number" id="removeItemArrayForm">
 </form>
-<button id="removeItemArrayButton"> Remove this Item </button>
+<button id="removeItemArrayButton"> Fjern denne ret </button>
 
 <script type="module" src=Admin.js></script>
 </body>

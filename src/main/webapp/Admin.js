@@ -180,6 +180,7 @@ function constructMenu()
     }
 
     menuItems[currentItem] = item;
+    writeTextArea("ItemText", menuItems)
     currentItem = menuItems.length;
     clearInfo();
 }
@@ -240,6 +241,7 @@ function importMenu() {
     currentOption = 0
     currentAddition = 0
     currentItem = menuItems.length
+    writeTextArea("ItemText", menuItems)
 
 
   //menuItems = givenJson.items
