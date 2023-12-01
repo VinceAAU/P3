@@ -67,10 +67,6 @@ body{
     transition: margin-bottom .5s;
 }
 
-
-
-
-
 .add-to-order{
     background-color: darkgray;
     border: none;
@@ -93,6 +89,21 @@ details > summary {
     font-weight: bold;
     cursor: pointer;
     text-align: center;
-    margin: 90px auto;
-    width: 50%;
+    margin: 60px auto;
+    position: relative;
 }
+
+details {
+    border: 1px solid #000;
+    display:block;
+}
+
+div.checkbox-container {
+    border: 1px solid #000;
+}
+
+h4{
+    margin: 5px 0;
+}
+
+

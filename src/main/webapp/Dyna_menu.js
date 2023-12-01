@@ -129,26 +129,29 @@ function HTMLgen(Menu) {
     console.log('Menu:', Menu);
     if (Menu && Menu.length > 0 && Menu[0].items) {
         Menu[0].items.forEach(item => {
-            html += '<details>'
-            html += `<summary><h3>${item.displayName}</h3></summary>`;
             html += '<div class="item-container">';
+            html += '<details>'
+            html += `<summary>${item.displayName}</summary>`;
             html += `<p>${item.basePrice / 100} kr</p>`;
             html += `<div class="option" data-min-selections="${item.minOptions}" data-max-selections="${item.maxOptions}">`;
 
+            html += '<h4>Options</h4>' //Change this later IDK the english word right now so SUCK IT
             item.options.forEach(option => {
                 html += '<div class="checkbox-container">';
-                html += `<input type="checkbox" data-option="${option.displayName}">`;
-                html += `<label> ${option.displayName}</label>`;
+                html += '<label>'
+                html += `<input type="checkbox" data-option="${option.displayName}"> ${option.displayName}`;
+                html += '</label>'
                 html += '</div>';
             })
             html += '</div>';
 
             html += '<div class="addition">';
-
+            html += '<h4>Additions</h4>' // Change later because danish name
             item.additions.forEach(addition => {
                 html += '<div class="checkbox-container">';
-                html += `<input type="checkbox" data-addition="${addition.displayName}">`;
-                html += `<label>${addition.displayName}</label>`;
+                html += '<label>'
+                html += `<input id="additionCheckbox" type="checkbox" data-addition="${addition.displayName}">${addition.displayName}`;
+                html += `</label>`;
                 html += '</div>';
             })
             html += '</div>'
@@ -172,7 +175,7 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
         console.log('Add to Order button clicked');
 
         // Find the closest item container
-        let itemContainer = event.target.closest('.item-container');;
+        let itemContainer = event.target.closest('.item-container');
         if (!itemContainer) {
             console.error('Could not find the closest .item-container element.');
             return;
@@ -186,7 +189,7 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
         }
 
         //extracts item details and selected options and additions
-        let itemName = itemContainer.querySelector('h3').textContent.trim();
+        let itemName = itemContainer.querySelector('summary').textContent.trim();
 
         let selectedOptions = [];
         optionGroup.querySelectorAll('input[type="checkbox"]:checked').forEach(function (checkbox) {
