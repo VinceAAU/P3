@@ -7,13 +7,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
-
+import java.util.Optional;
 
 @WebServlet(name="MenuSent", value = "/AktuelMenu/MenuSent")
 public class ReceiveMenuServlet extends HttpServlet {
@@ -30,7 +29,17 @@ public class ReceiveMenuServlet extends HttpServlet {
 
         Menu menu = Menu.fromJSONObject(uploadedMenu.getJSONObject("menu"));
 
-        Restaurant restaurant = Restaurant.allRestaurants.get(0); //TODO: Actually get restaurant input
+        String restaurantName = uploadedMenu.getJSONObject("menu").getString("restaurant");
+        Optional<Restaurant> maybeRestaurant = Restaurant.allRestaurants.stream().filter(r -> r.getName().equals(restaurantName)).findAny();
+
+        if(maybeRestaurant.isEmpty()) {
+            resp.setStatus(404);
+            resp.getWriter().println("Restaurant '" + restaurantName + "' not found");
+            return;
+        }
+        Restaurant restaurant = maybeRestaurant.get();
+
+
         if(restaurant.getMenu(menu.getName())==null) {
             restaurant.addMenu(menu);
         } else {
@@ -38,13 +47,13 @@ public class ReceiveMenuServlet extends HttpServlet {
         }
 
         //Rather than building our paths as a String, we use Paths.get(), because it's safer (handles things like "..", hopefully)
-        Path path = Paths.get((String) getServletContext().getAttribute("menuSaveLocation"), menu.getName()+".json");
+        Path path = Paths.get((String) getServletContext().getAttribute("menuSaveLocation"), restaurant.getName() +".json");
 
         try {
             path.toFile().createNewFile();
             FileWriter fileWriter = new FileWriter(path.toFile(), false);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write(menu.toJSONString());
+            bufferedWriter.write(restaurant.toJSONString());
             bufferedWriter.close();
             fileWriter.close();
         }catch (IOException i) {

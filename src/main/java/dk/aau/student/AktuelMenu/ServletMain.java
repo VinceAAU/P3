@@ -6,8 +6,8 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,16 @@ public class ServletMain extends HttpServlet {
                 }
             }
 
-            //Yeah
+            //Load all menus in
+            for(File restaurantFile : saveDir.listFiles((file, s) -> s.endsWith(".json"))){
+                try {
+                    JSONObject restaurant = new JSONObject(Files.readString(restaurantFile.toPath()));
+
+                    Restaurant.allRestaurants.add(Restaurant.fromJSONObject(restaurant));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
 
