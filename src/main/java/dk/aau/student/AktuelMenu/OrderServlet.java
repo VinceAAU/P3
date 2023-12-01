@@ -78,11 +78,15 @@ public class OrderServlet extends HttpServlet {
         int tableId = 1; // Extract from JSON if needed
         int orderId = 1; // Extract from JSON if needed
 
-        Order order = new Order(tableId, orderId, orderItems);
+        ServletContext orders = getServletContext();
+        ArrayList<Order> globalOrderArray = (ArrayList<Order>) orders.getAttribute("orderArray");
+        if (globalOrderArray == null) {
+            globalOrderArray = new ArrayList<>();
+            orders.setAttribute("orderArray", globalOrderArray);
+        }
 
-        ServletContext context = getServletContext();
-        synchronized (context) {
-            context.setAttribute("orderIdPlaceholder",order);
+        synchronized (globalOrderArray) {
+            globalOrderArray.add(new Order(tableId, orderId, orderItems));
         }
 
         System.out.println("order created");
