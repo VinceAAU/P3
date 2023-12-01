@@ -14,18 +14,15 @@ const sendURL = 'http://localhost:8080/P3_war/OrderSent';
 var coll = document.getElementsByClassName("Cart-collapsible");
 var i;
 
-for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function() {
-        this.classList.toggle("active");
-        var content = this.nextElementSibling;
-        if (content.style.display === "block") {
-            content.style.display = "none";
-        } else {
-            content.style.display = "block";
-        }
-    });
-}
+function openCart(){
+    document.getElementById("cart-container").style.width = "250px";
+    document.getElementById("menu-selection").style.marginBottom = "250px";
 
+}
+function closeCart(){
+    document.getElementById("cart-container").style.width = "0px";
+    document.getElementById("menu-selection").style.marginBottom = "0px";
+}
 function cartPrint(orderItems){
     let cartPrintHTML = document.createElement("ul");
     for (let j=0; j < orderItems.length; j++){
@@ -49,7 +46,7 @@ function cartPrint(orderItems){
     document.getElementById("JS-printer").appendChild(cartPrintHTML);
 }
 
-//document.getElementById("cart-button").addEventListener("click",() => cartPrint(orderItems));
+    document.getElementById("cart-button").addEventListener("click",() => cartPrint(orderItems));
 
 
     fetch(menuClassesURL ,{

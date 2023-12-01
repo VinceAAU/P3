@@ -31,11 +31,11 @@ body{
 
 
 .Cart-collapsible{
-    width: 96%;
+    width: 95%;
     position: fixed;
-    bottom: 20px;
+    bottom: 2%;
     background-color: darkgray;
-    border: none;
+    border: 5px;
     color: white;
     padding: 10px;
     text-align: center;
@@ -44,16 +44,29 @@ body{
     font-size: 16px;
     cursor: pointer;
     border-radius: 10px;
+    z-index: 1;
+
+
 }
 .Cart:hover{
     background-color: dimgray;
 }
 .cart-container {
-    padding: 0 18px;
-    display: none;
-    overflow: hidden;
-    background-color: #f1f1f1;
+    height:100%;
+    width: 0;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left:0;
+    background-color: slategrey;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
 }
+#menu-selection {
+    transition: margin-bottom .5s;
+}
+
 
 
 
@@ -75,9 +88,4 @@ body{
     background-color: dimgray;
 }
 
-.btn-styled {
-    font-size: 14px;
-    margin: 8px;
-    padding: 0 10px;
-    line-height: 2;
-}
+

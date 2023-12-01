@@ -2,7 +2,7 @@
 <html lang="da" xmlns="http://www.w3.org/1999/html">
 <meta charset="UTF-8">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height">
     <title>Aktuel Aalborg</title>
     <link rel="stylesheet" href="Dyna_menu.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,12 +13,21 @@
 <h1 id="order-for-bord">Ordre-side</h1>
 
 <div id="menu-selection">
-    <!-- <button id="menu-button_morning">Morgenmad & Brunch</button>
-    <button id="menu-button_evening">Frokost & Aften</button>
-    <button id="menu-button_bread">Smørrebrød</button> -->
+
 </div>
 <div id="menuContainer"></div>
+<div class="Cart-section">
+    <button type="button" class="Cart-collapsible" id="cart-button" onclick="openCart()">Cart</button>
+    <div class="cart-container" id="cart-container">
+        <button type="button" id="cart-button1" onclick="closeCart()">Close</button>
+        <h4>Your Order:</h4>
+        <div id="JS-printer">
 
+        </div>
+        <button type="button" class="Cart-Order">Order</button>
+    </div>
+
+</div>
 <button id="send-order-button">Send Order</button>
 
 <script src="Dyna_menu.js"></script>
