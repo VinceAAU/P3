@@ -11,12 +11,12 @@
 </head>
 <body>
 <h1 id="order-for-bord">Ordre-side</h1>
-<div id="menu-selection">
-    <button onclick="openMenu('menu-morgenmad&brunch')" class="menu-button">Morgenmad & Brunch</button>
-    <button onclick="openMenu('menu-frokost&aften')" class="menu-button">Frokost & Aften</button>
-    <button onclick="openMenu('menu-smørrebrød')" class="menu-button">Smørrebrød</button>
-</div>
 
+<div id="menu-selection">
+    <button id="menu-button_morning">Morgenmad & Brunch</button>
+    <button id="menu-button_evening">Frokost & Aften</button>
+    <button id="menu-button_bread">Smørrebrød</button>
+</div>
 <div id="menuContainer"></div>
 <div id="menu-morgenmad&brunch" class="menu">
     <!-- Insert the Morgenmad&Brunch .json -->
@@ -30,20 +30,7 @@
     <!-- Insert the Smørrebrød .json -->
 </div>
 <script>
-    // funktion til at åbne en specifik menu
-    function openMenu(menuId) {
-        // gem alle menuer der er
-        const menus = document.querySelectorAll('.menu');
-        menus.forEach(menu => {
-            menu.style.display = 'none';
-        });
 
-        // vis den valgte menu
-        const selectedMenu = document.getElementById(menuId);
-        if (selectedMenu) {
-            selectedMenu.style.display = 'block';
-        }
-    }
 </script>
 
 <button id="send-order-button">Send Order</button>
