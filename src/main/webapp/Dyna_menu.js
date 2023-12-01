@@ -49,34 +49,15 @@ function cartPrint(orderItems){
     document.getElementById("JS-printer").appendChild(cartPrintHTML);
 }
 
-document.getElementById("cart-button").addEventListener("click",() => cartPrint(orderItems));
+//document.getElementById("cart-button").addEventListener("click",() => cartPrint(orderItems));
 
 
-
-//We could avoid having an EventListener if we just load the script after the HTML (so put it at the bottom of <body>)
-
-document.addEventListener("DOMContentLoaded", function () {
-
-}, false)
-    console.log('DOM content loaded');
-    //unfinished fetch for getting menu from server
     fetch(menuClassesURL ,{
 
     })
         .then(response => {
             return response.json()})
         .then(Menu => {
-            let button = document.createElement('button');
-            button.type = 'button';
-            button.innerHTML = 'Press me';
-            button.className = 'btn-styled';
-
-            button.onclick = function() {
-
-            };
-
-            let container = document.getElementById('menu-selection');
-            container.appendChild(button);
             console.log(Menu);
 
             document.getElementById("menuContainer").innerHTML = HTMLgen(Menu);
