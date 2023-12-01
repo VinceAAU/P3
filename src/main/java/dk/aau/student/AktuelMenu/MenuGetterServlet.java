@@ -28,22 +28,6 @@ public class MenuGetterServlet extends HttpServlet {
             restaurant = new Restaurant("Budolfi");
             Restaurant.allRestaurants.add(restaurant);
         }
-
-        for(File jsonFile : new File((String) getServletContext().getAttribute("menuSaveLocation")).listFiles((file, s) -> s.endsWith(".json"))) {
-
-            try (BufferedReader br = new BufferedReader(new FileReader(jsonFile))) {
-                StringBuilder content = new StringBuilder();
-                String line;
-                while ((line = br.readLine()) != null) {
-                    content.append(line).append("\n");
-                }
-                Menu menu = Menu.fromJSONObject(new JSONObject(content.toString()));
-                restaurant.addMenu(menu);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -57,7 +41,7 @@ public class MenuGetterServlet extends HttpServlet {
                 .filter(r -> r.getName().equals(restaurantId))
                 .findFirst();
 
-        if (!optionalRestaurant.isPresent()) {
+        if (optionalRestaurant.isEmpty()) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Restaurant " + restaurantId + " does not exist");
             return;
         }
