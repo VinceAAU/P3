@@ -31,4 +31,8 @@ public class Order {
     public int getOrderId() {
         return orderId;
     }
+
+    public ArrayList<OrderItem> getItems() {
+        return items;
+    }
 }

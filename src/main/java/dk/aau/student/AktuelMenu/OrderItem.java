@@ -48,4 +48,16 @@ public class OrderItem {
         return menuItem.getPrice();
 
     }
+
+    public MenuItem getMenuItem(){
+        return menuItem;
+    }
+
+    public ArrayList<Option> getOptions() {
+        return new ArrayList<>(options);
+    }
+
+    public ArrayList<Option> getAdditions() {
+        return new ArrayList<>(additions);
+    }
 }
