@@ -41,12 +41,26 @@ public class KitchenServlet extends HttpServlet {
                     for (OrderItem item : order.getItems()) {
                         JSONObject itemJson = new JSONObject();
                         itemJson.put("internalName", item.getMenuItem().getInternalName());
+                        itemJson.put("comment",item.getComment());
                         orderItemJSONArray.put(itemJson);
 
-                        JSONArray orderoption = new JSONArray()
-                        for (Option options : item.getOptions())
+                        JSONArray orderOption = new JSONArray();
+                        for (Option option : item.getOptions()) {
                             JSONObject optionJSON = new JSONObject();
-                            optionJSON.put("internalName",options.get)
+                            optionJSON.put("internalName", option.getInternalName());
+                            orderOption.put(optionJSON);
+                        }
+                        orderJSON.put("options", orderOption);
+
+                        JSONArray orderAddition = new JSONArray();
+                        for (Option addition : item.getAdditions()){
+                            JSONObject additionJSON= new JSONObject();
+                            additionJSON.put("internalName", addition.getInternalName());
+                            orderAddition.put(additionJSON);
+                        }
+                        orderJSON.put("additions",orderAddition);
+
+                        orderItemJSONArray.put(itemJson);
                     }
 
                     orderJSON.put("orders", orderItemJSONArray);

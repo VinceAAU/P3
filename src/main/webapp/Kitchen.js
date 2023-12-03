@@ -1,23 +1,12 @@
 const container = document.getElementById('arrayContainer');
-const KitchenUrl ="/P3_war/OrderSent"
+const KitchenUrl ="/P3_war/kitchen"
 
-for (let i = 0; i < 6; i++) {
-    const gridItem = document.createElement('div');
-    gridItem.className = 'grid-item';
-    gridItem.innerHTML = generateHtmlContent(i);
-    container.appendChild(gridItem);
-}
+
 document.addEventListener("DOMContentLoaded", function (){
     setInterval(fetchOrders,20000);
 })
 
-
-function generateHtmlContent(index) {
-    //generate order here
-    return `<p>Order ${index+1}</p>`;
-}
 function fetchOrders() {
-    console.log("fetch made");
     fetch(KitchenUrl)
         .then(response=>{
             if(!response.ok) {
@@ -26,16 +15,56 @@ function fetchOrders() {
             return response.json();
         })
         .then(data => {
+            console.log(data);
             if (data.message === "No order yet"){
-                console.log("order received")
-
+                console.log("no orders available");
+                //todo display message in UI
             }else{
-                console.log("orders received")
-
+                processOrders(data);
             }
-
         })
         .catch(error => {
             console.error('fetch error:', error);
         });
+}
+
+function generateHtmlContent(order) {
+    // Generating HTML for options
+    let optionsHtml = order.options.map(option => `<li>${option.internalName}</li>`).join('');
+
+    // Generating HTML for additions
+    let additionsHtml = order.additions.map(addition => `<li>${addition.internalName}</li>`).join('');
+
+    // Generating HTML for each order item
+    let orderItemsHtml = order.orders.map(orderItem => {
+        return `
+            <div class="order-item">
+                <p>Item: ${orderItem.internalName}</p>
+                <p>Comment: ${orderItem.comment || ''}</p>
+            </div>
+        `;
+    }).join('');
+
+    // Full order HTML
+    return `
+        <div class="order-card">
+            <h3>Order ID: ${order.orderId}</h3>
+            <p>Table ID: ${order.tableId}</p>
+            <p>Options:</p><ul>${optionsHtml}</ul>
+            <p>Additions:</p><ul>${additionsHtml}</ul>
+            ${orderItemsHtml}
+        </div>
+    `;
+}
+
+
+function processOrders(orderJSON) {
+    container.innerHTML ='';
+
+    orderJSON.forEach(orderJSON =>{
+       const gridItem = document.createElement('div');
+       gridItem.className = 'grid-item';
+       gridItem.innerHTML = generateHtmlContent(orderJSON);
+       container.appendChild(gridItem);
+    });
 }

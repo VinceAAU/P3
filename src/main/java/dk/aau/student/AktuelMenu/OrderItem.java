@@ -11,6 +11,7 @@ public class OrderItem {
     private int price;
 
     private String comment;
+
     public OrderItem (MenuItem menuItem, ArrayList<Option> options, ArrayList<Option> additions,String comment){
         this.menuItem = menuItem;
         this.options = options;
@@ -49,6 +50,7 @@ public class OrderItem {
 
     }
 
+
     public MenuItem getMenuItem(){
         return menuItem;
     }
@@ -60,4 +62,6 @@ public class OrderItem {
     public ArrayList<Option> getAdditions() {
         return new ArrayList<>(additions);
     }
+
+    public String getComment() { return comment; }
 }
