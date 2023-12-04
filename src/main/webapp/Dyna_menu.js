@@ -71,31 +71,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
             document.getElementById("menuContainer").innerHTML = HTMLgen(Menu);
         })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+        .then( () => {
 
-    //ittereates over option groups to handle checkbox selections
-    let optionGroups = document.querySelectorAll('.option');
-    optionGroups.forEach(function (optionGroup) {
+            //ittereates over option groups to handle checkbox selections
+            let optionGroups = document.querySelectorAll('.option');
+            optionGroups.forEach(function (optionGroup) {
 
-        //get the minimum and maximum options form html
-        let minSelections = optionGroup.getAttribute('data-min-selections');
-        let maxSelections = optionGroup.getAttribute('data-max-selections');
+                //get the minimum and maximum options form html
+                let minSelections = optionGroup.getAttribute('data-min-selections');
+                let maxSelections = optionGroup.getAttribute('data-max-selections');
 
-        //adds event listener to each checkbox in the option group
-        let checkboxes = optionGroup.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(function (checkbox) {
-            checkbox.addEventListener('change', function () {
-                //checks if number of selected checkboxes exceeds the maximum allowed
-                let checkedCount = optionGroup.querySelectorAll('input[type="checkbox"]:checked').length;
-                if (checkedCount > maxSelections) {
-                    alert('Maximum selections exceeded.');
-                    checkbox.checked = false;
-                }
+                //adds event listener to each checkbox in the option group
+                let checkboxes = optionGroup.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(function (checkbox) {
+                    checkbox.addEventListener('change', function () {
+                        //checks if number of selected checkboxes exceeds the maximum allowed
+                        let checkedCount = optionGroup.querySelectorAll('input[type="checkbox"]:checked').length;
+                        if (checkedCount > maxSelections) {
+                            alert('Maximum selections exceeded.');
+                            checkbox.checked = false;
+                        }
+                    });
+                });
             });
         });
-    });
 
 
     // adds event listener for "send order" button
