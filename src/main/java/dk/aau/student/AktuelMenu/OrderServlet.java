@@ -33,11 +33,12 @@ public class OrderServlet extends HttpServlet {
         JSONArray orderArray = new JSONArray(requestBody.toString());
         ArrayList<OrderItem> orderItems = new ArrayList<>();
 
+
         for (int i = 0; i < orderArray.length(); i++) {
             JSONObject orderObject = orderArray.getJSONObject(i);
             String orderItemName = orderObject.getString("name");
+            String comment = orderObject.optString("comment", "");
             MenuItem menuItem = getMenuItemByDisplayName(orderItemName);
-            System.out.println("first loop started");
             if (menuItem == null) {
                 System.out.println("menuitem not found");
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Menu item not found: " + orderItemName);
@@ -47,10 +48,7 @@ public class OrderServlet extends HttpServlet {
             JSONArray selectedOptionsArray = orderObject.getJSONArray("selectedOptions");
             ArrayList<Option> selectedOptions = new ArrayList<>();
             for (int j = 0; j < selectedOptionsArray.length(); j++) {
-                System.out.println("made it into option loop");
                 String orderOptionName = selectedOptionsArray.getString(j);
-                System.out.println("menuItem " + menuItem);
-                System.out.println("orderOptionName " + orderOptionName);
                 Option selectedOption = getOptionByDisplayName(menuItem, orderOptionName);
                 if (selectedOption != null) {
                     selectedOptions.add(selectedOption);
@@ -60,15 +58,12 @@ public class OrderServlet extends HttpServlet {
             JSONArray selectedAdditionsArray = orderObject.getJSONArray("selectedAdditions");
             ArrayList<Option> selectedAdditions = new ArrayList<>();
             for (int j = 0; j < selectedAdditionsArray.length(); j++) {
-                System.out.println("made it inside addition loop");
                 String orderAdditionName = selectedAdditionsArray.getString(j);
                 Option selectedAddition = getAdditionByDisplayName(menuItem, orderAdditionName);
                 if (selectedAddition != null) {
                     selectedAdditions.add(selectedAddition);
                 }
             }
-
-            String comment = orderObject.optString("comment", ""); // optString will handle null or missing 'comment'
 
             OrderItem orderItem = new OrderItem(menuItem, selectedOptions, selectedAdditions, comment);
             orderItems.add(orderItem);
@@ -95,6 +90,7 @@ public class OrderServlet extends HttpServlet {
 
         synchronized (globalOrderArray) {
             globalOrderArray.add(new Order(tableId, orderId, orderItems));
+            System.out.println("order added to global array");
         }
 
         System.out.println("order created");

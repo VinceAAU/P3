@@ -31,7 +31,7 @@ public class MenuGetterServlet extends HttpServlet {
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("request recivede");
+        System.out.println("request received");
         resp.setContentType("application/json");
         JSONArray jsonResponse = new JSONArray();
 
@@ -47,12 +47,9 @@ public class MenuGetterServlet extends HttpServlet {
         }
 
         Restaurant restaurant = optionalRestaurant.get();
-        System.out.println(restaurant.availableMenus());
         for (Menu m : restaurant.availableMenus()) {
-            System.out.println("used for loop");
             JSONObject menuJson = new JSONObject(m.toJSONString());
             jsonResponse.put(menuJson);
-            System.out.println("Menu contains: " + m);
         }
 
         PrintWriter writer = resp.getWriter();

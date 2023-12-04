@@ -34,7 +34,7 @@ public class OrderStatusServlet extends HttpServlet {
 
         ServletContext context = getServletContext();
         synchronized (context) { // Synchronize on the ServletContext object
-            ArrayList<Order> orders = (ArrayList<Order>) context.getAttribute("globalOrderArray");
+            ArrayList<Order> orders = (ArrayList<Order>) context.getAttribute("orderArray");
 
             if (orders != null) {
                 for (Order order : orders) {

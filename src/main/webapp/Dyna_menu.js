@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then( () => {
 
             //ittereates over option groups to handle checkbox selections
-            let optionGroups = document.querySelectorAll('.option');
+            let optionGroups = document.querySelectorAll('details .option');
             optionGroups.forEach(function (optionGroup) {
 
                 //get the minimum and maximum options form html
@@ -111,17 +111,19 @@ document.addEventListener("DOMContentLoaded", function () {
         let orderItemsJSON = orderItems.map(orderItem => ({
             name: orderItem.name,
             selectedOptions: orderItem.selectedOptions,
-            selectedAdditions: orderItem.selectedAdditions
+            selectedAdditions: orderItem.selectedAdditions,
+            comment: orderItem.comment
         }));
-
     //fetch for sending order to server(needs to be fleshed out)
     fetch(sendURL, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
+
         body: JSON.stringify(orderItemsJSON),
     })
+
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -144,15 +146,21 @@ function HTMLgen(Menu) {
             html += '<details>'
             html += `<summary>${item.displayName}</summary>`;
             const itemdp = calculateMenuItemDisplayPrice(item);
-            html += `<p class="priceTag">${itemdp.price} kr for ${itemdp.amount}</p>`;
+            html += `<p class="priceTag">${itemdp.amount} for ${itemdp.price} kr</p>`;
+            html += item.minOptions<item.maxOptions?`<p class="priceForExtraOptions"><b>Tilvalg: ${itemOptionsMinimumPrice(item)} kr.</b></p>`:'';
             html += `<div class="option" data-min-selections="${item.minOptions}" data-max-selections="${item.maxOptions}">`;
+
 
 
             html += '<h4>Options</h4>' //Change this later IDK the english word right now so SUCK IT
             item.options.forEach(option => {
                 html += '<div class="checkbox-container">';
                 html += '<label>'
-                html += `<input type="checkbox" data-option="${option.displayName}"> ${option.displayName} ${calculateOptionDisplayPrice(item, option)>0?'+'+calculateOptionDisplayPrice(item, option) + 'kr':'ingen ekstra penge'}`;
+                html += `<input type="checkbox" data-option="${option.displayName}"> ${option.displayName} ${
+                    calculateOptionDisplayPrice(item, option)>0?
+                        '<b>+'+calculateOptionDisplayPrice(item, option) + 'kr</b>'
+                        : ''
+                }`;
                 html += '</label>'
                 html += '</div>';
             })
@@ -169,12 +177,10 @@ function HTMLgen(Menu) {
             })
             html += '<div class="item-comment">';
             html += '<label for="item-comment">Comment:</label>';
-            html += '<input type="text" class="item-comment-input" placeholder="Kommentar til køkkenet (allegier osv.)">';
+            html += '<input type="text" class="item-comment-input" placeholder="kommentare til køkkenet (allegier osv.)">';
             html += '</div>';
 
             html += '</div>'
-            html += '<label for="item-quantity">quantity:</label>';
-            html += '<input type="number" id="item-quantity" value="1" min="1">';
             html += `<button class="add-to-order" data-item-name="${item.displayName}">Add to Order</button>`;
             html += '</details>'
             html += '</div>';
@@ -199,7 +205,7 @@ function showNotification(message, type) {
     // Remove the notification after a certain duration
     setTimeout(() => {
         notification.remove();
-    }, 5000); // Adjust the duration (in milliseconds) as needed
+    }, 3000); // Adjust the duration (in milliseconds) as needed
 }
 //event listener for "add to order" buttons
 document.getElementById("menuContainer").addEventListener("click", function (event) {
@@ -237,7 +243,6 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
 
         //get comments from the input field on correct item
         let comment = itemContainer.querySelector('.item-comment .item-comment-input').value;
-
         //get quantity form the input field on current item
         let quantity = parseInt(itemContainer.querySelector('#item-quantity').value, 10);
 
@@ -246,14 +251,23 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
             let orderItem = new Order_Item(itemName);
             orderItem.selectedOptions = selectedOptions.slice();
             orderItem.selectedAdditions = selectedAdditions.slice();
-            orderItem.comment = comment;
+            orderItem.comment = comment.slice();
             orderItems.push(orderItem);
         }
 
         showNotification('Din ordre er tilføjet til kurven!','success')
-        console.log(orderItems);
     }
 });
+
+function itemOptionsMinimumPrice(item){
+    let minPrice = 1_000_000_000_000 //Please do not add any menuitems that cost more than 1 trillion kr
+    for (const option of item.options) {
+        if(option.price < minPrice)
+            minPrice = option.price
+    }
+
+    return minPrice
+}
 
 /**
  *
@@ -262,13 +276,10 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
  * @returns {{amount: number, price: number}}
  */
 function calculateMenuItemDisplayPrice(item){
-    let minPrice = 1_000_000_000_000 //Please do not add any menuitems that cost more than 1 trillion kr
-    for (const option of item.options) {
-        if(option.price < minPrice)
-            minPrice = option.price
+    return {
+        amount: item.minOptions,
+        price: item.basePrice + itemOptionsMinimumPrice(item)*item.minOptions
     }
-
-    return {amount: item.minOptions, price: item.basePrice + minPrice*item.minOptions}
 }
 
 /**
@@ -277,11 +288,5 @@ function calculateMenuItemDisplayPrice(item){
  * @param {Option} option
  */
 function calculateOptionDisplayPrice(item, option){
-    let minPrice = 1_000_000_000_000 //Please do not add any menuitems that cost more than 1 trillion kr
-    for (const option of item.options) {
-        if(option.price < minPrice)
-            minPrice = option.price
-    }
-
-    return option.price - minPrice
+    return option.price - itemOptionsMinimumPrice(item);
 }
