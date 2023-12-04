@@ -384,6 +384,11 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
 
         showNotification('Din ordre er tilføjet til kurven!','success')
         console.log(orderItems);
+
+
+        for (let e of itemContainer.querySelectorAll("input[type=checkbox]")){
+            e.checked = false;
+        }
     }
 });
 
