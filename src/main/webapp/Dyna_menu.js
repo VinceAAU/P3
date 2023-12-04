@@ -94,11 +94,14 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => {
             return response.json()
         })
-        .then(Menu => {
-            console.log(Menu);
+        .then(menus => {
+            console.log(menus);
 
-            document.getElementById("menuContainer").innerHTML = HTMLgen(Menu);
-            localStorage.setItem("menuJSON", JSON.stringify(Menu));
+            document.getElementById("menuContainer").innerHTML = HTMLgen(menus[0]);
+            for (const menu of menus) {
+                document.getElementById("menu-selection").appendChild(menuButtonGenerator(menu));
+            }
+            localStorage.setItem("menuJSON", JSON.stringify(menus));
         })
         .then( () => {
 
@@ -171,8 +174,8 @@ document.addEventListener("DOMContentLoaded", function () {
 function HTMLgen(Menu) {
     let html = '';
     console.log('Menu:', Menu);
-    if (Menu && Menu.length > 0 && Menu[0].items) {
-        Menu[0].items.forEach(item => {
+    if (Menu && Menu.items) {
+        Menu.items.forEach(item => {
             html += '<div class="item-container">';
             html += '<details>'
             html += `<summary>${item.displayName}</summary>`;
@@ -418,4 +421,15 @@ function calculateOptionDisplayPrice(item, option){
         return option.price - itemOptionsMinimumPrice(item);
     else
         return option.price;
+}
+
+/**
+ *
+ * @param {{items: MenuItem[], menuId: string, availableTimes: {start: string, days: string[], end: string}}} menu
+ */
+function menuButtonGenerator(menu){
+    const but = document.createElement("button");
+    but.innerText = menu.menuId;
+    but.addEventListener("click", ()=>document.querySelector("#menuContainer").innerHTML=HTMLgen(menu));
+    return but;
 }
