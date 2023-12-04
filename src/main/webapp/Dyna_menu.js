@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             // Handle success (if needed)
             console.log('Order sent successfully');
-        window.location.replace("/P3_war/"); //Replace with actual IP that we get
+        document.body.innerText="Tak for din bestilling!" //Replace with actual IP that we get
         })
         .catch(error => {
             // Handle errors
