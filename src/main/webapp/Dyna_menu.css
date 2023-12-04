@@ -31,11 +31,11 @@ body{
 
 
 .Cart-collapsible{
-    width: 96%;
+    width: 95%;
     position: fixed;
-    bottom: 20px;
+    bottom: 2%;
     background-color: darkgray;
-    border: none;
+    border: 5px;
     color: white;
     padding: 10px;
     text-align: center;
@@ -44,19 +44,28 @@ body{
     font-size: 16px;
     cursor: pointer;
     border-radius: 10px;
+    z-index: 1;
+
+
 }
 .Cart:hover{
     background-color: dimgray;
 }
 .cart-container {
-    padding: 0 18px;
-    display: none;
-    overflow: hidden;
-    background-color: #f1f1f1;
+    height:100%;
+    width: 0;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left:0;
+    background-color: slategrey;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
 }
-
-
-
+#menu-selection {
+    transition: margin-bottom .5s;
+}
 
 .add-to-order{
     background-color: darkgray;
@@ -75,4 +84,59 @@ body{
     background-color: dimgray;
 }
 
+details > summary {
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    margin: 60px auto;
+    position: relative;
+    transition: 0.5s;
+}
+details[open] {
+    margin: 20px;
+    background: lightslategray;
+    transition: 0.5s;
+}
+details {
+    border: 1px solid #000;
+    display:block;
+    transition:0.5s;
+    background: lightgrey;
+}
 
+div.checkbox-container {
+    border: 1px solid #000;
+}
+
+h4{
+    margin: 5px 0;
+}
+p.priceTag{
+    text-align: center;
+    font-size: 20px;
+    font-family: 'Raleway', sans-serif;
+    font-weight:bold;
+    margin: auto;
+}
+
+#notification-container{
+    justify-content: center;
+    align-items: center;
+}
+
+.success {
+    color: #000000;
+    position: fixed;
+    width: 95%;
+    top: 300px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    height: 50px;
+    text-align: center;
+    font-size: 15px;
+    font-family: 'Raleway', sans-serif;
+    font-weight:bold;
+    z-index: 3;
+
+}

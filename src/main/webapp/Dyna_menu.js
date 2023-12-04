@@ -20,18 +20,15 @@ let orderItems = [];//array for order_item objects
 var coll = document.getElementsByClassName("Cart-collapsible");
 var i;
 
-for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function() {
-        this.classList.toggle("active");
-        var content = this.nextElementSibling;
-        if (content.style.display === "block") {
-            content.style.display = "none";
-        } else {
-            content.style.display = "block";
-        }
-    });
-}
+function openCart(){
+    document.getElementById("cart-container").style.width = "250px";
+    document.getElementById("menu-selection").style.marginBottom = "250px";
 
+}
+function closeCart(){
+    document.getElementById("cart-container").style.width = "0px";
+    document.getElementById("menu-selection").style.marginBottom = "0px";
+}
 function cartPrint(orderItems){
     let cartPrintHTML = document.createElement("ul");
     for (let j=0; j < orderItems.length; j++){
@@ -55,7 +52,7 @@ function cartPrint(orderItems){
     document.getElementById("JS-printer").appendChild(cartPrintHTML);
 }
 
-document.getElementById("cart-button").addEventListener("click",() => cartPrint(orderItems));
+    document.getElementById("cart-button").addEventListener("click",() => cartPrint(orderItems));
 
 
 
@@ -99,56 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    //event listener for "add to order" buttons
-    document.getElementById("menuContainer").addEventListener("click", function (event) {
-        // Check if the clicked element has the "add-to-order" class
-        if (event.target.classList.contains("add-to-order")) {
-            // Handle the click on the "Add to Order" button
-            console.log('Add to Order button clicked');
 
-            // Find the closest item container
-            let itemContainer = event.target.closest('.item-container');
-            if (!itemContainer) {
-                console.error('Could not find the closest .item-container element.');
-                return;
-            }
-
-            // Find the option group within the item container
-            let optionGroup = itemContainer.querySelector('.option');
-            if (!optionGroup) {
-                console.error('Could not find the .option element within the item container.');
-                return;
-            }
-
-            //extracts item details and selected options and additions
-            let itemName = itemContainer.querySelector('h3').textContent.trim();
-            let selectedOptions = [];
-            optionGroup.querySelectorAll('input[type="checkbox"]:checked').forEach(function (checkbox) {
-                selectedOptions.push(checkbox.getAttribute('data-option'));
-            });
-
-            let selectedAdditions = [];
-            itemContainer.querySelectorAll('.addition input[type="checkbox"]:checked').forEach(function (checkbox) {
-                selectedAdditions.push(checkbox.getAttribute('data-addition'));
-            });
-
-            let comment = itemContainer.querySelector('#item-comment').value;
-
-            //get quantity form the input field on current item
-            let quantity = parseInt(itemContainer.querySelector('#item-quantity').value, 10);
-
-            //creates the order_item objects and puts them in the orderItems array
-            for (let i = 0; i < quantity; i++) {
-                let orderItem = new Order_Item(itemName);
-                orderItem.selectedOptions = selectedOptions.slice();
-                orderItem.selectedAdditions = selectedAdditions.slice();
-                orderItem.comment = comment;
-                orderItems.push(orderItem);
-            }
-
-            console.log(orderItems);
-        }
-    });
 
     // adds event listener for "send order" button
     let sendOrderButton = document.getElementById('send-order-button');
@@ -185,9 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => {
                 // Handle errors
                 console.error('Error sending order:', error);
-            });
-    });
-})
+            })})
 
 function HTMLgen(Menu) {
     let html = '';
@@ -195,8 +141,9 @@ function HTMLgen(Menu) {
     if (Menu && Menu.length > 0 && Menu[0].items) {
         Menu[0].items.forEach(item => {
             html += '<div class="item-container">';
-            html += `<h3>${item.displayName}</h3>`;
-            html += `<p>${item.basePrice / 100} kr</p>`;
+            html += '<details>'
+            html += `<summary>${item.displayName}</summary>`;
+            html += `<p class="priceTag">${item.basePrice / 100} kr</p>`;
             html += `<div class="option" data-min-selections="${item.minOptions}" data-max-selections="${item.maxOptions}">`;
 
             html += '<div class="item-comment">';
@@ -204,27 +151,30 @@ function HTMLgen(Menu) {
             html += '<input type="text" class="item-comment-input" placeholder="kommentare til køkkenet (allegier osv.)">';
             html += '</div>';
 
+            html += '<h4>Options</h4>' //Change this later IDK the english word right now so SUCK IT
             item.options.forEach(option => {
                 html += '<div class="checkbox-container">';
-                html += `<input type="checkbox" data-option="${option.displayName}">`;
-                html += `<label> ${option.displayName}</label>`;
+                html += '<label>'
+                html += `<input type="checkbox" data-option="${option.displayName}"> ${option.displayName}`;
+                html += '</label>'
                 html += '</div>';
             })
             html += '</div>';
 
             html += '<div class="addition">';
-
+            html += '<h4>Additions</h4>' // Change later because danish name
             item.additions.forEach(addition => {
                 html += '<div class="checkbox-container">';
-                html += `<input type="checkbox" data-addition="${addition.displayName}">`;
-                html += `<label>${addition.displayName}</label>`;
+                html += '<label>'
+                html += `<input id="additionCheckbox" type="checkbox" data-addition="${addition.displayName}">${addition.displayName}`;
+                html += `</label>`;
                 html += '</div>';
             })
             html += '</div>'
-
             html += '<label for="item-quantity">quantity:</label>';
             html += '<input type="number" id="item-quantity" value="1" min="1">';
             html += `<button class="add-to-order" data-item-name="${item.displayName}">Add to Order</button>`;
+            html += '</details>'
             html += '</div>';
         });
     } else {
@@ -233,3 +183,72 @@ function HTMLgen(Menu) {
 
     return html;
 }
+function showNotification(message, type) {
+    const notificationContainer = document.getElementById('notification-container');
+
+    // Create a new notification element
+    const notification = document.createElement('div');
+    notification.textContent = message;
+    notification.className = `notification ${type}`;
+
+    // Append the notification to the container
+    notificationContainer.appendChild(notification);
+
+    // Remove the notification after a certain duration
+    setTimeout(() => {
+        notification.remove();
+    }, 5000); // Adjust the duration (in milliseconds) as needed
+}
+//event listener for "add to order" buttons
+document.getElementById("menuContainer").addEventListener("click", function (event) {
+    // Check if the clicked element has the "add-to-order" class
+    if (event.target.classList.contains("add-to-order")) {
+        // Handle the click on the "Add to Order" button
+        console.log('Add to Order button clicked');
+
+        // Find the closest item container
+        let itemContainer = event.target.closest('.item-container');
+        if (!itemContainer) {
+            console.error('Could not find the closest .item-container element.');
+            return;
+        }
+
+        // Find the option group within the item container
+        let optionGroup = itemContainer.querySelector('.option');
+        if (!optionGroup) {
+            console.error('Could not find the .option element within the item container.');
+            return;
+        }
+
+        //extracts item details and selected options and additions
+        let itemName = itemContainer.querySelector('summary').textContent.trim();
+
+        let selectedOptions = [];
+        optionGroup.querySelectorAll('input[type="checkbox"]:checked').forEach(function (checkbox) {
+            selectedOptions.push(checkbox.getAttribute('data-option'));
+        });
+
+        let selectedAdditions = [];
+        itemContainer.querySelectorAll('.addition input[type="checkbox"]:checked').forEach(function (checkbox) {
+            selectedAdditions.push(checkbox.getAttribute('data-addition'));
+        });
+
+        //get quantity form the input field on correct item
+        let comment = itemContainer.querySelector('#item-comment').value;
+
+        //get quantity form the input field on current item
+        let quantity = parseInt(itemContainer.querySelector('#item-quantity').value, 10);
+
+        //creates the order_item objects and puts them in the orderItems array
+        for (let i = 0; i < quantity; i++) {
+            let orderItem = new Order_Item(itemName);
+            orderItem.selectedOptions = selectedOptions.slice();
+            orderItem.selectedAdditions = selectedAdditions.slice();
+            orderItem.comment = comment;
+            orderItems.push(orderItem);
+        }
+
+        showNotification('Din ordre er tilføjet til kurven!','success')
+        console.log(orderItems);
+    }
+});
