@@ -184,19 +184,19 @@ function HTMLgen(Menu) {
 
 
 
-            html += '<h4>Options</h4>' //Change this later IDK the english word right now so SUCK IT
+            //html += '<h4>Options</h4>' //Change this later IDK the english word right now so SUCK IT
             item.options.forEach(option => {
                 html += generateOptionElement(item, option).outerHTML;
             });
             html += '</div>';
 
-            html += '<div class="addition">';
-            html += '<h4>Additions</h4>' // Change later because danish name
+            html += '<br/><div class="addition">';
+            //html += '<h4>Additions</h4>' // Change later because danish name
             item.additions.forEach(addition => {
                 html += '<div class="checkbox-container">';
                 html += '<label>'
                 html += `<input id="additionCheckbox" type="checkbox" data-addition="${addition.displayName}">${addition.displayName}`;
-                html += `</label>`;
+                html += `</label> <b>${addition.price} kr.</b>`;
                 html += '</div>';
             })
             html += '<div class="item-comment">';
