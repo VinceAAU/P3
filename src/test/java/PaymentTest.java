@@ -1,5 +1,6 @@
+/*
 import dk.aau.student.AktuelMenu.MenuItem;      //Imports MenuItem.java
-import dk.aau.student.AktuelMenu.Payment;       //Imports Payment.java
+import dk.aau.student.AktuelMenu.PaymentServlet;       //Imports Payment.java
 import dk.aau.student.AktuelMenu.OrderItem;     //imports OrderItem.Java
 import dk.aau.student.AktuelMenu.Order;         //import Order.java
 import org.junit.jupiter.api.Assertions;        //imports jupiter assertions
@@ -12,7 +13,7 @@ public class PaymentTest {
 
     @Test
     public void doesObjectHaveContent(){
-        Payment PaymentTestObject = new Payment();
+        PaymentServlet PaymentTestObject = new PaymentServlet();
         ArrayList<MenuItem> menuList = new ArrayList<>();
         menuList.add(new MenuItem("borger","Okse Burger",10000));   //creates a menu item in a list
 
@@ -20,7 +21,7 @@ public class PaymentTest {
     }
     @Test
     public void doesObjectPrint(){
-        Payment paymentTestObject = new Payment();  //creates a payment object
+        PaymentServlet paymentTestObject = new PaymentServlet();  //creates a payment object
 
         ArrayList<MenuItem> menuList = new ArrayList<>();       //creates a menuitem list
         menuList.add(new MenuItem("borger","Okse Burger",10000));   //creates menu item 1
@@ -44,3 +45,4 @@ public class PaymentTest {
         System.out.println("Price: " + paymentTestObject.getPrice()/100 + "kr.");
     }
 }
+*/

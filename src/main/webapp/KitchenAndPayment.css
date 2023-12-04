@@ -40,3 +40,18 @@
 .deliver-btn:hover {
     background-color: #434543;
 }
+.payed-btn {
+    padding: 10px 20px;
+    background-color: #434543;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.payed-btn:hover {
+    background-color: #434543;
+}

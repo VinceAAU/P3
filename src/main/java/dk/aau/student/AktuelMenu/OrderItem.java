@@ -39,7 +39,7 @@ public class OrderItem {
         return output.toString();
     }
     public int calcPrice(){
-        if (menuItem.getDiscount() != null){
+        if (menuItem.getDiscount().applies()){
             int calcedPrice = menuItem.getPrice();
             int calcDiscount = menuItem.getDiscountInt();
             calcedPrice = Math.addExact(calcedPrice,calcDiscount);
