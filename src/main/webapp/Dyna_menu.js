@@ -4,6 +4,8 @@ class Order_Item {
         this.name = name;
         this.selectedOptions = [];
         this.selectedAdditions = [];
+        this.options = [];
+        this.additions = [];
         this.price = price;
     }
 }
@@ -140,8 +142,8 @@ document.addEventListener("DOMContentLoaded", function () {
         //Json setup for the orderitems array
         let orderItemsJSON = orderItems.map(orderItem => ({
             name: orderItem.name,
-            selectedOptions: orderItem.selectedOptions,
-            selectedAdditions: orderItem.selectedAdditions,
+            selectedOptions: orderItem.HTMLoptions,
+            selectedAdditions: orderItem.HTMLadditions,
             comment: orderItem.comment
         }));
         console.log("order " + orderItemsJSON);
@@ -161,7 +163,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             // Handle success (if needed)
             console.log('Order sent successfully');
-        window.location.replace("http://localhost:8080/P3_war"); //Replace with actual IP that we get
+        window.location.replace("/P3_war/"); //Replace with actual IP that we get
         })
         .catch(error => {
             // Handle errors
@@ -369,6 +371,8 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
             let orderItem = new Order_Item(itemName);
             orderItem.selectedOptions = options;
             orderItem.selectedAdditions = additions;
+            orderItem.HTMLoptions = selectedOptions;
+            orderItem.HTMLadditions = selectedAdditions;
             orderItem.price = item.basePrice;
             orderItem.comment = comment.slice();
             console.log("comment again" + comment);
