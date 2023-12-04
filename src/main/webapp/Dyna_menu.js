@@ -6,10 +6,16 @@ class Order_Item {
         this.selectedAdditions = [];
     }
 }
+// url example http://website.com/Dyna_menu.html?table=16&restaurant=Budofol
+
+
+const URLParameters = new URLSearchParams(window.location.search);
+const tableID = URLParameters.get('table');
+const restaurant = URLParameters.get('restaurant');
+const menuClassesURL = `menu.json?restaurant=${encodeURIComponent(restaurant)}`; // URL for getting menu from server//url for getting menu from server
+const sendURL = `/P3_war/OrderSent?table=${encodeURIComponent(tableID)}`;
 
 let orderItems = [];//array for order_item objects
-const menuClassesURL = 'menu.json?restaurant=Budofol\'s Restaurant';//url for getting menu from server
-const sendURL = 'http://localhost:8080/P3_war/OrderSent';
 
 var coll = document.getElementsByClassName("Cart-collapsible");
 var i;
@@ -59,9 +65,7 @@ document.getElementById("cart-button").addEventListener("click",() => cartPrint(
 document.addEventListener("DOMContentLoaded", function () {
     console.log('DOM content loaded');
     //unfinished fetch for getting menu from server
-    fetch(menuClassesURL ,{
-
-    })
+    fetch(menuClassesURL)
         .then(response => {
             return response.json()})
         .then(Menu => {
@@ -128,7 +132,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 selectedAdditions.push(checkbox.getAttribute('data-addition'));
             });
 
-            //get quantity form the input field on curret item
+            let comment = itemContainer.querySelector('#item-comment').value;
+
+            //get quantity form the input field on current item
             let quantity = parseInt(itemContainer.querySelector('#item-quantity').value, 10);
 
             //creates the order_item objects and puts them in the orderItems array
@@ -136,6 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 let orderItem = new Order_Item(itemName);
                 orderItem.selectedOptions = selectedOptions.slice();
                 orderItem.selectedAdditions = selectedAdditions.slice();
+                orderItem.comment = comment;
                 orderItems.push(orderItem);
             }
 
@@ -191,6 +198,11 @@ function HTMLgen(Menu) {
             html += `<h3>${item.displayName}</h3>`;
             html += `<p>${item.basePrice / 100} kr</p>`;
             html += `<div class="option" data-min-selections="${item.minOptions}" data-max-selections="${item.maxOptions}">`;
+
+            html += '<div class="item-comment">';
+            html += '<label for="item-comment">Comment:</label>';
+            html += '<input type="text" class="item-comment-input" placeholder="kommentare til køkkenet (allegier osv.)">';
+            html += '</div>';
 
             item.options.forEach(option => {
                 html += '<div class="checkbox-container">';

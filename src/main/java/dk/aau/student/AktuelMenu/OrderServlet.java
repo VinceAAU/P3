@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 @WebServlet(name = "ordersent", value = {"/OrderSent"})
 public class OrderServlet extends HttpServlet {
-
+    private static int lastOrderId = 0;
     public void init() throws ServletException {
         super.init();
         System.out.println("OrderServlet initialized");
@@ -75,8 +75,16 @@ public class OrderServlet extends HttpServlet {
             System.out.println("orderItem created");
         }
 
-        int tableId = 1; // Extract from JSON if needed
-        int orderId = 1; // Extract from JSON if needed
+        String tableIdString = request.getParameter("table");
+        int tableId;
+        try {
+            tableId = Integer.parseInt(tableIdString);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid table ID provided: " + tableIdString);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid table ID");
+            return;
+        }
+        int orderId = ++lastOrderId;
 
         ServletContext orders = getServletContext();
         ArrayList<Order> globalOrderArray = (ArrayList<Order>) orders.getAttribute("orderArray");
