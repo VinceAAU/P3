@@ -13,7 +13,7 @@ body{
     width: 100%;
     position: relative;
     bottom: 10px;
-    background-color: darkgray;
+    background-color: black;
     border: none;
     color: white;
     padding: 10px;
@@ -23,6 +23,7 @@ body{
     font-size: 16px;
     cursor: pointer;
     border-radius: 10px;
+    font-weight: bold;
 }
 .Cart-Order:hover{
     background-color: darkgreen;
@@ -58,7 +59,7 @@ body{
     z-index: 2;
     top: 0;
     left:0;
-    background-color: slategrey;
+    background-color: white;
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
@@ -95,14 +96,14 @@ details > summary {
 }
 details[open] {
     margin: 20px;
-    background: lightslategray;
+    background: white;
     transition: 0.5s;
 }
 details {
     border: 1px solid #000;
     display:block;
     transition:0.5s;
-    background: lightgrey;
+    background: white;
 }
 
 div.checkbox-container {
@@ -143,6 +144,25 @@ p.priceTag{
 
 .priceForExtraOptions{
     text-align: center;
+}
+
+.vegetarianLabel{
+    color: #7fa576;
+}
+.veganLabel{
+    color: #aa6363;
+}
+.glutenFreeLabel{
+    color: #cdb75b;
+}
+.lactoseFreeLabel{
+    color: #458787;
+}
+.fingerFoodLabel{
+    color: #e6a061;
+}
+.label{
+    font-weight: bold;
 }
 
 .removeButton{

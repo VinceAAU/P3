@@ -172,16 +172,8 @@ function HTMLgen(Menu) {
 
             html += '<h4>Options</h4>' //Change this later IDK the english word right now so SUCK IT
             item.options.forEach(option => {
-                html += '<div class="checkbox-container">';
-                html += '<label>'
-                html += `<input type="checkbox" data-option="${option.displayName}"> ${option.displayName} ${
-                    calculateOptionDisplayPrice(item, option)>0?
-                        '<b>+'+calculateOptionDisplayPrice(item, option) + 'kr</b>'
-                        : ''
-                }`;
-                html += '</label>'
-                html += '</div>';
-            })
+                html += generateOptionElement(item, option).outerHTML;
+            });
             html += '</div>';
 
             html += '<div class="addition">';
@@ -209,6 +201,60 @@ function HTMLgen(Menu) {
 
     return html;
 }
+
+/**
+ *
+ * @param {MenuItem} item
+ * @param {Option} option
+ * @return {HTMLDivElement}
+ */
+function generateOptionElement(item, option){
+    const container = document.createElement("div");
+    container.className = "checkbox-container";
+    container.innerHTML = `<label><input type="checkbox" data-option="${option.displayName}"></label>`;
+
+    const inputLabel = container.querySelector("label");
+
+    inputLabel.innerHTML += option.displayName; //This relies on admin frontend being secure to prevent HTML injection
+
+    const displayPrice = calculateOptionDisplayPrice(item, option);
+    if(displayPrice>0)
+        container.innerHTML += ` <b>+${calculateOptionDisplayPrice(item, option)} kr.</b>`
+
+    for(let labelText of option.labels){
+        let label = document.createElement("span");
+
+        label.classList.add("label")
+
+        switch(labelText){
+            case "VEGAN":
+                label.innerText = 'VG';
+                label.classList.add('veganLabel');
+                break;
+            case "VEGETARIAN":
+                label.innerText = 'V';
+                label.classList.add('vegetarianLabel');
+                break;
+            case "GLUTEN_FREE":
+                label.innerText = 'G';
+                label.classList.add('glutenFreeLabel');
+                break;
+            case "LACTOSE_FREE":
+                label.innerText = 'L';
+                label.classList.add('lactoseFreeLabel');
+                break;
+            case "FINGER_FOOD":
+                label.innerText = 'MF';
+                label.classList.add('fingerFoodLabel');
+                break;
+        }
+        container.append(' ');
+        container.appendChild(label);
+    }
+
+    return container;
+}
+
 function showNotification(message, type) {
     const notificationContainer = document.getElementById('notification-container');
 

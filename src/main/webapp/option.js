@@ -1,5 +1,8 @@
 export {Option};
 
+/**
+ * @property {string[]} labels
+ */
 class Option{
     internalName = "";
     displayName = "";
