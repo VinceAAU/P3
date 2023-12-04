@@ -114,7 +114,6 @@ document.addEventListener("DOMContentLoaded", function () {
             selectedAdditions: orderItem.selectedAdditions,
             comment: orderItem.comment
         }));
-        console.log("order " + orderItemsJSON);
     //fetch for sending order to server(needs to be fleshed out)
     fetch(sendURL, {
         method: 'POST',
@@ -182,8 +181,6 @@ function HTMLgen(Menu) {
             html += '</div>';
 
             html += '</div>'
-            html += '<label for="item-quantity">quantity:</label>';
-            html += '<input type="number" id="item-quantity" value="1" min="1">';
             html += `<button class="add-to-order" data-item-name="${item.displayName}">Add to Order</button>`;
             html += '</details>'
             html += '</div>';
@@ -246,7 +243,6 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
 
         //get comments from the input field on correct item
         let comment = itemContainer.querySelector('.item-comment .item-comment-input').value;
-        console.log("komentar" + comment);
         //get quantity form the input field on current item
         let quantity = parseInt(itemContainer.querySelector('#item-quantity').value, 10);
 
@@ -256,12 +252,10 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
             orderItem.selectedOptions = selectedOptions.slice();
             orderItem.selectedAdditions = selectedAdditions.slice();
             orderItem.comment = comment.slice();
-            console.log("comment again" + comment);
             orderItems.push(orderItem);
         }
 
         showNotification('Din ordre er tilføjet til kurven!','success')
-        console.log(orderItems);
     }
 });
 

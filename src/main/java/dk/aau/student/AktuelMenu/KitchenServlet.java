@@ -48,7 +48,6 @@ public class KitchenServlet extends HttpServlet {
                             JSONObject itemJson = new JSONObject();
                             itemJson.put("internalName", item.getMenuItem().getInternalName());
                             itemJson.put("comment", item.getComment());
-                            System.out.println("kommentar" + item.getComment());
 
                             JSONArray orderOption = new JSONArray();
                             for (Option option : item.getOptions()) {
