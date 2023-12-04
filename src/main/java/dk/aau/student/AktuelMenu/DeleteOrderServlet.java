@@ -52,12 +52,6 @@ public class DeleteOrderServlet extends HttpServlet {
                     response.getWriter().write("{\"message\": \"Order not found.\"}");
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 }
-
-                response.getWriter().write("{\"message\": \"Order status updated.\"}");
-            } else {
-
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().write("{\"error\": \"Orders not found or not initialized.\"}");
             }
         }
     }

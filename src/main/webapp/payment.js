@@ -77,8 +77,7 @@ function markOrderAspayed(orderId, orderElement) {
             return response.json();
         })
         .then(data => {
-            console.log('Order status updated:', data);
-            // Remove the order element from the display
+            console.log('Order status updated: ', data);
             container.removeChild(orderElement);
         })
         .catch(error => {
