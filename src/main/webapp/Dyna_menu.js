@@ -64,7 +64,8 @@ document.addEventListener("DOMContentLoaded", function () {
     //unfinished fetch for getting menu from server
     fetch(menuClassesURL)
         .then(response => {
-            return response.json()})
+            return response.json()
+        })
         .then(Menu => {
             console.log(Menu);
 
@@ -97,12 +98,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-
     // adds event listener for "send order" button
     let sendOrderButton = document.getElementById('send-order-button');
     sendOrderButton.addEventListener('click', function () {
         console.log('Send Order button clicked');
-       // checks if there are orders in the array to send
+        // checks if there are orders in the array to send
         if (orderItems.length === 0) {
             console.log('No items in the order.');
             return;
@@ -115,26 +115,27 @@ document.addEventListener("DOMContentLoaded", function () {
             selectedAdditions: orderItem.selectedAdditions
         }));
 
-        //fetch for sending order to server(needs to be fleshed out)
-        fetch(sendURL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(orderItemsJSON),
+    //fetch for sending order to server(needs to be fleshed out)
+    fetch(sendURL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderItemsJSON),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            // Handle success (if needed)
+            console.log('Order sent successfully');
         })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                // Handle success (if needed)
-                console.log('Order sent successfully');
-            })
-            .catch(error => {
-                // Handle errors
-                console.error('Error sending order:', error);
-            })})
-
+        .catch(error => {
+            // Handle errors
+            console.error('Error sending order:', error);
+        })
+    })
+})
 function HTMLgen(Menu) {
     let html = '';
     console.log('Menu:', Menu);
