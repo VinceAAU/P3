@@ -15,7 +15,7 @@ class Order_Item {
 let dayOperator = ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"];
 
 const URLParameters = new URLSearchParams(window.location.search);
-const tableID = URLParameters.get('table');
+const tableID = URLParameters.get('tableId');
 const restaurant = URLParameters.get('restaurant');
 const menuClassesURL = `menu.json?restaurant=${encodeURIComponent(restaurant)}`; // URL for getting menu from server//url for getting menu from server
 const sendURL = `/P3_war/OrderSent?table=${encodeURIComponent(tableID)}`;
