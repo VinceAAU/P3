@@ -60,6 +60,6 @@ public class ServletMain extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
-        res.getWriter().println("Hello:3");
+        res.getWriter().println("Tak for at vaere med i testen!");
     }
 }

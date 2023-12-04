@@ -148,6 +148,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             // Handle success (if needed)
             console.log('Order sent successfully');
+        window.location.replace("http://localhost:8080/P3_war"); //Replace with actual IP that we get
         })
         .catch(error => {
             // Handle errors
