@@ -189,7 +189,7 @@ function constructMenu()
 document.querySelector("#ImportMenuBotton").addEventListener('click', importMenu);
 function importMenu() {
   //get menu from server
-    const originUrl = '/P3_war//AktuelMenu/MenuGet';
+    const originUrl = '/P3_war/AktuelMenu/MenuGet';
 
     fetch(originUrl,{
         method: 'POST',
