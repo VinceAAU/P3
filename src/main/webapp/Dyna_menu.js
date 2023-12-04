@@ -1,9 +1,10 @@
 //defining a class for the selected order to be sent back to server
 class Order_Item {
-    constructor(name) {
+    constructor(name,price) {
         this.name = name;
         this.selectedOptions = [];
         this.selectedAdditions = [];
+        this.price = price;
     }
 }
     // url example http://website.com/Dyna_menu.html?table=16&restaurant=Budolfi
@@ -31,35 +32,46 @@ function closeCart(){
 }
 function cartPrint(orderItems){
     let cartPrintHTML = document.createElement("ul");
-    for (let j=0; j < orderItems.length; j++){
+    let totalPriceText = document.createElement("totalPrice");
+    let totalPrice = 0;
+    for (let j=0; j < orderItems.length; j++) {
         let orderPrintItem = document.createElement("li");
         orderPrintItem.innerText = orderItems[j].name;
-        orderPrintItem.setAttribute("orderIndex",j.toString());
+        orderPrintItem.setAttribute("orderIndex", j.toString());
+
+        let finalPrice = document.createElement("price");
+        let price = orderItems[j].price;
 
         let removeButton = document.createElement("input");
         removeButton.type = "button";
         removeButton.value = "-";
         removeButton.className = "removeButton";
-        removeButton.addEventListener("click",(event) =>
-        {
+        removeButton.addEventListener("click", (event) => {
             removeItems(orderPrintItem)
         })
-        orderPrintItem.appendChild(removeButton);
 
         let orderPrintItemExtra = document.createElement("ul");
-        for (let q=0; q < orderItems[j].selectedOptions.length; q++){
+        for (let q = 0; q < orderItems[j].selectedOptions.length; q++) {
             let orderPrintItemExtraOptions = document.createElement("li");
-            orderPrintItemExtraOptions.innerText = orderItems[j].selectedOptions[q];
+            orderPrintItemExtraOptions.innerText = orderItems[j].selectedOptions[q].displayName;
+            price += orderItems[j].selectedOptions[q].price;
             orderPrintItemExtra.appendChild(orderPrintItemExtraOptions);
         }
-        for (let q=0; q < orderItems[j].selectedAdditions.length; q++) {
+        for (let q = 0; q < orderItems[j].selectedAdditions.length; q++) {
             let orderPrintItemExtraAddition = document.createElement("li");
-            orderPrintItemExtraAddition.innerText = orderItems[j].selectedAdditions[q];
+            orderPrintItemExtraAddition.innerText = orderItems[j].selectedAdditions[q].displayName;
+            price += orderItems[j].selectedAdditions[q].price;
             orderPrintItemExtra.appendChild(orderPrintItemExtraAddition);
         }
+        finalPrice.innerText = " - Pris: " + price.toString() + " ";
+        totalPrice += price;
+        orderPrintItem.appendChild(finalPrice);
+        orderPrintItem.appendChild(removeButton);
         orderPrintItem.appendChild(orderPrintItemExtra);
         cartPrintHTML.appendChild(orderPrintItem)
     }
+    totalPriceText.innerText = "\nPris: " + totalPrice.toString();
+    cartPrintHTML.appendChild(totalPriceText);
     document.getElementById("JS-printer").innerHTML = "";
     document.getElementById("JS-printer").appendChild(cartPrintHTML);
 }
@@ -87,6 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log(Menu);
 
             document.getElementById("menuContainer").innerHTML = HTMLgen(Menu);
+            localStorage.setItem("menuJSON", JSON.stringify(Menu));
         })
         .then( () => {
 
@@ -306,14 +319,57 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
             selectedAdditions.push(checkbox.getAttribute('data-addition'));
         });
 
+
+
         //get comments from the input field on correct item
         let comment = itemContainer.querySelector('.item-comment .item-comment-input').value;
         console.log("komentar" + comment);
 
+        /**
+         * @type {MenuItem}
+         */
+        let item;
+        let options = [];
+        let additions = [];
+        JSON.parse(localStorage.getItem("menuJSON")).forEach(menu => {
+            menu.items.forEach(i => {
+                if(i.displayName === itemName)
+                    item = i;
+            })
+        });
+
+        for (let optionString of selectedOptions){
+            JSON.parse(localStorage.getItem("menuJSON")).forEach(menu => {
+                menu.items.forEach(i => {
+                    i.options.forEach(option => {
+                        if(option.displayName===optionString){
+                            options.push(option);
+                        }
+                    })
+                })
+            })
+        }
+
+        for (let additionString of selectedAdditions){
+            JSON.parse(localStorage.getItem("menuJSON")).forEach(menu => {
+                menu.items.forEach(i => {
+                    i.additions.forEach(addition => {
+                        if(addition.displayName===additionString){
+                            additions.push(addition);
+                        }
+                    })
+                })
+            })
+        }
+
+
+        //console.log(`Item: ${itemName}, PRICE: ${basePrice}`);
+
         //creates the order_item objects and puts them in the orderItems array
             let orderItem = new Order_Item(itemName);
-            orderItem.selectedOptions = selectedOptions.slice();
-            orderItem.selectedAdditions = selectedAdditions.slice();
+            orderItem.selectedOptions = options;
+            orderItem.selectedAdditions = additions;
+            orderItem.price = item.basePrice;
             orderItem.comment = comment.slice();
             console.log("comment again" + comment);
             orderItems.push(orderItem);

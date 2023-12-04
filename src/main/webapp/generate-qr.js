@@ -7,7 +7,7 @@ submitButton.addEventListener('click', (e) => {
     console.log('Clicked on button')
     e.preventDefault();
 
-    const url = new URL("https://example.com/bestil");
+    const url = new URL("http://70.34.203.118:8080/P3_war/Dyna_menu.html");
 
     url.searchParams.set(
         'restaurant',
@@ -15,7 +15,7 @@ submitButton.addEventListener('click', (e) => {
     );
     url.searchParams.set(
         'tableId',
-        form.tableId.value
+        document.getElementById("tableIdInput").value
     );
 
     const container = document.querySelector('#qrContainer');
