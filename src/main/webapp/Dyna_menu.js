@@ -59,10 +59,10 @@ function cartPrint(orderItems){
             price += orderItems[j].selectedOptions[q].price;
             orderPrintItemExtra.appendChild(orderPrintItemExtraOptions);
         }
-        for (let q = 0; q < orderItems[j].selectedAdditions.length; q++) {
+        for (let p = 0; q < orderItems[j].selectedAdditions.length; p++) {
             let orderPrintItemExtraAddition = document.createElement("li");
-            orderPrintItemExtraAddition.innerText = orderItems[j].selectedAdditions[q].displayName;
-            price += orderItems[j].selectedAdditions[q].price;
+            orderPrintItemExtraAddition.innerText = orderItems[j].selectedAdditions[p].displayName;
+            price += orderItems[j].selectedAdditions[p].price;
             orderPrintItemExtra.appendChild(orderPrintItemExtraAddition);
         }
         finalPrice.innerText = " - Pris: " + price.toString() + " ";
