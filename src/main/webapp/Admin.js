@@ -189,7 +189,7 @@ function constructMenu()
 document.querySelector("#ImportMenuBotton").addEventListener('click', importMenu);
 function importMenu() {
   //get menu from server
-    const originUrl = 'http://localhost:8080/P3_war//AktuelMenu/MenuGet';
+    const originUrl = '/P3_war//AktuelMenu/MenuGet';
 
     fetch(originUrl,{
         method: 'POST',
@@ -335,7 +335,7 @@ function sendMenuToServer()
             "9:00 should be written 09:00")
         return;
     }
-    const sendUrl = 'http://localhost:8080/P3_war/AktuelMenu/MenuSent'
+    const sendUrl = '/P3_war/AktuelMenu/MenuSent'
 
     fetch(sendUrl,{
         method: 'POST',
