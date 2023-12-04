@@ -173,10 +173,9 @@ p.priceTag{
 
 }
 
-#cart-button1{
-
-    border: 1px solid #000;
-    transition:0.5s;
-    background: lightgrey;
-    margin-left: 10px;
+.closeButton {
+    background-color: white;
+    float: right;
+    border-style: none;
+    font-weight: bolder;
 }
