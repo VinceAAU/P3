@@ -20,9 +20,6 @@ const sendURL = `/P3_war/OrderSent?table=${encodeURIComponent(tableID)}`;
 
 let orderItems = [];//array for order_item objects
 
-var coll = document.getElementsByClassName("Cart-collapsible");
-var i;
-
 function openCart(){
     document.getElementById("cart-container").style.width = "250px";
     document.getElementById("menu-selection").style.marginBottom = "250px";
