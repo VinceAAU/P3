@@ -1,7 +1,11 @@
 import {Discount} from "./discount.js";
+import {Option} from "./option.js"
 
 export {MenuItem}
 
+/**
+ * @property {Option[]} options
+ */
 class MenuItem {
     internalName = "";
     displayName = "";

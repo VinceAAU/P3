@@ -143,7 +143,8 @@ function HTMLgen(Menu) {
             html += '<div class="item-container">';
             html += '<details>'
             html += `<summary>${item.displayName}</summary>`;
-            html += `<p class="priceTag">${item.basePrice / 100} kr</p>`;
+            const itemdp = calculateMenuItemDisplayPrice(item);
+            html += `<p class="priceTag">${itemdp.price} kr for ${itemdp.amount}</p>`;
             html += `<div class="option" data-min-selections="${item.minOptions}" data-max-selections="${item.maxOptions}">`;
 
 
@@ -151,7 +152,7 @@ function HTMLgen(Menu) {
             item.options.forEach(option => {
                 html += '<div class="checkbox-container">';
                 html += '<label>'
-                html += `<input type="checkbox" data-option="${option.displayName}"> ${option.displayName}`;
+                html += `<input type="checkbox" data-option="${option.displayName}"> ${option.displayName} ${calculateOptionDisplayPrice(item, option)>0?'+'+calculateOptionDisplayPrice(item, option) + 'kr':'ingen ekstra penge'}`;
                 html += '</label>'
                 html += '</div>';
             })
@@ -253,3 +254,34 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
         console.log(orderItems);
     }
 });
+
+/**
+ *
+ * @param {MenuItem} item
+ *
+ * @returns {{amount: number, price: number}}
+ */
+function calculateMenuItemDisplayPrice(item){
+    let minPrice = 1_000_000_000_000 //Please do not add any menuitems that cost more than 1 trillion kr
+    for (const option of item.options) {
+        if(option.price < minPrice)
+            minPrice = option.price
+    }
+
+    return {amount: item.minOptions, price: item.basePrice + minPrice*item.minOptions}
+}
+
+/**
+ *
+ * @param {MenuItem} item
+ * @param {Option} option
+ */
+function calculateOptionDisplayPrice(item, option){
+    let minPrice = 1_000_000_000_000 //Please do not add any menuitems that cost more than 1 trillion kr
+    for (const option of item.options) {
+        if(option.price < minPrice)
+            minPrice = option.price
+    }
+
+    return option.price - minPrice
+}
