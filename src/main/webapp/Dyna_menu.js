@@ -6,7 +6,7 @@ class Order_Item {
         this.selectedAdditions = [];
     }
 }
-// url example http://website.com/Dyna_menu.html?table=16&restaurant=Budofol
+    // url example http://website.com/Dyna_menu.html?table=16&restaurant=Budolfi
 
 
 const URLParameters = new URLSearchParams(window.location.search);
@@ -146,10 +146,6 @@ function HTMLgen(Menu) {
             html += `<p class="priceTag">${item.basePrice / 100} kr</p>`;
             html += `<div class="option" data-min-selections="${item.minOptions}" data-max-selections="${item.maxOptions}">`;
 
-            html += '<div class="item-comment">';
-            html += '<label for="item-comment">Comment:</label>';
-            html += '<input type="text" class="item-comment-input" placeholder="kommentare til køkkenet (allegier osv.)">';
-            html += '</div>';
 
             html += '<h4>Options</h4>' //Change this later IDK the english word right now so SUCK IT
             item.options.forEach(option => {
@@ -170,6 +166,11 @@ function HTMLgen(Menu) {
                 html += `</label>`;
                 html += '</div>';
             })
+            html += '<div class="item-comment">';
+            html += '<label for="item-comment">Comment:</label>';
+            html += '<input type="text" class="item-comment-input" placeholder="Kommentar til køkkenet (allegier osv.)">';
+            html += '</div>';
+
             html += '</div>'
             html += '<label for="item-quantity">quantity:</label>';
             html += '<input type="number" id="item-quantity" value="1" min="1">';
@@ -233,8 +234,8 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
             selectedAdditions.push(checkbox.getAttribute('data-addition'));
         });
 
-        //get quantity form the input field on correct item
-        let comment = itemContainer.querySelector('#item-comment').value;
+        //get comments from the input field on correct item
+        let comment = itemContainer.querySelector('.item-comment .item-comment-input').value;
 
         //get quantity form the input field on current item
         let quantity = parseInt(itemContainer.querySelector('#item-quantity').value, 10);
