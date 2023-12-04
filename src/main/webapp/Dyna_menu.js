@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then( () => {
 
             //ittereates over option groups to handle checkbox selections
-            let optionGroups = document.querySelectorAll('.option');
+            let optionGroups = document.querySelectorAll('details .option');
             optionGroups.forEach(function (optionGroup) {
 
                 //get the minimum and maximum options form html
@@ -182,8 +182,6 @@ function HTMLgen(Menu) {
             html += '</div>';
 
             html += '</div>'
-            html += '<label for="item-quantity">quantity:</label>';
-            html += '<input type="number" id="item-quantity" value="1" min="1">';
             html += `<button class="add-to-order" data-item-name="${item.displayName}">Add to Order</button>`;
             html += '</details>'
             html += '</div>';
@@ -208,7 +206,7 @@ function showNotification(message, type) {
     // Remove the notification after a certain duration
     setTimeout(() => {
         notification.remove();
-    }, 5000); // Adjust the duration (in milliseconds) as needed
+    }, 3000); // Adjust the duration (in milliseconds) as needed
 }
 //event listener for "add to order" buttons
 document.getElementById("menuContainer").addEventListener("click", function (event) {
