@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Menu redigering side</title>
     <link rel="stylesheet" href="Dyna_menu.css">
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 </head>
 <body>
 <h1>Opret ret</h1>
@@ -145,6 +146,23 @@ Den første Genstand er nummer 0
     <input type="number" id="removeItemArrayForm">
 </form>
 <button id="removeItemArrayButton"> Fjern denne ret </button>
+
+<br>
+
+<h1>Her kan du generere en QR kode</h1>
+
+<form id="qrForm">
+    Restaurant: <br/>
+    <input type="radio" name="restaurant" value="Budolfi" id="budolfiOption"> <label for="budolfiOption">Budolfi</label> <br/>
+    <input type="radio" name="restaurant" value="Hasseris" id="hasserisOption"> <label for="hasserisOption">Hasseris</label> <br/>
+    <label for="tableIdInput">Table ID:</label><input type="number"  min="0" name=tableId" id="tableIdInput"> <br/>
+    <input type="submit" id="qrSubmitButton">
+</form>
+
+<div id="qrContainer" hidden="hidden">
+</div>
+
+<script src="generate-qr.js"></script>
 
 <script type="module" src=Admin.js></script>
 </body>
