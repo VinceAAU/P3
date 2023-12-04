@@ -111,17 +111,20 @@ document.addEventListener("DOMContentLoaded", function () {
         let orderItemsJSON = orderItems.map(orderItem => ({
             name: orderItem.name,
             selectedOptions: orderItem.selectedOptions,
-            selectedAdditions: orderItem.selectedAdditions
+            selectedAdditions: orderItem.selectedAdditions,
+            comment: orderItem.comment
         }));
-
+        console.log("order " + orderItemsJSON);
     //fetch for sending order to server(needs to be fleshed out)
     fetch(sendURL, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
+
         body: JSON.stringify(orderItemsJSON),
     })
+
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -149,6 +152,7 @@ function HTMLgen(Menu) {
             html += `<div class="option" data-min-selections="${item.minOptions}" data-max-selections="${item.maxOptions}">`;
 
 
+
             html += '<h4>Options</h4>' //Change this later IDK the english word right now so SUCK IT
             item.options.forEach(option => {
                 html += '<div class="checkbox-container">';
@@ -174,7 +178,7 @@ function HTMLgen(Menu) {
             })
             html += '<div class="item-comment">';
             html += '<label for="item-comment">Comment:</label>';
-            html += '<input type="text" class="item-comment-input" placeholder="Kommentar til køkkenet (allegier osv.)">';
+            html += '<input type="text" class="item-comment-input" placeholder="kommentare til køkkenet (allegier osv.)">';
             html += '</div>';
 
             html += '</div>'
@@ -242,7 +246,7 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
 
         //get comments from the input field on correct item
         let comment = itemContainer.querySelector('.item-comment .item-comment-input').value;
-
+        console.log("komentar" + comment);
         //get quantity form the input field on current item
         let quantity = parseInt(itemContainer.querySelector('#item-quantity').value, 10);
 
@@ -251,7 +255,8 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
             let orderItem = new Order_Item(itemName);
             orderItem.selectedOptions = selectedOptions.slice();
             orderItem.selectedAdditions = selectedAdditions.slice();
-            orderItem.comment = comment;
+            orderItem.comment = comment.slice();
+            console.log("comment again" + comment);
             orderItems.push(orderItem);
         }
 

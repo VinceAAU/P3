@@ -32,10 +32,12 @@ public class OrderServlet extends HttpServlet {
 
         JSONArray orderArray = new JSONArray(requestBody.toString());
         ArrayList<OrderItem> orderItems = new ArrayList<>();
+        System.out.println(orderArray);
 
         for (int i = 0; i < orderArray.length(); i++) {
             JSONObject orderObject = orderArray.getJSONObject(i);
             String orderItemName = orderObject.getString("name");
+            String comment = orderObject.optString("comment", "");
             MenuItem menuItem = getMenuItemByDisplayName(orderItemName);
             System.out.println("first loop started");
             if (menuItem == null) {
@@ -68,8 +70,8 @@ public class OrderServlet extends HttpServlet {
                 }
             }
 
-            String comment = orderObject.optString("comment", ""); // optString will handle null or missing 'comment'
 
+            System.out.println("comment " + comment);
             OrderItem orderItem = new OrderItem(menuItem, selectedOptions, selectedAdditions, comment);
             orderItems.add(orderItem);
             System.out.println("orderItem created");
@@ -95,6 +97,7 @@ public class OrderServlet extends HttpServlet {
 
         synchronized (globalOrderArray) {
             globalOrderArray.add(new Order(tableId, orderId, orderItems));
+            System.out.println("order added to global array");
         }
 
         System.out.println("order created");

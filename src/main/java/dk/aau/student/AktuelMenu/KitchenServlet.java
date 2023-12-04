@@ -22,7 +22,8 @@ public class KitchenServlet extends HttpServlet {
         ArrayList<Order> currentOrders;
 
         synchronized (context) {
-            currentOrders = (ArrayList<Order>) context.getAttribute("globalOrderArray");
+            currentOrders = (ArrayList<Order>) context.getAttribute("orderArray");
+
 
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
@@ -41,11 +42,13 @@ public class KitchenServlet extends HttpServlet {
 
                         JSONArray orderItemJSONArray = new JSONArray();
 
+
                         // Process each OrderItem as before
                         for (OrderItem item : order.getItems()) {
                             JSONObject itemJson = new JSONObject();
                             itemJson.put("internalName", item.getMenuItem().getInternalName());
                             itemJson.put("comment", item.getComment());
+                            System.out.println("kommentar" + item.getComment());
 
                             JSONArray orderOption = new JSONArray();
                             for (Option option : item.getOptions()) {

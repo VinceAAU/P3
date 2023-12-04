@@ -4,7 +4,7 @@ const updateOrderStatusUrl = '/P3_war/updateOrderStatus';
 
 document.addEventListener("DOMContentLoaded", function (){
     fetchOrders();
-    setInterval(fetchOrders,20000);
+    setInterval(fetchOrders,7500);
 })
 
 function fetchOrders() {
