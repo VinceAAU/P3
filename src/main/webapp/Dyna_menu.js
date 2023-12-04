@@ -36,11 +36,14 @@ function cartPrint(orderItems){
         orderPrintItem.innerText = orderItems[j].name;
         orderPrintItem.setAttribute("orderIndex",j.toString());
 
-        var button = document.createElement("input");
-        button.type = "button";
-        button.value = "remove";
-        button.onclick = removeItems(orderItems);
-        orderPrintItem.appendChild(button);
+        let removeButton = document.createElement("input");
+        removeButton.type = "button";
+        removeButton.value = "-";
+        removeButton.addEventListener("click",(event) =>
+        {
+            removeItems(orderPrintItem)
+        })
+        orderPrintItem.appendChild(removeButton);
 
         let orderPrintItemExtra = document.createElement("ul");
         for (let q=0; q < orderItems[j].selectedOptions.length; q++){
@@ -60,10 +63,10 @@ function cartPrint(orderItems){
     document.getElementById("JS-printer").appendChild(cartPrintHTML);
 }
 
-    function removeItems(orderItems){
-        let index = parseInt(orderItems.getAttribute("orderIndex"));
+    function removeItems(orderPrintItem){
+        let index = parseInt(orderPrintItem.getAttribute("orderIndex"));
         orderItems.splice(index,1);
-
+        cartPrint(orderItems);
     }
     document.getElementById("cart-button").addEventListener("click",() => cartPrint(orderItems));
 
@@ -260,14 +263,12 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
         console.log("komentar" + comment);
 
         //creates the order_item objects and puts them in the orderItems array
-        for (let i = 0; i < quantity; i++) {
             let orderItem = new Order_Item(itemName);
             orderItem.selectedOptions = selectedOptions.slice();
             orderItem.selectedAdditions = selectedAdditions.slice();
             orderItem.comment = comment.slice();
             console.log("comment again" + comment);
             orderItems.push(orderItem);
-        }
 
         showNotification('Din ordre er tilføjet til kurven!','success')
         console.log(orderItems);
