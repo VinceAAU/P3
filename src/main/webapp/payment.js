@@ -1,6 +1,6 @@
 const container = document.getElementById('arrayContainer');
-const KitchenUrl ="/P3_war/kitchen"
-const updateOrderStatusUrl = '/P3_war/updateOrderStatus';
+const PaymentUrl ="/P3_war/payment"
+const updateOrderStatusUrl = '/P3_war/delete';
 
 document.addEventListener("DOMContentLoaded", function (){
     fetchOrders();
@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function (){
 })
 
 function fetchOrders() {
-    fetch(KitchenUrl)
+    fetch(PaymentUrl)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Order fetch failed');
@@ -16,12 +16,12 @@ function fetchOrders() {
             return response.json();
         })
         .then(data => {
-            if (!data.message) {
-                container.classList.remove("center-content");
-                processOrders(data);
-            } else {
+            if (data.message) {
                 container.innerHTML = `<p class="no-orders-message">${data.message}</p>`;
                 container.classList.add("center-content");
+            } else {
+                container.classList.remove("center-content");
+                processOrders(data);
             }
         })
         .catch(error => {
@@ -34,18 +34,17 @@ function generateHtmlContent(order) {
     // Generating HTML for each order item
     let orderItemsHtml = order.orders.map(orderItem => {
         // Generating HTML for options of this order item
-        let optionsHtml = orderItem.options.map(option => `<li>${option.internalName}</li>`).join('');
+        let optionsHtml = orderItem.options.map(option => `<li>${option.internalName} ${option.price}</li>`).join('');
 
         // Generating HTML for additions of this order item
-        let additionsHtml = orderItem.additions.map(addition => `<li>${addition.internalName}</li>`).join('');
+        let additionsHtml = orderItem.additions.map(addition => `<li>${addition.internalName} ${addition.price}</li>`).join('');
 
         // Order Item HTML Content
         return `
             <div class="order-item">
-                <p>Bestiling: ${orderItem.internalName}</p>
+                <p>Bestiling: ${orderItem.internalName} ${orderItem.price}</p>
                 ${optionsHtml ? `<p>Variant(er):</p><ul>${optionsHtml}</ul>` : ''}
                 ${additionsHtml ? `<p>Tilkøb:</p><ul>${additionsHtml}</ul>` : ''}
-                <p>Kommentar: ${orderItem.comment || ''}</p>
             </div>
         `;
     }).join('');
@@ -53,16 +52,15 @@ function generateHtmlContent(order) {
     // Full order HTML
     return `
         <div class="order-card">
-            <h3>Order nummer: ${order.orderId}</h3>
-            <p>Bord: ${order.tableId}</p>
+            <h3>Order nummer: ${order.orderId} Bord: ${order.tableId}</h3>
             ${orderItemsHtml}
-            <button class="deliver-btn" data-order-id="${order.orderId}">Marker som færdig</button>
+            <button class="payed-btn" data-order-id="${order.orderId}">Marker som betalt</button>
         </div>
     `;
 }
 
 
-function markOrderAsDelivered(orderId, orderElement) {
+function markOrderAspayed(orderId, orderElement) {
     console.log("Marking order as delivered:", orderId);
 
     fetch(updateOrderStatusUrl, {
@@ -97,9 +95,9 @@ function processOrders(orderJSON) {
         container.appendChild(gridItem);
 
         // Attach an event listener to the "Mark as Delivered" button
-        const deliverButton = gridItem.querySelector(`.deliver-btn[data-order-id="${order.orderId}"]`);
+        const deliverButton = gridItem.querySelector(`.payed-btn[data-order-id="${order.orderId}"]`);
         deliverButton.addEventListener('click', function() {
-            markOrderAsDelivered(order.orderId, gridItem);
+            markOrderAspayed(order.orderId, gridItem);
         });
     });
 }

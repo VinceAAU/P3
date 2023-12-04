@@ -18,6 +18,8 @@ public class Option implements JSONString {
 
     String getDisplayName() { return displayName; }
 
+    int getPrice(){ return price; }
+
     public Option(String internalName, String displayName, int price){
         this.internalName = internalName;
         this.displayName = displayName;
