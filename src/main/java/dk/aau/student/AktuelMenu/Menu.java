@@ -64,7 +64,7 @@ public class Menu implements JSONString {
         menuJson.put("menuId", name);
 
         // Convert TimeAvailability to JSONString
-        menuJson.put("availableTimes", availabilities.toJSONString());
+        menuJson.put("availableTimes", availabilities);
 
         // Convert MenuItems to JSONString
         JSONArray itemsJsonArray = new JSONArray();
