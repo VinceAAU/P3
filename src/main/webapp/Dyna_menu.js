@@ -144,7 +144,8 @@ function HTMLgen(Menu) {
             html += '<details>'
             html += `<summary>${item.displayName}</summary>`;
             const itemdp = calculateMenuItemDisplayPrice(item);
-            html += `<p class="priceTag">${itemdp.price} kr for ${itemdp.amount}</p>`;
+            html += `<p class="priceTag">${itemdp.amount} for ${itemdp.price} kr</p>`;
+            html += item.minOptions<item.maxOptions?`<p class="priceForExtraOptions"><b>Tilvalg: ${itemOptionsMinimumPrice(item)} kr.</b></p>`:'';
             html += `<div class="option" data-min-selections="${item.minOptions}" data-max-selections="${item.maxOptions}">`;
 
 
@@ -152,7 +153,11 @@ function HTMLgen(Menu) {
             item.options.forEach(option => {
                 html += '<div class="checkbox-container">';
                 html += '<label>'
-                html += `<input type="checkbox" data-option="${option.displayName}"> ${option.displayName} ${calculateOptionDisplayPrice(item, option)>0?'+'+calculateOptionDisplayPrice(item, option) + 'kr':'ingen ekstra penge'}`;
+                html += `<input type="checkbox" data-option="${option.displayName}"> ${option.displayName} ${
+                    calculateOptionDisplayPrice(item, option)>0?
+                        '<b>+'+calculateOptionDisplayPrice(item, option) + 'kr</b>'
+                        : ''
+                }`;
                 html += '</label>'
                 html += '</div>';
             })
@@ -255,6 +260,16 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
     }
 });
 
+function itemOptionsMinimumPrice(item){
+    let minPrice = 1_000_000_000_000 //Please do not add any menuitems that cost more than 1 trillion kr
+    for (const option of item.options) {
+        if(option.price < minPrice)
+            minPrice = option.price
+    }
+
+    return minPrice
+}
+
 /**
  *
  * @param {MenuItem} item
@@ -262,13 +277,10 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
  * @returns {{amount: number, price: number}}
  */
 function calculateMenuItemDisplayPrice(item){
-    let minPrice = 1_000_000_000_000 //Please do not add any menuitems that cost more than 1 trillion kr
-    for (const option of item.options) {
-        if(option.price < minPrice)
-            minPrice = option.price
+    return {
+        amount: item.minOptions,
+        price: item.basePrice + itemOptionsMinimumPrice(item)*item.minOptions
     }
-
-    return {amount: item.minOptions, price: item.basePrice + minPrice*item.minOptions}
 }
 
 /**
@@ -277,11 +289,5 @@ function calculateMenuItemDisplayPrice(item){
  * @param {Option} option
  */
 function calculateOptionDisplayPrice(item, option){
-    let minPrice = 1_000_000_000_000 //Please do not add any menuitems that cost more than 1 trillion kr
-    for (const option of item.options) {
-        if(option.price < minPrice)
-            minPrice = option.price
-    }
-
-    return option.price - minPrice
+    return option.price - itemOptionsMinimumPrice(item);
 }
