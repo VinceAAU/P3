@@ -144,3 +144,19 @@ p.priceTag{
 .priceForExtraOptions{
     text-align: center;
 }
+
+.removeButton{
+    border: 1px solid #000;
+    transition:0.5s;
+    background: lightgrey;
+    margin-left: 10px;
+
+}
+
+#cart-button1{
+
+    border: 1px solid #000;
+    transition:0.5s;
+    background: lightgrey;
+    margin-left: 10px;
+}

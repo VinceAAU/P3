@@ -39,6 +39,7 @@ function cartPrint(orderItems){
         let removeButton = document.createElement("input");
         removeButton.type = "button";
         removeButton.value = "-";
+        removeButton.className = "removeButton";
         removeButton.addEventListener("click",(event) =>
         {
             removeItems(orderPrintItem)
