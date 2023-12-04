@@ -34,6 +34,14 @@ function cartPrint(orderItems){
     for (let j=0; j < orderItems.length; j++){
         let orderPrintItem = document.createElement("li");
         orderPrintItem.innerText = orderItems[j].name;
+        orderPrintItem.setAttribute("orderIndex",j.toString());
+
+        var button = document.createElement("input");
+        button.type = "button";
+        button.value = "remove";
+        button.onclick = removeItems(orderItems);
+        orderPrintItem.appendChild(button);
+
         let orderPrintItemExtra = document.createElement("ul");
         for (let q=0; q < orderItems[j].selectedOptions.length; q++){
             let orderPrintItemExtraOptions = document.createElement("li");
@@ -52,6 +60,11 @@ function cartPrint(orderItems){
     document.getElementById("JS-printer").appendChild(cartPrintHTML);
 }
 
+    function removeItems(orderItems){
+        let index = parseInt(orderItems.getAttribute("orderIndex"));
+        orderItems.splice(index,1);
+
+    }
     document.getElementById("cart-button").addEventListener("click",() => cartPrint(orderItems));
 
 
@@ -114,6 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
             selectedAdditions: orderItem.selectedAdditions,
             comment: orderItem.comment
         }));
+        console.log("order " + orderItemsJSON);
     //fetch for sending order to server(needs to be fleshed out)
     fetch(sendURL, {
         method: 'POST',
@@ -243,8 +257,7 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
 
         //get comments from the input field on correct item
         let comment = itemContainer.querySelector('.item-comment .item-comment-input').value;
-        //get quantity form the input field on current item
-        let quantity = parseInt(itemContainer.querySelector('#item-quantity').value, 10);
+        console.log("komentar" + comment);
 
         //creates the order_item objects and puts them in the orderItems array
         for (let i = 0; i < quantity; i++) {
@@ -252,10 +265,12 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
             orderItem.selectedOptions = selectedOptions.slice();
             orderItem.selectedAdditions = selectedAdditions.slice();
             orderItem.comment = comment.slice();
+            console.log("comment again" + comment);
             orderItems.push(orderItem);
         }
 
         showNotification('Din ordre er tilføjet til kurven!','success')
+        console.log(orderItems);
     }
 });
 
