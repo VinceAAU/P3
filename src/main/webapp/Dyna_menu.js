@@ -178,8 +178,12 @@ function HTMLgen(Menu) {
             html += '<details>'
             html += `<summary>${item.displayName}</summary>`;
             const itemdp = calculateMenuItemDisplayPrice(item);
-            html += `<p class="priceTag">${itemdp.amount} for ${itemdp.price} kr</p>`;
-            html += item.minOptions<item.maxOptions?`<p class="priceForExtraOptions"><b>Tilvalg: ${itemOptionsMinimumPrice(item)} kr.</b></p>`:'';
+            if(itemdp.price!==0 && itemdp.amount!==0) {
+                html += `<p class="priceTag">${itemdp.amount} for ${itemdp.price} kr.</p>`;
+                html += item.minOptions < item.maxOptions ? `<p class="priceForExtraOptions"><b>Tilvalg: ${itemOptionsMinimumPrice(item)} kr.</b></p>` : '';
+            } else if (itemdp.price!==0){
+                html += `<p class="priceTag">${itemdp.price} kr.</p>`
+            }
             html += `<div class="option" data-min-selections="${item.minOptions}" data-max-selections="${item.maxOptions}">`;
 
 
@@ -196,7 +200,7 @@ function HTMLgen(Menu) {
                 html += '<div class="checkbox-container">';
                 html += '<label>'
                 html += `<input id="additionCheckbox" type="checkbox" data-addition="${addition.displayName}">${addition.displayName}`;
-                html += `</label> <b>${addition.price} kr.</b>`;
+                html += `</label> <b>+${addition.price} kr.</b>`;
                 html += '</div>';
             })
             html += '<div class="item-comment">';
@@ -233,7 +237,7 @@ function generateOptionElement(item, option){
 
     const displayPrice = calculateOptionDisplayPrice(item, option);
     if(displayPrice>0)
-        container.innerHTML += ` <b>+${calculateOptionDisplayPrice(item, option)} kr.</b>`
+        container.innerHTML += ` <b>${calculateOptionDisplayPrice(item, option)} kr.</b>`
 
     for(let labelText of option.labels){
         let label = document.createElement("span");
@@ -408,5 +412,9 @@ function calculateMenuItemDisplayPrice(item){
  * @param {Option} option
  */
 function calculateOptionDisplayPrice(item, option){
-    return option.price - itemOptionsMinimumPrice(item);
+    console.log(`Calculate option display price of ${item.internalName}: ${calculateMenuItemDisplayPrice(item).amount}`)
+    if(calculateMenuItemDisplayPrice(item).amount!==0)
+        return option.price - itemOptionsMinimumPrice(item);
+    else
+        return option.price;
 }
