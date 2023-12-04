@@ -4,6 +4,8 @@ class Order_Item {
         this.name = name;
         this.selectedOptions = [];
         this.selectedAdditions = [];
+        this.options = [];
+        this.additions = [];
         this.price = price;
     }
 }
@@ -17,9 +19,6 @@ const menuClassesURL = `menu.json?restaurant=${encodeURIComponent(restaurant)}`;
 const sendURL = `/P3_war/OrderSent?table=${encodeURIComponent(tableID)}`;
 
 let orderItems = [];//array for order_item objects
-
-var coll = document.getElementsByClassName("Cart-collapsible");
-var i;
 
 function openCart(){
     document.getElementById("cart-container").style.width = "250px";
@@ -57,10 +56,10 @@ function cartPrint(orderItems){
             price += orderItems[j].selectedOptions[q].price;
             orderPrintItemExtra.appendChild(orderPrintItemExtraOptions);
         }
-        for (let q = 0; q < orderItems[j].selectedAdditions.length; q++) {
+        for (let p = 0; q < orderItems[j].selectedAdditions.length; p++) {
             let orderPrintItemExtraAddition = document.createElement("li");
-            orderPrintItemExtraAddition.innerText = orderItems[j].selectedAdditions[q].displayName;
-            price += orderItems[j].selectedAdditions[q].price;
+            orderPrintItemExtraAddition.innerText = orderItems[j].selectedAdditions[p].displayName;
+            price += orderItems[j].selectedAdditions[p].price;
             orderPrintItemExtra.appendChild(orderPrintItemExtraAddition);
         }
         finalPrice.innerText = " - Pris: " + price.toString() + " ";
@@ -140,8 +139,8 @@ document.addEventListener("DOMContentLoaded", function () {
         //Json setup for the orderitems array
         let orderItemsJSON = orderItems.map(orderItem => ({
             name: orderItem.name,
-            selectedOptions: orderItem.selectedOptions,
-            selectedAdditions: orderItem.selectedAdditions,
+            selectedOptions: orderItem.HTMLoptions,
+            selectedAdditions: orderItem.HTMLadditions,
             comment: orderItem.comment
         }));
         console.log("order " + orderItemsJSON);
@@ -161,7 +160,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             // Handle success (if needed)
             console.log('Order sent successfully');
-        window.location.replace("http://localhost:8080/P3_war"); //Replace with actual IP that we get
+        window.location.replace("/P3_war/"); //Replace with actual IP that we get
         })
         .catch(error => {
             // Handle errors
@@ -373,6 +372,8 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
             let orderItem = new Order_Item(itemName);
             orderItem.selectedOptions = options;
             orderItem.selectedAdditions = additions;
+            orderItem.HTMLoptions = selectedOptions;
+            orderItem.HTMLadditions = selectedAdditions;
             orderItem.price = item.basePrice;
             orderItem.comment = comment.slice();
             console.log("comment again" + comment);
