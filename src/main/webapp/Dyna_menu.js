@@ -386,6 +386,11 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
             })
         })
 
+        if(options.length<item.minOptions){
+            alert(`Du skal vælge mindst ${item.minOptions} ting`);
+            return;
+        }
+
         //console.log(`Item: ${itemName}, PRICE: ${basePrice}`);
 
         //creates the order_item objects and puts them in the orderItems array
