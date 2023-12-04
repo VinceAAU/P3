@@ -28,43 +28,47 @@ public class KitchenServlet extends HttpServlet {
             response.setCharacterEncoding("UTF-8");
 
             if (currentOrders == null || currentOrders.isEmpty()) {
-                String message = "{\"message\": \"No orders yet\"}";
+                String message = "{\"message\": \"Venter på ordre\"}";
                 response.getWriter().write(message);
             } else {
                 JSONArray ordersJsonArray = new JSONArray();
                 for (Order order : currentOrders) {
-                    JSONObject orderJSON = new JSONObject();
-                    orderJSON.put("tableId", order.getTableId());
-                    orderJSON.put("orderId", order.getOrderId());
+                    // Check if the order is not delivered
+                    if (!order.isDelivered()) {
+                        JSONObject orderJSON = new JSONObject();
+                        orderJSON.put("tableId", order.getTableId());
+                        orderJSON.put("orderId", order.getOrderId());
 
-                    JSONArray orderItemJSONArray = new JSONArray();
-                    for (OrderItem item : order.getItems()) {
-                        JSONObject itemJson = new JSONObject();
-                        itemJson.put("internalName", item.getMenuItem().getInternalName());
-                        itemJson.put("comment",item.getComment());
-                        orderItemJSONArray.put(itemJson);
+                        JSONArray orderItemJSONArray = new JSONArray();
 
-                        JSONArray orderOption = new JSONArray();
-                        for (Option option : item.getOptions()) {
-                            JSONObject optionJSON = new JSONObject();
-                            optionJSON.put("internalName", option.getInternalName());
-                            orderOption.put(optionJSON);
+                        // Process each OrderItem as before
+                        for (OrderItem item : order.getItems()) {
+                            JSONObject itemJson = new JSONObject();
+                            itemJson.put("internalName", item.getMenuItem().getInternalName());
+                            itemJson.put("comment", item.getComment());
+
+                            JSONArray orderOption = new JSONArray();
+                            for (Option option : item.getOptions()) {
+                                JSONObject optionJSON = new JSONObject();
+                                optionJSON.put("internalName", option.getInternalName());
+                                orderOption.put(optionJSON);
+                            }
+                            itemJson.put("options", orderOption);
+
+                            JSONArray orderAddition = new JSONArray();
+                            for (Option addition : item.getAdditions()) {
+                                JSONObject additionJSON = new JSONObject();
+                                additionJSON.put("internalName", addition.getInternalName());
+                                orderAddition.put(additionJSON);
+                            }
+                            itemJson.put("additions", orderAddition);
+
+                            orderItemJSONArray.put(itemJson);
                         }
-                        orderJSON.put("options", orderOption);
 
-                        JSONArray orderAddition = new JSONArray();
-                        for (Option addition : item.getAdditions()){
-                            JSONObject additionJSON= new JSONObject();
-                            additionJSON.put("internalName", addition.getInternalName());
-                            orderAddition.put(additionJSON);
-                        }
-                        orderJSON.put("additions",orderAddition);
-
-                        orderItemJSONArray.put(itemJson);
+                        orderJSON.put("orders", orderItemJSONArray);
+                        ordersJsonArray.put(orderJSON);
                     }
-
-                    orderJSON.put("orders", orderItemJSONArray);
-                    ordersJsonArray.put(orderJSON);
                 }
 
                 response.getWriter().write(ordersJsonArray.toString());

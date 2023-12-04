@@ -32,6 +32,13 @@ public class Order {
         return orderId;
     }
 
+    public void setDelivered( boolean delivered) {
+        this.delivered = delivered;
+    }
+    public boolean isDelivered() {
+        return delivered;
+    }
+
     public ArrayList<OrderItem> getItems() {
         return items;
     }

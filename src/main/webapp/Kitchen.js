@@ -1,46 +1,51 @@
 const container = document.getElementById('arrayContainer');
 const KitchenUrl ="/P3_war/kitchen"
-
+const updateOrderStatusUrl = '/P3_war/updateOrderStatus';
 
 document.addEventListener("DOMContentLoaded", function (){
+    fetchOrders();
     setInterval(fetchOrders,20000);
 })
 
 function fetchOrders() {
     fetch(KitchenUrl)
-        .then(response=>{
-            if(!response.ok) {
-                throw new Error('order fetch failed');
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Order fetch failed');
             }
             return response.json();
         })
         .then(data => {
-            console.log(data);
-            if (data.message === "No order yet"){
-                console.log("no orders available");
-                //todo display message in UI
-            }else{
+            if (data.message) {
+                container.innerHTML = `<p class="no-orders-message">${data.message}</p>`;
+                container.classList.add("center-content");
+            } else {
+                container.classList.remove("center-content");
                 processOrders(data);
             }
         })
         .catch(error => {
-            console.error('fetch error:', error);
+            console.error('Fetch error:', error);
+            container.innerHTML = '<p>Error fetching orders.</p>';
         });
 }
 
 function generateHtmlContent(order) {
-    // Generating HTML for options
-    let optionsHtml = order.options.map(option => `<li>${option.internalName}</li>`).join('');
-
-    // Generating HTML for additions
-    let additionsHtml = order.additions.map(addition => `<li>${addition.internalName}</li>`).join('');
-
     // Generating HTML for each order item
     let orderItemsHtml = order.orders.map(orderItem => {
+        // Generating HTML for options of this order item
+        let optionsHtml = orderItem.options.map(option => `<li>${option.internalName}</li>`).join('');
+
+        // Generating HTML for additions of this order item
+        let additionsHtml = orderItem.additions.map(addition => `<li>${addition.internalName}</li>`).join('');
+
+        // Order Item HTML Content
         return `
             <div class="order-item">
-                <p>Item: ${orderItem.internalName}</p>
-                <p>Comment: ${orderItem.comment || ''}</p>
+                <p>Bestiling: ${orderItem.internalName}</p>
+                ${optionsHtml ? `<p>Variant(er):</p><ul>${optionsHtml}</ul>` : ''}
+                ${additionsHtml ? `<p>Tilkøb:</p><ul>${additionsHtml}</ul>` : ''}
+                <p>Kommentar: ${orderItem.comment || ''}</p>
             </div>
         `;
     }).join('');
@@ -48,23 +53,53 @@ function generateHtmlContent(order) {
     // Full order HTML
     return `
         <div class="order-card">
-            <h3>Order ID: ${order.orderId}</h3>
-            <p>Table ID: ${order.tableId}</p>
-            <p>Options:</p><ul>${optionsHtml}</ul>
-            <p>Additions:</p><ul>${additionsHtml}</ul>
+            <h3>Order nummer: ${order.orderId}</h3>
+            <p>Bord: ${order.tableId}</p>
             ${orderItemsHtml}
+            <button class="deliver-btn" data-order-id="${order.orderId}">Marker som færdig</button>
         </div>
     `;
 }
 
 
-function processOrders(orderJSON) {
-    container.innerHTML ='';
+function markOrderAsDelivered(orderId, orderElement) {
+    console.log("Marking order as delivered:", orderId);
 
-    orderJSON.forEach(orderJSON =>{
-       const gridItem = document.createElement('div');
-       gridItem.className = 'grid-item';
-       gridItem.innerHTML = generateHtmlContent(orderJSON);
-       container.appendChild(gridItem);
+    fetch(updateOrderStatusUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ orderId: orderId, delivered: true })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update order status');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Order status updated:', data);
+            // Remove the order element from the display
+            container.removeChild(orderElement);
+        })
+        .catch(error => {
+            console.error('Error updating order status:', error);
+        });
+}
+function processOrders(orderJSON) {
+    container.innerHTML = '';
+
+    orderJSON.forEach(order => {
+        const gridItem = document.createElement('div');
+        gridItem.className = 'grid-item';
+        gridItem.innerHTML = generateHtmlContent(order);
+        container.appendChild(gridItem);
+
+        // Attach an event listener to the "Mark as Delivered" button
+        const deliverButton = gridItem.querySelector(`.deliver-btn[data-order-id="${order.orderId}"]`);
+        deliverButton.addEventListener('click', function() {
+            markOrderAsDelivered(order.orderId, gridItem);
+        });
     });
 }

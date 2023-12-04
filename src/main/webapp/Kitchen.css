@@ -1,12 +1,42 @@
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columns */
-    grid-template-rows: repeat(2, 1fr); /* 2 rows */
-    gap: 10px; /* space between grid items */
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 10px;
 }
 .grid-item {
-    /* Styling for each grid item */
+
     border: 1px solid #ccc;
     padding: 10px;
+    text-align: left;
+}
+.grid-container .grid-item .order-card .order-item ul li {
+    list-style-type: none;
+}
+.center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.no-orders-message {
+    font-size: 100px;
     text-align: center;
+}
+
+.deliver-btn {
+    padding: 10px 20px;
+    background-color: #434543;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.deliver-btn:hover {
+    background-color: #434543;
 }
