@@ -7,10 +7,12 @@ class Order_Item {
         this.options = [];
         this.additions = [];
         this.price = price;
+        this.discount = [];
     }
 }
     // url example http://website.com/Dyna_menu.html?table=16&restaurant=Budolfi
 
+let dayOperator = ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"];
 
 const URLParameters = new URLSearchParams(window.location.search);
 const tableID = URLParameters.get('table');
@@ -33,6 +35,7 @@ function cartPrint(orderItems){
     let cartPrintHTML = document.createElement("ul");
     let totalPriceText = document.createElement("totalPrice");
     let totalPrice = 0;
+    let optionsChosen = 0;
     for (let j=0; j < orderItems.length; j++) {
         let orderPrintItem = document.createElement("li");
         orderPrintItem.innerText = orderItems[j].name;
@@ -40,7 +43,6 @@ function cartPrint(orderItems){
 
         let finalPrice = document.createElement("price");
         let price = orderItems[j].price;
-
         let removeButton = document.createElement("input");
         removeButton.type = "button";
         removeButton.value = "-";
@@ -54,13 +56,21 @@ function cartPrint(orderItems){
             let orderPrintItemExtraOptions = document.createElement("li");
             orderPrintItemExtraOptions.innerText = orderItems[j].selectedOptions[q].displayName;
             price += orderItems[j].selectedOptions[q].price;
+            optionsChosen += 1;
             orderPrintItemExtra.appendChild(orderPrintItemExtraOptions);
         }
-        for (let p = 0; q < orderItems[j].selectedAdditions.length; p++) {
+        for (let p = 0; p < orderItems[j].selectedAdditions.length; p++) {
             let orderPrintItemExtraAddition = document.createElement("li");
             orderPrintItemExtraAddition.innerText = orderItems[j].selectedAdditions[p].displayName;
             price += orderItems[j].selectedAdditions[p].price;
             orderPrintItemExtra.appendChild(orderPrintItemExtraAddition);
+        }
+        if (orderItems[j].discount.amount >= optionsChosen){
+            for (let i = 0; i < orderItems[j].discount.days.length; i++) {
+                if (dayOperator.indexOf(orderItems[j].discount.days[i])+1 === new Date().getDay()){
+                    price += orderItems[j].discount.price;
+                }
+            }
         }
         finalPrice.innerText = " - Pris: " + price.toString() + " ";
         totalPrice += price;
@@ -337,6 +347,7 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
         let item;
         let options = [];
         let additions = [];
+        let selectedDiscount;
         JSON.parse(localStorage.getItem("menuJSON")).forEach(menu => {
             menu.items.forEach(i => {
                 if(i.displayName === itemName)
@@ -367,7 +378,13 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
                 })
             })
         }
-
+        JSON.parse(localStorage.getItem("menuJSON")).forEach(menu => {
+            menu.items.forEach(items => {
+                if(items.displayName===itemName) {
+                    selectedDiscount = items.discount;
+                }
+            })
+        })
 
         //console.log(`Item: ${itemName}, PRICE: ${basePrice}`);
 
@@ -377,6 +394,7 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
             orderItem.selectedAdditions = additions;
             orderItem.HTMLoptions = selectedOptions;
             orderItem.HTMLadditions = selectedAdditions;
+            orderItem.discount = selectedDiscount;
             orderItem.price = item.basePrice;
             orderItem.comment = comment.slice();
             console.log("comment again" + comment);
