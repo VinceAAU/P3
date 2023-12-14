@@ -107,7 +107,7 @@ details {
 }
 
 div.checkbox-container {
-    border: 1px solid #000;
+    padding-bottom: 0.7em;
 }
 
 h4{
@@ -168,7 +168,6 @@ p.priceTag{
 .removeButton{
     border: 1px solid #000;
     transition:0.5s;
-    background: lightgrey;
     margin-left: 10px;
 
 }

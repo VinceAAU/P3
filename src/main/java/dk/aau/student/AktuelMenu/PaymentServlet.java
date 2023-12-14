@@ -26,11 +26,10 @@ public class PaymentServlet extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
 
-            if (currentOrders == null || currentOrders.isEmpty()) {
-                String message = "{\"message\": \"Venter på ordre\"}";
-                response.getWriter().write(message);
-            } else {
-                JSONArray ordersJsonArray = new JSONArray();
+            boolean noOrdersToShow = true;
+            JSONArray ordersJsonArray = new JSONArray();
+            if (currentOrders != null) {
+
                 for (Order order : currentOrders) {
                     // Check if the order is not delivered
                     if (order.isDelivered()) {
@@ -70,9 +69,15 @@ public class PaymentServlet extends HttpServlet {
 
                         orderJSON.put("orders", orderItemJSONArray);
                         ordersJsonArray.put(orderJSON);
+                        noOrdersToShow = false;
                     }
                 }
+            }
 
+            if (currentOrders == null || currentOrders.isEmpty() || noOrdersToShow) {
+                String message = "{\"message\": \"Venter på ordre\"}";
+                response.getWriter().write(message);
+            } else {
                 response.getWriter().write(ordersJsonArray.toString());
             }
         }
@@ -80,20 +85,7 @@ public class PaymentServlet extends HttpServlet {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
+/* legacy
     ArrayList<OrderItem> list = new ArrayList<>();
        public void payment(ArrayList<OrderItem> orderItems) {
 

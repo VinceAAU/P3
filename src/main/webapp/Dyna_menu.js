@@ -1,24 +1,26 @@
 //defining a class for the selected order to be sent back to server
 class Order_Item {
-    constructor(name) {
+    constructor(name,price) {
         this.name = name;
         this.selectedOptions = [];
         this.selectedAdditions = [];
+        this.options = [];
+        this.additions = [];
+        this.price = price;
+        this.discount = [];
     }
 }
     // url example http://website.com/Dyna_menu.html?table=16&restaurant=Budolfi
 
+let dayOperator = ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"];
 
 const URLParameters = new URLSearchParams(window.location.search);
-const tableID = URLParameters.get('table');
+const tableID = URLParameters.get('tableId');
 const restaurant = URLParameters.get('restaurant');
 const menuClassesURL = `menu.json?restaurant=${encodeURIComponent(restaurant)}`; // URL for getting menu from server//url for getting menu from server
 const sendURL = `/P3_war/OrderSent?table=${encodeURIComponent(tableID)}`;
 
 let orderItems = [];//array for order_item objects
-
-var coll = document.getElementsByClassName("Cart-collapsible");
-var i;
 
 function openCart(){
     document.getElementById("cart-container").style.width = "250px";
@@ -31,35 +33,54 @@ function closeCart(){
 }
 function cartPrint(orderItems){
     let cartPrintHTML = document.createElement("ul");
-    for (let j=0; j < orderItems.length; j++){
+    let totalPriceText = document.createElement("totalPrice");
+    let totalPrice = 0;
+    let optionsChosen = 0;
+    for (let j=0; j < orderItems.length; j++) {
         let orderPrintItem = document.createElement("li");
         orderPrintItem.innerText = orderItems[j].name;
-        orderPrintItem.setAttribute("orderIndex",j.toString());
+        orderPrintItem.setAttribute("orderIndex", j.toString());
 
+        let finalPrice = document.createElement("price");
+        let price = orderItems[j].price;
         let removeButton = document.createElement("input");
         removeButton.type = "button";
         removeButton.value = "-";
         removeButton.className = "removeButton";
-        removeButton.addEventListener("click",(event) =>
-        {
+        removeButton.addEventListener("click", (event) => {
             removeItems(orderPrintItem)
         })
-        orderPrintItem.appendChild(removeButton);
 
         let orderPrintItemExtra = document.createElement("ul");
-        for (let q=0; q < orderItems[j].selectedOptions.length; q++){
+        for (let q = 0; q < orderItems[j].selectedOptions.length; q++) {
             let orderPrintItemExtraOptions = document.createElement("li");
-            orderPrintItemExtraOptions.innerText = orderItems[j].selectedOptions[q];
+            orderPrintItemExtraOptions.innerText = orderItems[j].selectedOptions[q].displayName;
+            price += orderItems[j].selectedOptions[q].price;
+            optionsChosen += 1;
             orderPrintItemExtra.appendChild(orderPrintItemExtraOptions);
         }
-        for (let q=0; q < orderItems[j].selectedAdditions.length; q++) {
+        for (let p = 0; p < orderItems[j].selectedAdditions.length; p++) {
             let orderPrintItemExtraAddition = document.createElement("li");
-            orderPrintItemExtraAddition.innerText = orderItems[j].selectedAdditions[q];
+            orderPrintItemExtraAddition.innerText = orderItems[j].selectedAdditions[p].displayName;
+            price += orderItems[j].selectedAdditions[p].price;
             orderPrintItemExtra.appendChild(orderPrintItemExtraAddition);
         }
+        if (orderItems[j].discount.amount >= optionsChosen){
+            for (let i = 0; i < orderItems[j].discount.days.length; i++) {
+                if (dayOperator.indexOf(orderItems[j].discount.days[i])+1 === new Date().getDay()){
+                    price += orderItems[j].discount.price;
+                }
+            }
+        }
+        finalPrice.innerText = " - Pris: " + price.toString() + " ";
+        totalPrice += price;
+        orderPrintItem.appendChild(finalPrice);
+        orderPrintItem.appendChild(removeButton);
         orderPrintItem.appendChild(orderPrintItemExtra);
         cartPrintHTML.appendChild(orderPrintItem)
     }
+    totalPriceText.innerText = "\nPris: " + totalPrice.toString();
+    cartPrintHTML.appendChild(totalPriceText);
     document.getElementById("JS-printer").innerHTML = "";
     document.getElementById("JS-printer").appendChild(cartPrintHTML);
 }
@@ -83,10 +104,14 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => {
             return response.json()
         })
-        .then(Menu => {
-            console.log(Menu);
+        .then(menus => {
+            console.log(menus);
 
-            document.getElementById("menuContainer").innerHTML = HTMLgen(Menu);
+            document.getElementById("menuContainer").innerHTML = HTMLgen(menus[0]);
+            for (const menu of menus) {
+                document.getElementById("menu-selection").appendChild(menuButtonGenerator(menu));
+            }
+            localStorage.setItem("menuJSON", JSON.stringify(menus));
         })
         .then( () => {
 
@@ -127,8 +152,8 @@ document.addEventListener("DOMContentLoaded", function () {
         //Json setup for the orderitems array
         let orderItemsJSON = orderItems.map(orderItem => ({
             name: orderItem.name,
-            selectedOptions: orderItem.selectedOptions,
-            selectedAdditions: orderItem.selectedAdditions,
+            selectedOptions: orderItem.HTMLoptions,
+            selectedAdditions: orderItem.HTMLadditions,
             comment: orderItem.comment
         }));
         console.log("order " + orderItemsJSON);
@@ -148,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             // Handle success (if needed)
             console.log('Order sent successfully');
-        window.location.replace("http://localhost:8080/P3_war"); //Replace with actual IP that we get
+        document.body.innerText="Tak for din bestilling!" //Replace with actual IP that we get
         })
         .catch(error => {
             // Handle errors
@@ -159,31 +184,35 @@ document.addEventListener("DOMContentLoaded", function () {
 function HTMLgen(Menu) {
     let html = '';
     console.log('Menu:', Menu);
-    if (Menu && Menu.length > 0 && Menu[0].items) {
-        Menu[0].items.forEach(item => {
+    if (Menu && Menu.items) {
+        Menu.items.forEach(item => {
             html += '<div class="item-container">';
             html += '<details>'
             html += `<summary>${item.displayName}</summary>`;
             const itemdp = calculateMenuItemDisplayPrice(item);
-            html += `<p class="priceTag">${itemdp.amount} for ${itemdp.price} kr</p>`;
-            html += item.minOptions<item.maxOptions?`<p class="priceForExtraOptions"><b>Tilvalg: ${itemOptionsMinimumPrice(item)} kr.</b></p>`:'';
+            if(itemdp.price!==0 && itemdp.amount!==0) {
+                html += `<p class="priceTag">${itemdp.amount} for ${itemdp.price} kr.</p>`;
+                html += item.minOptions < item.maxOptions ? `<p class="priceForExtraOptions"><b>Tilvalg: ${itemOptionsMinimumPrice(item)} kr.</b></p>` : '';
+            } else if (itemdp.price!==0){
+                html += `<p class="priceTag">${itemdp.price} kr.</p>`
+            }
             html += `<div class="option" data-min-selections="${item.minOptions}" data-max-selections="${item.maxOptions}">`;
 
 
 
-            html += '<h4>Options</h4>' //Change this later IDK the english word right now so SUCK IT
+            //html += '<h4>Options</h4>' //Change this later IDK the english word right now so SUCK IT
             item.options.forEach(option => {
                 html += generateOptionElement(item, option).outerHTML;
             });
             html += '</div>';
 
-            html += '<div class="addition">';
-            html += '<h4>Additions</h4>' // Change later because danish name
+            html += '<br/><div class="addition">';
+            //html += '<h4>Additions</h4>' // Change later because danish name
             item.additions.forEach(addition => {
                 html += '<div class="checkbox-container">';
                 html += '<label>'
                 html += `<input id="additionCheckbox" type="checkbox" data-addition="${addition.displayName}">${addition.displayName}`;
-                html += `</label>`;
+                html += `</label> <b>+${addition.price} kr.</b>`;
                 html += '</div>';
             })
             html += '<div class="item-comment">';
@@ -220,7 +249,7 @@ function generateOptionElement(item, option){
 
     const displayPrice = calculateOptionDisplayPrice(item, option);
     if(displayPrice>0)
-        container.innerHTML += ` <b>+${calculateOptionDisplayPrice(item, option)} kr.</b>`
+        container.innerHTML += ` <b>${calculateOptionDisplayPrice(item, option)} kr.</b>`
 
     for(let labelText of option.labels){
         let label = document.createElement("span");
@@ -306,20 +335,83 @@ document.getElementById("menuContainer").addEventListener("click", function (eve
             selectedAdditions.push(checkbox.getAttribute('data-addition'));
         });
 
+
+
         //get comments from the input field on correct item
         let comment = itemContainer.querySelector('.item-comment .item-comment-input').value;
         console.log("komentar" + comment);
 
+        /**
+         * @type {MenuItem}
+         */
+        let item;
+        let options = [];
+        let additions = [];
+        let selectedDiscount;
+        JSON.parse(localStorage.getItem("menuJSON")).forEach(menu => {
+            menu.items.forEach(i => {
+                if(i.displayName === itemName)
+                    item = i;
+            })
+        });
+
+        for (let optionString of selectedOptions){
+            JSON.parse(localStorage.getItem("menuJSON")).forEach(menu => {
+                menu.items.forEach(i => {
+                    i.options.forEach(option => {
+                        if(option.displayName===optionString){
+                            options.push(option);
+                        }
+                    })
+                })
+            })
+        }
+
+        for (let additionString of selectedAdditions){
+            JSON.parse(localStorage.getItem("menuJSON")).forEach(menu => {
+                menu.items.forEach(i => {
+                    i.additions.forEach(addition => {
+                        if(addition.displayName===additionString){
+                            additions.push(addition);
+                        }
+                    })
+                })
+            })
+        }
+        JSON.parse(localStorage.getItem("menuJSON")).forEach(menu => {
+            menu.items.forEach(items => {
+                if(items.displayName===itemName) {
+                    selectedDiscount = items.discount;
+                }
+            })
+        })
+
+        if(options.length<item.minOptions){
+            alert(`Du skal vælge mindst ${item.minOptions} ting`);
+            return;
+        }
+
+        //console.log(`Item: ${itemName}, PRICE: ${basePrice}`);
+
         //creates the order_item objects and puts them in the orderItems array
             let orderItem = new Order_Item(itemName);
-            orderItem.selectedOptions = selectedOptions.slice();
-            orderItem.selectedAdditions = selectedAdditions.slice();
+            orderItem.selectedOptions = options;
+            orderItem.selectedAdditions = additions;
+            orderItem.HTMLoptions = selectedOptions;
+            orderItem.HTMLadditions = selectedAdditions;
+            orderItem.discount = selectedDiscount;
+            orderItem.price = item.basePrice;
             orderItem.comment = comment.slice();
             console.log("comment again" + comment);
             orderItems.push(orderItem);
 
         showNotification('Din ordre er tilføjet til kurven!','success')
         console.log(orderItems);
+
+
+        for (let e of itemContainer.querySelectorAll("input[type=checkbox]")){
+            e.checked = false;
+        }
     }
 });
 
@@ -352,5 +444,20 @@ function calculateMenuItemDisplayPrice(item){
  * @param {Option} option
  */
 function calculateOptionDisplayPrice(item, option){
-    return option.price - itemOptionsMinimumPrice(item);
+    console.log(`Calculate option display price of ${item.internalName}: ${calculateMenuItemDisplayPrice(item).amount}`)
+    if(calculateMenuItemDisplayPrice(item).amount!==0)
+        return option.price - itemOptionsMinimumPrice(item);
+    else
+        return option.price;
+}
+
+/**
+ *
+ * @param {{items: MenuItem[], menuId: string, availableTimes: {start: string, days: string[], end: string}}} menu
+ */
+function menuButtonGenerator(menu){
+    const but = document.createElement("button");
+    but.innerText = menu.menuId;
+    but.addEventListener("click", ()=>document.querySelector("#menuContainer").innerHTML=HTMLgen(menu));
+    return but;
 }

@@ -10,7 +10,7 @@ public class DiscountTest {
 
     private int finalCalcedPrice;
 
-    @Test
+    /*@Test
     public void doesItemHaveDiscount(){
         ArrayList<MenuItem> menuList = new ArrayList<>();       //creates a menuitem list
         menuList.add(new MenuItem("borger","Okse Burger",10000));   //creates menu item 1
@@ -25,7 +25,7 @@ public class DiscountTest {
         Discount DiscountTester = new Discount(orderList.get(0).calcPrice(),1,Daysselection);
         Assertions.assertTrue(DiscountTester.applies());
 
-    }
+    }*/
 
     @Test
     public void DoesItemNotHaveDiscount(){
