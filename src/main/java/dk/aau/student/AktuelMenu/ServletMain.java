@@ -8,12 +8,12 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.security.SecureRandom;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "mainServlet", value="/index.html", loadOnStartup = 0)
-
 public class ServletMain extends HttpServlet {
     @Override
     public void init() throws ServletException {
@@ -56,6 +56,26 @@ public class ServletMain extends HttpServlet {
                     throw new RuntimeException(e);
                 }
             }
+
+            //Do the auth stuff
+            File tokenFile = new File(saveDir, "token");
+            String token;
+            try {
+                if (tokenFile.exists() && tokenFile.isFile()) {
+                    token = Files.readString(tokenFile.toPath()).strip();
+                } else {
+                    token = Long.toString(new SecureRandom().nextLong(), 36);
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(tokenFile));
+                    writer.write(token);
+                    writer.close();
+                }
+            } catch (IOException e){
+                throw new RuntimeException(e);
+            }
+
+            context.setAttribute("adminToken", token);
+
+            System.out.println("Your token is '" + token + "'");
         }
     }
 

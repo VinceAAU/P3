@@ -19,7 +19,7 @@ import java.util.Optional;
 @WebServlet(name = "MenuGetterServlet", value="/menu.json")
 public class MenuGetterServlet extends HttpServlet {
 
-    @Override
+    /*@Override
     public void init() throws ServletException {
         //Assume that our restaurant is Budolfi. It is a problem that we do this
         Restaurant restaurant = Restaurant.allRestaurants.stream().filter(r -> r.getName().equals("Budolfi")).findAny().orElse(null);
@@ -28,7 +28,7 @@ public class MenuGetterServlet extends HttpServlet {
             restaurant = new Restaurant("Budolfi");
             Restaurant.allRestaurants.add(restaurant);
         }
-    }
+    }*/
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("request received");

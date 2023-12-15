@@ -86,8 +86,6 @@ public class Menu implements JSONString {
                 )
         );
 
-        //TODO: Move discount from menu to menuitem
-
         JSONArray itemsJSON = menuJSON.getJSONArray("items");
 
         for (int i = 0; i < itemsJSON.length(); i++) {

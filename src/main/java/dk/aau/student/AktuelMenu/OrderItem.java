@@ -47,7 +47,6 @@ public class OrderItem {
             return calcedPrice;
         }
         return menuItem.getPrice();
-
     }
 
 
