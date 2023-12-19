@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.stream.Collectors;
 import java.util.Optional;
 
@@ -25,6 +26,17 @@ public class ReceiveMenuServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String[] authHeader = req.getHeader("Authorization").split(" ");
+        if(!authHeader[0].equals("Basic")){
+            resp.sendError(401, "Only the Basic authorisation scheme is supported");
+            return;
+        }
+        String providedToken = new String(Base64.getDecoder().decode(authHeader[1]));
+        if(!getServletContext().getAttribute("adminToken").equals(providedToken)){
+            resp.sendError(403);
+            return;
+        }
+
         JSONObject uploadedMenu = new JSONObject(req.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
 
         Menu menu = Menu.fromJSONObject(uploadedMenu.getJSONObject("menu"));

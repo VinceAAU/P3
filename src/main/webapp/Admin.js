@@ -337,6 +337,8 @@ function sendMenuToServer()
     }
     const sendUrl = '/P3_war/AktuelMenu/MenuSent'
 
+    const auth = 'Basic ' + btoa(new URL(window.location).searchParams.get('token'));
+
     fetch(sendUrl,{
         method: 'POST',
         headers: {
@@ -345,7 +347,7 @@ function sendMenuToServer()
             'Access-Control-Allow-Credentials':'true',
             'Content-Type':'application/json',
             'Accept':'application/json',
-            'Authorization': 'Basic '
+            'Authorization': auth
         },
         body: JSON.stringify(json)
     })
