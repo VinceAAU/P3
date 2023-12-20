@@ -277,6 +277,8 @@ function GoToItem(number)
     {document.getElementById("discSaturday").checked=true}
     if (menuItems[number].discount.days.includes("SUNDAY",0))
     {document.getElementById("discSunday").checked=true}
+    currentAddition = menuItems[number].additions.length;
+    currentOption = menuItems[number].options.length;
 }
 
 
@@ -300,10 +302,6 @@ function sendMenuToServer()
     if (document.getElementById("sunday").checked)
         dayArray.push("Sunday")
 
-
-
-
-
     let json = {
     menu: {
         restaurant:document.getElementById("restaurantForm").value,
@@ -315,8 +313,6 @@ function sendMenuToServer()
         },
         items:menuItems,
     }
-
-
     }
     if (json.menu.menuId =="" || json.menu.availableTimes.start =="" || json.menu.availableTimes.end == "")
     {
@@ -352,10 +348,6 @@ function sendMenuToServer()
         body: JSON.stringify(json)
     })
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok' + response.statusText);
-            }
-            return response.json();
         })
         .then(data => {
             console.log('Success:');
